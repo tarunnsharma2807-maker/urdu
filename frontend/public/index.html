@@ -523,6 +523,45 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
   .login-logo{font-size:26px;}
 }
 
+/* ═══════ VOCABULARY ═══════ */
+.vocab-controls{margin:14px 0 22px;display:flex;flex-direction:column;gap:14px;}
+.vocab-search{width:100%;padding:13px 18px;border:1.5px solid var(--border);border-radius:14px;font-size:14px;font-weight:500;background:#fff;color:var(--ink);transition:all .15s;font-family:var(--display);}
+.vocab-search:focus{outline:none;border-color:var(--pb);box-shadow:0 0 0 4px rgba(0,49,83,.08);}
+.vocab-cats{display:flex;flex-wrap:wrap;gap:7px;}
+.vocab-cat-btn{padding:7px 14px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;}
+.vocab-cat-btn:hover{border-color:var(--pb);color:var(--pb);}
+.vocab-cat-btn.active{background:var(--pb);color:#fff;border-color:var(--pb);}
+.vocab-cat-btn .count{opacity:.7;margin-left:5px;font-weight:500;}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.vocab-card{
+  background:#fff;border-radius:18px;padding:18px 16px;border:1.5px solid var(--border);
+  text-align:center;cursor:pointer;position:relative;
+  transition:transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .25s;
+  transform-style:preserve-3d;perspective:1000px;
+  min-height:138px;display:flex;flex-direction:column;justify-content:center;gap:6px;
+}
+.vocab-card:hover{box-shadow:0 8px 24px rgba(0,49,83,.08);transform:translateY(-2px);}
+.vocab-card.flipped{background:linear-gradient(135deg,#003153,#0a4a7a);border-color:#003153;color:#fff;}
+.vocab-card .v-urdu{font-family:var(--urdu);font-size:30px;direction:rtl;color:var(--pb);line-height:1.4;}
+.vocab-card.flipped .v-urdu{color:#fdf6e3;}
+.vocab-card .v-roman{font-family:var(--display);font-style:italic;font-size:12px;color:var(--muted);letter-spacing:.4px;}
+.vocab-card.flipped .v-roman{color:rgba(253,246,227,.85);}
+.vocab-card .v-en{font-size:14px;font-weight:600;color:var(--ink);}
+.vocab-card.flipped .v-en{color:#fff;}
+.vocab-card .v-hi{font-size:12.5px;color:var(--muted);font-weight:500;}
+.vocab-card.flipped .v-hi{color:#a8d8ea;}
+.vocab-card .v-cat-badge{position:absolute;top:8px;right:10px;font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;opacity:.7;}
+.vocab-card.flipped .v-cat-badge{color:var(--gold);}
+.vocab-card .v-speaker{position:absolute;top:8px;left:10px;background:transparent;border:none;font-size:16px;cursor:pointer;opacity:.55;}
+.vocab-card .v-speaker:hover{opacity:1;transform:scale(1.15);}
+.vocab-empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;}
+
+@media (max-width: 760px){
+  .vocab-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+  .vocab-card{padding:14px 12px;min-height:120px;}
+  .vocab-card .v-urdu{font-size:24px;}
+}
+
 /* Touch / no-hover device tweaks */
 @media (hover: none){
   .unit-bubble:not(.locked-b2):hover, .opt-btn:hover, .start-btn:hover, .login-btn:hover{transform:none;}
@@ -638,11 +677,13 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
   </div>
   <div class="nav-list">
     <div class="nav-item active" onclick="go('home')"><span class="nav-icon">🏠</span> Learn</div>
+    <div class="nav-item" onclick="go('vocab')"><span class="nav-icon">📚</span> Vocabulary</div>
     <div class="nav-item" onclick="go('alphabet')"><span class="nav-icon">ا</span> Alphabet</div>
     <div class="nav-item" onclick="go('writing')"><span class="nav-icon">✍️</span> Writing</div>
     <div class="nav-item" onclick="go('pronounce')"><span class="nav-icon">🔊</span> Pronunciation</div>
     <div class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span> AI Tutor</div>
     <div class="nav-item" onclick="go('progress')"><span class="nav-icon">📊</span> Progress</div>
+    <div class="nav-item" onclick="showBday()" style="margin-top:8px;color:#f7c948;"><span class="nav-icon">🎉</span> Birthday wish</div>
   </div>
   <div class="sb-bottom">
     <div class="sb-user">
@@ -756,6 +797,19 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
     <div class="page-title">Progress</div>
     <div class="page-sub">Every lesson brings you closer to fluency</div>
     <div id="progContent"></div>
+  </div>
+</div>
+
+<!-- VOCABULARY -->
+<div id="screen-vocab" class="screen">
+  <div class="page-wrap">
+    <div class="page-title">Vocabulary <span style="font-family:var(--urdu);font-size:24px;color:var(--gold);">لغویات</span></div>
+    <div class="page-sub">Curated words from a real Urdu vocabulary primer — grouped by theme. Tap a card to flip.</div>
+    <div class="vocab-controls">
+      <input id="vocabSearch" class="vocab-search" placeholder="Search Urdu / Roman / English / Hindi…" oninput="renderVocab()">
+      <div id="vocabCats" class="vocab-cats"></div>
+    </div>
+    <div id="vocabGrid" class="vocab-grid"></div>
   </div>
 </div>
 
@@ -1151,7 +1205,7 @@ const CURRICULUM = [
 ];
 // STATE & STORAGE
 // ════════════════════════════════════════════════
-const S = {xp:0,streak:1,lives:3,done:[],unit:null,step:0,correct:0,total:0,start:0,matchU:null,matchE:null,matched:[],chatHist:[],currentUser:null};
+const S = {xp:0,streak:1,lives:3,done:[],unit:null,step:0,correct:0,total:0,start:0,matchU:null,matchE:null,matched:[],chatHist:[],currentUser:null,currentUserEmail:''};
 
 function storageKey(u){return 'urduduo_'+u;}
 function saveProgress(){
@@ -1171,14 +1225,19 @@ function saveAccounts(a){localStorage.setItem('urduduo_accounts',JSON.stringify(
 // BIRTHDAY
 // ════════════════════════════════════════════════
 function checkBirthday(name){
-  // Show birthday overlay when Srushti logs in (any case-insensitive) OR on stored date
+  // Show birthday overlay when:
+  //  - user looks like Srushti (name OR email contains 'srushti')
+  //  - OR this account has not yet been shown the overlay on this device
+  //  - OR stored bday date matches today
   const today = new Date();
-  const bdayDate = localStorage.getItem('urduduo_bday_date') || '2025-06-07';
-  const shown = localStorage.getItem('urduduo_bday_shown');
+  const bdayDate = localStorage.getItem('urduduo_bday_date') || '2026-06-07';
   const todayStr = today.toISOString().slice(0,10);
   const n = (name||S.currentUser||'').toLowerCase();
-  if(n && n.indexOf('srushti')>-1) return true;
-  if(todayStr === bdayDate && shown !== todayStr){ return true; }
+  const email = (S.currentUserEmail||'').toLowerCase();
+  if((n && n.indexOf('srushti')>-1) || (email && email.indexOf('srushti')>-1)) return true;
+  const seenKey = 'urduduo_bday_seen_'+(S.currentUser||'guest');
+  if(!localStorage.getItem(seenKey)) return true;
+  if(todayStr === bdayDate) return true;
   return false;
 }
 function showBday(){
@@ -1232,6 +1291,8 @@ function showBday(){
 function closeBday(){
   const today = new Date().toISOString().slice(0,10);
   localStorage.setItem('urduduo_bday_shown', today);
+  const seenKey = 'urduduo_bday_seen_'+(S.currentUser||'guest');
+  localStorage.setItem(seenKey, today);
   const overlay = document.getElementById('bdayOverlay');
   overlay.style.transition='opacity .45s ease';overlay.style.opacity=0;setTimeout(()=>{overlay.style.display='none';overlay.style.opacity=1;overlay.style.transition='';},460);
 }
@@ -1356,8 +1417,9 @@ async function pushCloudProgress(extra){
 
 function guestLogin(){loginUser('guest','Guest');}
 
-function loginUser(u, displayName){
+function loginUser(u, displayName, email){
   S.currentUser=u;
+  S.currentUserEmail = email || '';
   if(u==='guest'){loadProgress(u);}
   localStorage.setItem('urduduo_lastuser',u);
   document.getElementById('loginScreen').style.display='none';
@@ -1395,6 +1457,7 @@ function go(id){
   toggleSidebar(false);
   updateBar();
   if(id==='home')buildHome();
+  if(id==='vocab'){renderVocabCats();renderVocab();}
   if(id==='alphabet')buildAlphabet();
   if(id==='writing')buildWriting();
   if(id==='pronounce')buildPronounce();
@@ -1917,6 +1980,235 @@ function buildProgress(){
 }
 
 // ════════════════════════════════════════════════
+// VOCABULARY (curated from real Urdu primer)
+// ════════════════════════════════════════════════
+const VOCAB = [
+  // GREETINGS
+  {u:'السلام علیکم',r:'assalāmu ʻalaikum',e:'peace be upon you',h:'सलाम (नमस्ते जैसा)',c:'Greetings'},
+  {u:'صبح بخیر',r:'subḥ bakhair',e:'good morning',h:'सुप्रभात',c:'Greetings'},
+  {u:'شام بخیر',r:'shām bakhair',e:'good evening',h:'शुभ संध्या',c:'Greetings'},
+  {u:'خدا حافظ',r:'khudā ḥāfiẓ',e:'goodbye',h:'अलविदा',c:'Greetings'},
+  {u:'شکریہ',r:'shukriya',e:'thank you',h:'धन्यवाद',c:'Greetings'},
+  {u:'معاف کیجیے',r:'muʻāf kījiye',e:'excuse me / sorry',h:'माफ कीजिए',c:'Greetings'},
+  {u:'جی ہاں',r:'jī hāṅ',e:'yes',h:'हाँ जी',c:'Greetings'},
+  {u:'نہیں',r:'nahīṅ',e:'no',h:'नहीं',c:'Greetings'},
+
+  // FAMILY / PEOPLE
+  {u:'خاندان',r:'khāndān',e:'family',h:'परिवार',c:'Family'},
+  {u:'والد',r:'wālid',e:'father',h:'पिता',c:'Family'},
+  {u:'والدہ',r:'wālida',e:'mother',h:'माँ',c:'Family'},
+  {u:'بیٹا',r:'beṭā',e:'son',h:'बेटा',c:'Family'},
+  {u:'بیٹی',r:'beṭī',e:'daughter',h:'बेटी',c:'Family'},
+  {u:'بھائی',r:'bhāī',e:'brother',h:'भाई',c:'Family'},
+  {u:'بہن',r:'behan',e:'sister',h:'बहन',c:'Family'},
+  {u:'دوست',r:'dost',e:'friend',h:'दोस्त',c:'Family'},
+  {u:'استاد',r:'ustād',e:'teacher',h:'शिक्षक',c:'Family'},
+  {u:'طالب علم',r:'ṭālib ʻilm',e:'student',h:'विद्यार्थी',c:'Family'},
+  {u:'بچے',r:'bacche',e:'children',h:'बच्चे',c:'Family'},
+  {u:'ڈاکٹر',r:'ḍākṭar',e:'doctor',h:'डॉक्टर',c:'Family'},
+
+  // FOOD
+  {u:'کھانا',r:'khānā',e:'food',h:'खाना',c:'Food'},
+  {u:'پانی',r:'pānī',e:'water',h:'पानी',c:'Food'},
+  {u:'چائے',r:'chāy',e:'tea',h:'चाय',c:'Food'},
+  {u:'کافی',r:'kāfī',e:'coffee',h:'कॉफ़ी',c:'Food'},
+  {u:'روٹی',r:'roṭī',e:'bread / roti',h:'रोटी',c:'Food'},
+  {u:'چاول',r:'chāval',e:'rice',h:'चावल',c:'Food'},
+  {u:'دال',r:'dāl',e:'lentils / daal',h:'दाल',c:'Food'},
+  {u:'سبزی',r:'sabzī',e:'vegetable',h:'सब्ज़ी',c:'Food'},
+  {u:'گوشت',r:'gosht',e:'meat',h:'गोश्त',c:'Food'},
+  {u:'مچھلی',r:'machhlī',e:'fish',h:'मछली',c:'Food'},
+  {u:'پھل',r:'phal',e:'fruit',h:'फल',c:'Food'},
+  {u:'بریانی',r:'biryānī',e:'biryani',h:'बिरयानी',c:'Food'},
+  {u:'سموسہ',r:'samosā',e:'samosa',h:'समोसा',c:'Food'},
+  {u:'لسی',r:'lassī',e:'lassi',h:'लस्सी',c:'Food'},
+  {u:'چٹنی',r:'chuṭnī',e:'chutney',h:'चटनी',c:'Food'},
+
+  // TIME
+  {u:'صبح',r:'subḥ',e:'morning',h:'सुबह',c:'Time'},
+  {u:'شام',r:'shām',e:'evening',h:'शाम',c:'Time'},
+  {u:'رات',r:'rāt',e:'night',h:'रात',c:'Time'},
+  {u:'دن',r:'din',e:'day',h:'दिन',c:'Time'},
+  {u:'سال',r:'sāl',e:'year',h:'साल',c:'Time'},
+  {u:'مہینہ',r:'mahīnā',e:'month',h:'महीना',c:'Time'},
+  {u:'ہفتہ',r:'hafta',e:'week',h:'हफ़्ता',c:'Time'},
+  {u:'آج',r:'āj',e:'today',h:'आज',c:'Time'},
+  {u:'کل',r:'kal',e:'yesterday / tomorrow',h:'कल',c:'Time'},
+  {u:'ابھی',r:'abhī',e:'right now',h:'अभी',c:'Time'},
+
+  // NUMBERS
+  {u:'ایک',r:'ek',e:'one',h:'एक',c:'Numbers'},
+  {u:'دو',r:'do',e:'two',h:'दो',c:'Numbers'},
+  {u:'تین',r:'tīn',e:'three',h:'तीन',c:'Numbers'},
+  {u:'چار',r:'chār',e:'four',h:'चार',c:'Numbers'},
+  {u:'پانچ',r:'pānch',e:'five',h:'पाँच',c:'Numbers'},
+  {u:'چھ',r:'chhe',e:'six',h:'छह',c:'Numbers'},
+  {u:'سات',r:'sāt',e:'seven',h:'सात',c:'Numbers'},
+  {u:'آٹھ',r:'āṭh',e:'eight',h:'आठ',c:'Numbers'},
+  {u:'نو',r:'nau',e:'nine',h:'नौ',c:'Numbers'},
+  {u:'دس',r:'das',e:'ten',h:'दस',c:'Numbers'},
+  {u:'صفر',r:'sifr',e:'zero',h:'शून्य',c:'Numbers'},
+
+  // COLORS
+  {u:'رنگ',r:'rang',e:'colour',h:'रंग',c:'Colors'},
+  {u:'سرخ',r:'surkh',e:'red',h:'लाल',c:'Colors'},
+  {u:'نیلا',r:'nīlā',e:'blue',h:'नीला',c:'Colors'},
+  {u:'سبز',r:'sabz',e:'green',h:'हरा',c:'Colors'},
+  {u:'پیلا',r:'pīlā',e:'yellow',h:'पीला',c:'Colors'},
+  {u:'سفید',r:'safed',e:'white',h:'सफ़ेद',c:'Colors'},
+  {u:'کالا',r:'kālā',e:'black',h:'काला',c:'Colors'},
+
+  // ADJECTIVES
+  {u:'بڑا',r:'baṛā',e:'big',h:'बड़ा',c:'Adjectives'},
+  {u:'چھوٹا',r:'chhoṭā',e:'small',h:'छोटा',c:'Adjectives'},
+  {u:'اچھا',r:'achchhā',e:'good',h:'अच्छा',c:'Adjectives'},
+  {u:'برا',r:'burā',e:'bad',h:'बुरा',c:'Adjectives'},
+  {u:'نیا',r:'nayā',e:'new',h:'नया',c:'Adjectives'},
+  {u:'پرانا',r:'purānā',e:'old',h:'पुराना',c:'Adjectives'},
+  {u:'گرم',r:'garam',e:'hot',h:'गरम',c:'Adjectives'},
+  {u:'ٹھنڈا',r:'ṭhanḍā',e:'cold',h:'ठंडा',c:'Adjectives'},
+  {u:'آسان',r:'āsān',e:'easy',h:'आसान',c:'Adjectives'},
+  {u:'مشکل',r:'mushkil',e:'difficult',h:'मुश्किल',c:'Adjectives'},
+  {u:'خوبصورت',r:'khūbsūrat',e:'beautiful',h:'खूबसूरत',c:'Adjectives'},
+  {u:'تیز',r:'tez',e:'fast / sharp',h:'तेज़',c:'Adjectives'},
+  {u:'آہستہ',r:'āhista',e:'slow',h:'धीरे',c:'Adjectives'},
+  {u:'دلچسپ',r:'dilchasp',e:'interesting',h:'दिलचस्प',c:'Adjectives'},
+  {u:'پیارا',r:'pyārā',e:'dear / lovely',h:'प्यारा',c:'Adjectives'},
+
+  // EMOTIONS
+  {u:'محبت',r:'muḥabbat',e:'love',h:'मोहब्बत',c:'Emotions'},
+  {u:'خوشی',r:'khushī',e:'happiness',h:'ख़ुशी',c:'Emotions'},
+  {u:'غم',r:'gham',e:'sadness',h:'ग़म',c:'Emotions'},
+  {u:'غصہ',r:'ghussa',e:'anger',h:'ग़ुस्सा',c:'Emotions'},
+  {u:'ڈر',r:'ḍar',e:'fear',h:'डर',c:'Emotions'},
+  {u:'خوش',r:'khush',e:'happy',h:'ख़ुश',c:'Emotions'},
+  {u:'اداس',r:'udās',e:'sad',h:'उदास',c:'Emotions'},
+  {u:'پسند',r:'pasand',e:'liking / favourite',h:'पसंद',c:'Emotions'},
+
+  // QUESTION WORDS
+  {u:'کیا',r:'kyā',e:'what',h:'क्या',c:'Questions'},
+  {u:'کون',r:'kaun',e:'who',h:'कौन',c:'Questions'},
+  {u:'کہاں',r:'kahāṅ',e:'where',h:'कहाँ',c:'Questions'},
+  {u:'کب',r:'kab',e:'when',h:'कब',c:'Questions'},
+  {u:'کیوں',r:'kyūṅ',e:'why',h:'क्यों',c:'Questions'},
+  {u:'کیسے',r:'kaise',e:'how',h:'कैसे',c:'Questions'},
+  {u:'کتنا',r:'kitnā',e:'how much',h:'कितना',c:'Questions'},
+
+  // PRONOUNS
+  {u:'میں',r:'maiṅ',e:'I',h:'मैं',c:'Pronouns'},
+  {u:'تم',r:'tum',e:'you (informal)',h:'तुम',c:'Pronouns'},
+  {u:'آپ',r:'āp',e:'you (formal)',h:'आप',c:'Pronouns'},
+  {u:'ہم',r:'ham',e:'we',h:'हम',c:'Pronouns'},
+  {u:'وہ',r:'vo',e:'he / she / they',h:'वो',c:'Pronouns'},
+  {u:'یہ',r:'yeh',e:'this',h:'यह',c:'Pronouns'},
+  {u:'میرا',r:'merā',e:'my',h:'मेरा',c:'Pronouns'},
+  {u:'تمہارا',r:'tumhārā',e:'your',h:'तुम्हारा',c:'Pronouns'},
+
+  // PLACES
+  {u:'گھر',r:'ghar',e:'house',h:'घर',c:'Places'},
+  {u:'شہر',r:'shahar',e:'city',h:'शहर',c:'Places'},
+  {u:'گاؤں',r:'gāuṅ',e:'village',h:'गाँव',c:'Places'},
+  {u:'ملک',r:'mulk',e:'country',h:'देश',c:'Places'},
+  {u:'سکول',r:'iskūl',e:'school',h:'स्कूल',c:'Places'},
+  {u:'یونیورسٹی',r:'yūnivarsiṭī',e:'university',h:'विश्वविद्यालय',c:'Places'},
+  {u:'ہسپتال',r:'hospitāl',e:'hospital',h:'अस्पताल',c:'Places'},
+  {u:'بازار',r:'bāzār',e:'market',h:'बाज़ार',c:'Places'},
+  {u:'سڑک',r:'saṛak',e:'road',h:'सड़क',c:'Places'},
+
+  // OBJECTS
+  {u:'کتاب',r:'kitāb',e:'book',h:'किताब',c:'Objects'},
+  {u:'قلم',r:'qalam',e:'pen',h:'क़लम',c:'Objects'},
+  {u:'کاغذ',r:'kāghaz',e:'paper',h:'काग़ज़',c:'Objects'},
+  {u:'گاڑی',r:'gāṛī',e:'car / vehicle',h:'गाड़ी',c:'Objects'},
+  {u:'دروازہ',r:'darvāza',e:'door',h:'दरवाज़ा',c:'Objects'},
+  {u:'کھڑکی',r:'khiṛkī',e:'window',h:'खिड़की',c:'Objects'},
+  {u:'پیسہ',r:'paisā',e:'money',h:'पैसा',c:'Objects'},
+  {u:'چابی',r:'chābī',e:'key',h:'चाबी',c:'Objects'},
+
+  // VERBS
+  {u:'کرنا',r:'karnā',e:'to do',h:'करना',c:'Verbs'},
+  {u:'ہونا',r:'honā',e:'to be',h:'होना',c:'Verbs'},
+  {u:'جانا',r:'jānā',e:'to go',h:'जाना',c:'Verbs'},
+  {u:'آنا',r:'ānā',e:'to come',h:'आना',c:'Verbs'},
+  {u:'دیکھنا',r:'dekhnā',e:'to see',h:'देखना',c:'Verbs'},
+  {u:'سننا',r:'sunnā',e:'to hear',h:'सुनना',c:'Verbs'},
+  {u:'بولنا',r:'bolnā',e:'to speak',h:'बोलना',c:'Verbs'},
+  {u:'پڑھنا',r:'paṛhnā',e:'to read',h:'पढ़ना',c:'Verbs'},
+  {u:'لکھنا',r:'likhnā',e:'to write',h:'लिखना',c:'Verbs'},
+  {u:'کھانا',r:'khānā',e:'to eat',h:'खाना',c:'Verbs'},
+  {u:'پینا',r:'pīnā',e:'to drink',h:'पीना',c:'Verbs'},
+  {u:'سونا',r:'sonā',e:'to sleep',h:'सोना',c:'Verbs'},
+  {u:'جاگنا',r:'jāgnā',e:'to wake up',h:'जागना',c:'Verbs'},
+  {u:'دینا',r:'denā',e:'to give',h:'देना',c:'Verbs'},
+  {u:'لینا',r:'lenā',e:'to take',h:'लेना',c:'Verbs'},
+
+  // POETRY / LITERATURE (from PDF Ghalib section)
+  {u:'لفظ',r:'lafẓ',e:'word',h:'शब्द',c:'Literature'},
+  {u:'اشعار',r:'ashʻār',e:'verses / poems',h:'शेर, अशआर',c:'Literature'},
+  {u:'غالب',r:'Ghālib',e:'Ghalib (legendary poet)',h:'ग़ालिब',c:'Literature'},
+  {u:'طلسم',r:'tilism',e:'charm / talisman',h:'जादू',c:'Literature'},
+  {u:'معانی',r:'maʻānī',e:'meanings',h:'अर्थ',c:'Literature'},
+  {u:'گنجینہ',r:'ganjīna',e:'treasure',h:'ख़ज़ाना',c:'Literature'},
+  {u:'محبت',r:'muḥabbat',e:'love',h:'मोहब्बत',c:'Literature'},
+
+  // CONJUNCTIONS / GLUE WORDS
+  {u:'اور',r:'aur',e:'and',h:'और',c:'Conjunctions'},
+  {u:'یا',r:'yā',e:'or',h:'या',c:'Conjunctions'},
+  {u:'لیکن',r:'lekin',e:'but',h:'लेकिन',c:'Conjunctions'},
+  {u:'اگر',r:'agar',e:'if',h:'अगर',c:'Conjunctions'},
+  {u:'تو',r:'to',e:'then',h:'तो',c:'Conjunctions'},
+];
+let VOCAB_ACTIVE_CAT = 'All';
+
+function vocabCategories(){
+  const cats = ['All'];
+  const seen = new Set();
+  VOCAB.forEach(v=>{if(!seen.has(v.c)){seen.add(v.c);cats.push(v.c);}});
+  return cats;
+}
+function renderVocabCats(){
+  const cats = vocabCategories();
+  const counts = {All: VOCAB.length};
+  VOCAB.forEach(v=>{counts[v.c]=(counts[v.c]||0)+1;});
+  document.getElementById('vocabCats').innerHTML = cats.map(c =>
+    `<button class="vocab-cat-btn ${c===VOCAB_ACTIVE_CAT?'active':''}" onclick="setVocabCat('${c}')">${c}<span class="count">${counts[c]||0}</span></button>`
+  ).join('');
+}
+function setVocabCat(c){VOCAB_ACTIVE_CAT=c;renderVocabCats();renderVocab();}
+function renderVocab(){
+  const q = (document.getElementById('vocabSearch')?.value||'').trim().toLowerCase();
+  const grid = document.getElementById('vocabGrid');
+  const matches = VOCAB.filter(v=>{
+    if(VOCAB_ACTIVE_CAT!=='All' && v.c!==VOCAB_ACTIVE_CAT) return false;
+    if(!q) return true;
+    return (v.u+' '+v.r+' '+v.e+' '+v.h).toLowerCase().includes(q);
+  });
+  if(matches.length===0){
+    grid.innerHTML = `<div class="vocab-empty">No words match "${esc(q)}". Try another search.</div>`;
+    return;
+  }
+  grid.innerHTML = matches.map((v,i)=>`
+    <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+      <span class="v-cat-badge">${v.c}</span>
+      <button class="v-speaker" onclick="event.stopPropagation();speakUrdu('${esc(v.u)}')" title="Pronounce">🔊</button>
+      <div class="v-urdu">${v.u}</div>
+      <div class="v-roman">${v.r}</div>
+      <div class="v-en">${v.e}</div>
+      <div class="v-hi">${v.h}</div>
+    </div>
+  `).join('');
+}
+function speakUrdu(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='ur-PK';u.rate=.85;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// ════════════════════════════════════════════════
 // BOOT
 // ════════════════════════════════════════════════
 (async function(){
@@ -1936,7 +2228,7 @@ function buildProgress(){
         try{localStorage.setItem('urduduo_bday_img', cloud.portrait);}catch(e){}
       }
     }
-    loginUser(me.user_id, me.name || me.email);
+    loginUser(me.user_id, me.name || me.email, me.email);
     return;
   }
 

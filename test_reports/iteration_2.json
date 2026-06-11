@@ -1,0 +1,32 @@
+{
+  "summary": "Frontend-only iteration 2 test on public URL. All review-requested features verified end-to-end: login screen + guest login work; sidebar now contains 'Vocabulary' (between Learn and Alphabet) and gold '🎉 Birthday wish' at bottom (color rgb(247,201,72)); Vocabulary screen titled 'Vocabulary لغویات' renders search box + 16 chips (All + 15 themed categories) with 145 total cards matching the spec; each card shows Urdu (RTL), italic roman (e.g. assalāmu ʻalaikum), English (peace be upon you), Hindi (सलाम), speaker btn at top-left (left:10px top:8px), category badge at top-right (right:10px top:8px); category filter (Food => 15 cards) and card flip (.flipped class + dark navy gradient bg) work; search 'love' returns 3 matches (پیارا, محبت x2), Hindi search 'दिल' returns दلچسپ (substring); Birthday wish nav re-opens overlay with owl, 'Happy Birthday', 'Srushti', marigold poem (گیندے present), and the forbidden phrases 'Saalgirah Mubarak Ho' / 'Teri muskurahat' are absent; 'Begin your journey' closes the overlay.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Vocabulary", "issues": ["Minor: word 'محبت' (love) appears twice in VOCAB array — once in Emotions category and once in Literature category (search 'love' returns 3 cards including this duplicate). Total count of 145 includes this duplicate. Not a functional bug but if uniqueness was intended, dedupe Literature['محبت'] (index.html line 2152)."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/iteration_2.json"
+  ],
+  "action_items": [
+    "OPTIONAL: Dedupe 'محبت' between Emotions and Literature categories in VOCAB array (index.html ~line 2152) if 145 was meant to be 145 *unique* words. Currently 145 entries but 144 unique."
+  ],
+  "critical_code_review_comments": [
+    "index.html is now ~2247 lines (single static file). VOCAB array (262 lines) is well-structured but the whole file is getting hard to maintain — recommend splitting into /static/vocab.js, /static/screens/*.html partials, and /static/styles/*.css in a future iteration.",
+    "VOCAB search uses substring match on lowercased concatenation of u+r+e+h — works correctly for Latin and Devanagari; case-insensitive. Good.",
+    "Card flip uses inline onclick='this.classList.toggle(\\'flipped\\')' which works but is non-accessible (no keyboard handler, no aria). Consider adding role='button' tabindex='0' and a keydown handler for Enter/Space.",
+    "speakUrdu uses window.speechSynthesis with lang='ur-PK' — graceful fallback when not supported. Good.",
+    "Category counts are computed every render (O(n) over 145 items) — acceptable for this scale."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (skipped per request — unchanged from iter1)", "frontend": "100% (all 8 review acceptance criteria pass)"},
+  "test_credentials": "Guest login used (no auth required); see /app/memory/test_credentials.md for cookie-session details from iter1",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Vocabulary route id='vocab', screen id='screen-vocab', card class .vocab-card, search input #vocabSearch, category chips container #vocabCats. To navigate: page.evaluate(\"guestLogin();setTimeout(()=>{closeBday&&closeBday();go('vocab')},1500)\"). To reopen bday: click sidebar 'Birthday wish' or page.evaluate('showBday()'). networkidle wait times out on this public URL — use domcontentloaded + fixed timeout. Public URL: https://universal-login-1.preview.emergentagent.com",
+  "rca_of_the_issue": "N/A — no failures encountered. Only one cosmetic dedup observation (محبت appears in two categories)."
+}
