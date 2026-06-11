@@ -8,13 +8,13 @@ services:
     startCommand: cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: MONGO_URL
-        scope: build
+        scope: runtime
       - key: DB_NAME
-        scope: build
+        scope: runtime
+        value: urdu
       - key: EMERGENT_LLM_KEY
-        scope: build
+        scope: runtime
     region: oregon
-    healthCheckPath: /docs
 
   - type: web
     name: urdu-frontend
@@ -28,4 +28,3 @@ services:
       - key: REACT_APP_API_URL
         scope: build
     region: oregon
-    healthCheckPath: /
