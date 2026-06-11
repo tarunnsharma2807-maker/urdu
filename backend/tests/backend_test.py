@@ -52,6 +52,7 @@ def seeded_session(mongo):
     mongo.users.delete_one({"user_id": user_id})
     mongo.user_sessions.delete_one({"session_token": token})
     mongo.user_progress.delete_one({"user_id": user_id})
+    mongo.vocab_mastery.delete_one({"user_id": user_id})
 
 
 # ── health ────────────────────────────────────────────────
@@ -166,3 +167,73 @@ def test_progress_portrait_save(api, seeded_session, mongo):
 
     user = mongo.users.find_one({"user_id": user_id})
     assert user["portrait"] == data_url
+
+
+# ── vocab mastery (cross-device per-card known/unsure/new) ─
+def test_vocab_mastery_unauth(api):
+    r = api.get(f"{BASE_URL}/api/vocab/mastery", timeout=10)
+    assert r.status_code == 401
+    r = api.post(f"{BASE_URL}/api/vocab/mastery",
+                 json={"word": "السلام علیکم", "status": "known"}, timeout=10)
+    assert r.status_code == 401
+
+
+def test_vocab_mastery_invalid_status(api, seeded_session):
+    _, token = seeded_session
+    headers = {"Authorization": f"Bearer {token}"}
+    r = api.post(f"{BASE_URL}/api/vocab/mastery", headers=headers,
+                 json={"word": "السلام علیکم", "status": "foo"}, timeout=10)
+    assert r.status_code == 400
+
+
+def test_vocab_mastery_set_get_remove(api, seeded_session, mongo):
+    user_id, token = seeded_session
+    headers = {"Authorization": f"Bearer {token}"}
+
+    # Initial mastery — empty
+    r = api.get(f"{BASE_URL}/api/vocab/mastery", headers=headers, timeout=10)
+    assert r.status_code == 200
+    assert r.json() == {"mastery": {}}
+
+    # Mark a word "known"
+    word_a = "السلام علیکم"
+    r = api.post(f"{BASE_URL}/api/vocab/mastery", headers=headers,
+                 json={"word": word_a, "status": "known"}, timeout=10)
+    assert r.status_code == 200
+    assert r.json().get("ok") is True
+
+    # Mark another word "unsure"
+    word_b = "پانی"
+    r = api.post(f"{BASE_URL}/api/vocab/mastery", headers=headers,
+                 json={"word": word_b, "status": "unsure"}, timeout=10)
+    assert r.status_code == 200
+
+    # GET — both entries present
+    r = api.get(f"{BASE_URL}/api/vocab/mastery", headers=headers, timeout=10)
+    assert r.status_code == 200
+    mastery = r.json()["mastery"]
+    assert mastery.get(word_a) == "known"
+    assert mastery.get(word_b) == "unsure"
+
+    # DB cross-check
+    doc = mongo.vocab_mastery.find_one({"user_id": user_id})
+    assert doc is not None
+    assert doc["mastery"][word_a] == "known"
+    assert doc["mastery"][word_b] == "unsure"
+
+    # Transition known -> unsure
+    r = api.post(f"{BASE_URL}/api/vocab/mastery", headers=headers,
+                 json={"word": word_a, "status": "unsure"}, timeout=10)
+    assert r.status_code == 200
+    r = api.get(f"{BASE_URL}/api/vocab/mastery", headers=headers, timeout=10)
+    assert r.json()["mastery"][word_a] == "unsure"
+
+    # status:'new' should REMOVE the entry
+    r = api.post(f"{BASE_URL}/api/vocab/mastery", headers=headers,
+                 json={"word": word_a, "status": "new"}, timeout=10)
+    assert r.status_code == 200
+    r = api.get(f"{BASE_URL}/api/vocab/mastery", headers=headers, timeout=10)
+    final = r.json()["mastery"]
+    assert word_a not in final
+    assert final.get(word_b) == "unsure"
+

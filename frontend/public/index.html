@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#003153">
-<title>UrduDuo — for Srushti</title>
+<title>UrduDuo - for Srushti</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
@@ -439,7 +439,7 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
 .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pb);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ═══════ DUOLINGO OWL — constant mascot on bday ═══════ */
+/* ═══════ DUOLINGO OWL - constant mascot on bday ═══════ */
 .duo-owl{position:absolute;bottom:18px;left:18px;width:120px;height:130px;z-index:5;animation:owlBob 3.4s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 8px 16px rgba(88,204,2,.35));}
 @keyframes owlBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
 .duo-owl-speech{position:absolute;bottom:150px;left:140px;background:#fff;color:var(--ink);border-radius:14px;padding:9px 13px;font-size:12px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.18);max-width:160px;line-height:1.45;animation:speechIn .8s 1.4s both;z-index:6;}
@@ -459,7 +459,7 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
 .bday-poem-en{font-size:clamp(12px,1.8vw,13px);color:rgba(255,255,255,.55);line-height:1.7;margin-top:12px;text-align:center;font-style:italic;}
 .bday-poem-sig{font-family:var(--display);font-style:italic;font-size:12px;color:var(--gold);text-align:right;margin-top:14px;letter-spacing:.5px;}
 
-/* ═══════ RESPONSIVE — mobile first refinements ═══════ */
+/* ═══════ RESPONSIVE - mobile first refinements ═══════ */
 .mobile-toggle{display:none;position:fixed;top:14px;left:14px;z-index:300;background:var(--pb);color:#fff;border:none;width:42px;height:42px;border-radius:12px;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);}
 .sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:199;}
 .sidebar-backdrop.open{display:block;}
@@ -554,6 +554,34 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
 .vocab-card.flipped .v-cat-badge{color:var(--gold);}
 .vocab-card .v-speaker{position:absolute;top:8px;left:10px;background:transparent;border:none;font-size:16px;cursor:pointer;opacity:.55;}
 .vocab-card .v-speaker:hover{opacity:1;transform:scale(1.15);}
+.vocab-card .v-status-dot{position:absolute;bottom:8px;right:10px;width:8px;height:8px;border-radius:50%;}
+.vocab-card .v-status-dot.known{background:#58cc02;box-shadow:0 0 0 3px rgba(88,204,2,.18);}
+.vocab-card .v-status-dot.unsure{background:#f7c948;box-shadow:0 0 0 3px rgba(247,201,72,.18);}
+.vocab-card .v-status-dot.new{display:none;}
+.vocab-mastery{display:flex;gap:6px;justify-content:center;margin-top:10px;}
+.vocab-card .vocab-mastery button{
+  flex:1;padding:6px 8px;border-radius:10px;border:1.5px solid var(--border);
+  background:#fff;color:#0b1220;font-size:11px;font-weight:700;
+  cursor:pointer;font-family:var(--body);transition:all .15s;letter-spacing:.3px;
+}
+.vocab-card.flipped .vocab-mastery button{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3);}
+.vocab-card .vocab-mastery button:hover{background:rgba(0,49,83,.05);}
+.vocab-card.flipped .vocab-mastery button:hover{background:rgba(255,255,255,.18);}
+.vocab-card .vocab-mastery button.act-known{border-color:#58cc02;color:#3ea301;}
+.vocab-card .vocab-mastery button.act-known.on{background:#58cc02;border-color:#58cc02;color:#fff;}
+.vocab-card .vocab-mastery button.act-unsure{border-color:#f7c948;color:#a87f00;}
+.vocab-card .vocab-mastery button.act-unsure.on{background:#f7c948;border-color:#f7c948;color:#003153;}
+.vocab-card .vocab-mastery button.act-new{border-color:var(--border);color:#64748b;}
+.vocab-card .vocab-mastery button.act-new.on{background:rgba(0,49,83,.08);border-color:var(--pb);color:var(--pb);}
+.vocab-card.flipped .vocab-mastery button.act-known{color:#a8f060;}
+.vocab-card.flipped .vocab-mastery button.act-unsure{color:#ffd76b;}
+.vocab-card.flipped .vocab-mastery button.act-new{color:rgba(255,255,255,.7);}
+.vocab-card.flipped .vocab-mastery button.on{color:#fff;}
+.vocab-summary{display:flex;gap:14px;margin-bottom:18px;font-size:13px;color:var(--muted);font-weight:600;flex-wrap:wrap;}
+.vocab-summary .vfilter{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;transition:all .15s;}
+.vocab-summary .vfilter:hover{background:rgba(0,49,83,.05);}
+.vocab-summary .vfilter.on{background:rgba(0,49,83,.08);border-color:var(--pb);color:var(--pb);}
+.vocab-summary .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
 .vocab-empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;}
 
 @media (max-width: 760px){
@@ -603,7 +631,7 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
       ہزار رنگوں میں سے ایک،<br>
       جس کے بغیر یہ باغ ادھورا ہے۔<br>
       میری زندگی کا سب سے روشن دیا،<br>
-      تم ہو — صرف تم۔
+      تم ہو - صرف تم۔
     </div>
     <div class="bday-poem-roman">
       Gende ke phool ki tarah,<br>
@@ -611,14 +639,14 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
       Hazaar rangon mein se ek,<br>
       jiske baghair yeh baagh adhoora hai.<br>
       Meri zindagi ka sab se roshan diya,<br>
-      tum ho — sirf tum.
+      tum ho - sirf tum.
     </div>
     <div class="bday-poem-en">
       Like a marigold, you bloom into every morning of mine.<br>
-      One among a thousand colours — without whom this garden is incomplete.<br>
+      One among a thousand colours - without whom this garden is incomplete.<br>
       The brightest lamp of my life is you, only you.
     </div>
-    <div class="bday-poem-sig">— for you, always 🌼</div>
+    <div class="bday-poem-sig">- for you, always 🌼</div>
   </div>
 
   <!-- Buttons -->
@@ -654,14 +682,12 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
   <div class="login-card">
     <div class="login-logo">UrduDuo</div>
     <div class="login-logo-urdu">اردو سیکھیں</div>
-    <p style="font-size:13px;color:var(--muted);margin-bottom:22px;line-height:1.55;">Sign in to save your progress across every device — your streaks, XP and chosen portrait follow you everywhere.</p>
     <div id="loginErr" class="login-err"></div>
     <button class="login-btn" id="googleBtn" onclick="doGoogleLogin()" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1f1f1f;border:1.5px solid var(--border);box-shadow:0 2px 0 #e5e7eb;">
       <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.79 2.72v2.26h2.9c1.7-1.56 2.69-3.87 2.69-6.62z" fill="#4285f4"/><path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.34A9 9 0 0 0 9 18z" fill="#34a853"/><path d="M3.95 10.7A5.4 5.4 0 0 1 3.65 9c0-.6.1-1.17.3-1.7V4.96H.96A9 9 0 0 0 0 9c0 1.45.35 2.82.96 4.04l2.99-2.34z" fill="#fbbc05"/><path d="M9 3.58c1.32 0 2.5.45 3.44 1.34l2.58-2.58A9 9 0 0 0 9 0 9 9 0 0 0 .96 4.96L3.95 7.3C4.66 5.17 6.65 3.58 9 3.58z" fill="#ea4335"/></svg>
       Continue with Google
     </button>
-    <button class="login-guest" onclick="guestLogin()" style="margin-top:14px;">Just browsing? Continue as guest</button>
-    <div class="login-note">Guest progress is saved on this device only.</div>
+    <button class="login-guest" onclick="guestLogin()" style="margin-top:14px;">Continue as guest</button>
   </div>
 </div>
 
@@ -804,9 +830,10 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
 <div id="screen-vocab" class="screen">
   <div class="page-wrap">
     <div class="page-title">Vocabulary <span style="font-family:var(--urdu);font-size:24px;color:var(--gold);">لغویات</span></div>
-    <div class="page-sub">Curated words from a real Urdu vocabulary primer — grouped by theme. Tap a card to flip.</div>
+    <div class="page-sub">Tap a card to flip. Mark words as Known, Unsure or New to track mastery.</div>
     <div class="vocab-controls">
       <input id="vocabSearch" class="vocab-search" placeholder="Search Urdu / Roman / English / Hindi…" oninput="renderVocab()">
+      <div id="vocabSummary" class="vocab-summary"></div>
       <div id="vocabCats" class="vocab-cats"></div>
     </div>
     <div id="vocabGrid" class="vocab-grid"></div>
@@ -1358,7 +1385,7 @@ function showMascot(kind,txt,timeout=2200){
 }
 
 // ════════════════════════════════════════════════
-// LOGIN — Emergent Google Auth (cross-device)
+// LOGIN - Emergent Google Auth (cross-device)
 // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
 // ════════════════════════════════════════════════
 function doGoogleLogin(){
@@ -1422,6 +1449,8 @@ function loginUser(u, displayName, email){
   S.currentUserEmail = email || '';
   if(u==='guest'){loadProgress(u);}
   localStorage.setItem('urduduo_lastuser',u);
+  loadVocabMasteryLocal();
+  loadVocabMasteryCloud(); // async, fine
   document.getElementById('loginScreen').style.display='none';
   document.getElementById('appShell').style.display='block';
   const name = displayName || u;
@@ -2158,6 +2187,39 @@ const VOCAB = [
   {u:'تو',r:'to',e:'then',h:'तो',c:'Conjunctions'},
 ];
 let VOCAB_ACTIVE_CAT = 'All';
+let VOCAB_FILTER = 'all'; // all | known | unsure | new
+let VOCAB_MASTERY = {}; // {urduWord: 'known'|'unsure'}
+
+function vocabStorageKey(){return 'urduduo_vocab_mastery_'+(S.currentUser||'guest');}
+function loadVocabMasteryLocal(){
+  try{VOCAB_MASTERY = JSON.parse(localStorage.getItem(vocabStorageKey())||'{}');}
+  catch(e){VOCAB_MASTERY={};}
+}
+async function loadVocabMasteryCloud(){
+  if(!S.currentUser || S.currentUser==='guest') return;
+  try{
+    const r = await fetch(API+'/vocab/mastery',{credentials:'include'});
+    if(!r.ok) return;
+    const data = await r.json();
+    if(data && data.mastery) VOCAB_MASTERY = data.mastery;
+    localStorage.setItem(vocabStorageKey(), JSON.stringify(VOCAB_MASTERY));
+  }catch(e){}
+}
+async function setMastery(word, status){
+  if(status === 'new') delete VOCAB_MASTERY[word];
+  else VOCAB_MASTERY[word] = status;
+  localStorage.setItem(vocabStorageKey(), JSON.stringify(VOCAB_MASTERY));
+  renderVocab(); // refresh dots/buttons
+  if(S.currentUser && S.currentUser!=='guest'){
+    try{
+      await fetch(API+'/vocab/mastery',{
+        method:'POST',credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({word, status})
+      });
+    }catch(e){}
+  }
+}
 
 function vocabCategories(){
   const cats = ['All'];
@@ -2174,19 +2236,41 @@ function renderVocabCats(){
   ).join('');
 }
 function setVocabCat(c){VOCAB_ACTIVE_CAT=c;renderVocabCats();renderVocab();}
+function setVocabFilter(f){VOCAB_FILTER=f;renderVocab();}
+
+function renderVocabSummary(){
+  const known = Object.values(VOCAB_MASTERY).filter(s=>s==='known').length;
+  const unsure = Object.values(VOCAB_MASTERY).filter(s=>s==='unsure').length;
+  const total = VOCAB.length;
+  const fresh = total - known - unsure;
+  const el = document.getElementById('vocabSummary');
+  if(!el) return;
+  el.innerHTML = `
+    <span class="vfilter ${VOCAB_FILTER==='all'?'on':''}" onclick="setVocabFilter('all')"><span class="dot" style="background:#cbd5e1"></span> All <b style="color:var(--ink)">${total}</b></span>
+    <span class="vfilter ${VOCAB_FILTER==='known'?'on':''}" onclick="setVocabFilter('known')"><span class="dot" style="background:#58cc02"></span> Known <b style="color:var(--ink)">${known}</b></span>
+    <span class="vfilter ${VOCAB_FILTER==='unsure'?'on':''}" onclick="setVocabFilter('unsure')"><span class="dot" style="background:#f7c948"></span> Unsure <b style="color:var(--ink)">${unsure}</b></span>
+    <span class="vfilter ${VOCAB_FILTER==='new'?'on':''}" onclick="setVocabFilter('new')"><span class="dot" style="background:#94a3b8"></span> New <b style="color:var(--ink)">${fresh}</b></span>
+  `;
+}
+
 function renderVocab(){
   const q = (document.getElementById('vocabSearch')?.value||'').trim().toLowerCase();
   const grid = document.getElementById('vocabGrid');
+  renderVocabSummary();
   const matches = VOCAB.filter(v=>{
     if(VOCAB_ACTIVE_CAT!=='All' && v.c!==VOCAB_ACTIVE_CAT) return false;
+    const status = VOCAB_MASTERY[v.u] || 'new';
+    if(VOCAB_FILTER!=='all' && VOCAB_FILTER!==status) return false;
     if(!q) return true;
     return (v.u+' '+v.r+' '+v.e+' '+v.h).toLowerCase().includes(q);
   });
   if(matches.length===0){
-    grid.innerHTML = `<div class="vocab-empty">No words match "${esc(q)}". Try another search.</div>`;
+    grid.innerHTML = `<div class="vocab-empty">No words match. Try another filter or search.</div>`;
     return;
   }
-  grid.innerHTML = matches.map((v,i)=>`
+  grid.innerHTML = matches.map((v)=>{
+    const status = VOCAB_MASTERY[v.u] || 'new';
+    return `
     <div class="vocab-card" onclick="this.classList.toggle('flipped')">
       <span class="v-cat-badge">${v.c}</span>
       <button class="v-speaker" onclick="event.stopPropagation();speakUrdu('${esc(v.u)}')" title="Pronounce">🔊</button>
@@ -2194,8 +2278,14 @@ function renderVocab(){
       <div class="v-roman">${v.r}</div>
       <div class="v-en">${v.e}</div>
       <div class="v-hi">${v.h}</div>
+      <div class="vocab-mastery" onclick="event.stopPropagation()">
+        <button class="act-known ${status==='known'?'on':''}" onclick="setMastery('${esc(v.u)}','known')">Known</button>
+        <button class="act-unsure ${status==='unsure'?'on':''}" onclick="setMastery('${esc(v.u)}','unsure')">Unsure</button>
+        <button class="act-new ${status==='new'?'on':''}" onclick="setMastery('${esc(v.u)}','new')">New</button>
+      </div>
+      <span class="v-status-dot ${status}"></span>
     </div>
-  `).join('');
+  `;}).join('');
 }
 function speakUrdu(text){
   try{

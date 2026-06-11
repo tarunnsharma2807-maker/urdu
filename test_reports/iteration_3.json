@@ -1,0 +1,29 @@
+{
+  "summary": "Both backend (pytest, 13/13) and frontend (Playwright) tests pass end-to-end for the new vocab-mastery feature and the login-copy cleanup. Backend: GET/POST /api/vocab/mastery enforce auth (401 unauth), invalid status returns 400, known/unsure persist + survive GET + visible in db.vocab_mastery, status:'new' removes the entry. All previously-passing endpoints still green. Frontend: login screen contains ONLY logo + Urdu subtitle + 'Continue with Google' + 'Continue as guest' (no 'Sign in to save...', 'Just browsing?', 'Guest progress is saved on this device only.'); zero em-dashes (U+2014) anywhere in rendered text; Vocabulary page renders 144 cards, each with 3 Known/Unsure/New mastery buttons with visible text on white (and flipped) cards; clicking Known adds a green .v-status-dot.known + .on class on btn + summary chip 'Known 1'; switching to Unsure flips the dot yellow; clicking New removes the marking; mastery-button click does NOT flip the card (event.stopPropagation respected); summary filter chips correctly filter to Known(1)/New(143)/All(144).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml",
+    "/app/test_reports/iteration_3.json"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "Mastery is stored guest-side via vocabStorageKey()='urduduo_vocab_mastery_guest' in localStorage and server-side per user via /api/vocab/mastery — saveMastery() POSTs only when S.currentUser is set, so guest progress is local-only (as designed).",
+    "VOCAB_MASTERY mongo update uses $unset + $set in one operation when status='new'; first-time call on a brand-new user creates the doc with no 'mastery' field and removes a non-existent key — works but consider asserting upsert behavior in future refactor.",
+    "Card-flip handler is the outer onclick on .vocab-card; mastery buttons wrap onclick with event.stopPropagation() — verified working. Consider migrating to addEventListener for cleaner separation in the future.",
+    "/app/frontend/public/index.html is now ~2336 lines — recommend splitting (still carried over from iter2)."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100% (13/13)", "frontend": "100% (8/8 acceptance criteria)"},
+  "test_credentials": "Seeded user+session via Mongo per /app/memory/test_credentials.md, used Authorization: Bearer <token>. Guest flow tested in UI via guestLogin().",
+  "seed_data_creation": "Per-test seeded TEST_user_* + TEST_session_* via fixture, torn down after session (users, user_sessions, user_progress, vocab_mastery rows all deleted).",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Vocab mastery: storage key client = 'urduduo_vocab_mastery_'+S.currentUser (or 'guest'). Backend collection = db.vocab_mastery, doc shape {user_id, mastery:{<urduWord>:'known'|'unsure'}, updated_at}. POST status='new' removes the field. Frontend exposes setMastery(word,status) globally. Card duplicate from iter2 ('محبت' x2) appears to have been deduped — count is now 144 (was 145).",
+  "rca_of_the_issue": "N/A — no failures encountered."
+}

@@ -123,6 +123,11 @@ class ProgressPayload(BaseModel):
     portrait: Optional[str] = None  # data URL for chosen portrait
 
 
+class VocabMasteryItem(BaseModel):
+    word: str  # urdu script as id
+    status: str  # 'known' | 'unsure' | 'new'
+
+
 @api_router.get("/progress")
 async def get_progress(request: Request):
     user = await get_current_user(request)
@@ -157,6 +162,39 @@ async def save_progress(request: Request, body: ProgressPayload):
         await db.users.update_one(
             {"user_id": user["user_id"]},
             {"$set": {"portrait": body.portrait}}
+        )
+    return {"ok": True}
+
+
+@api_router.get("/vocab/mastery")
+async def get_vocab_mastery(request: Request):
+    user = await get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    doc = await db.vocab_mastery.find_one({"user_id": user["user_id"]}, {"_id": 0})
+    return {"mastery": (doc or {}).get("mastery", {})}
+
+
+@api_router.post("/vocab/mastery")
+async def set_vocab_mastery(request: Request, body: VocabMasteryItem):
+    user = await get_current_user(request)
+    if not user:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+    if body.status not in ("known", "unsure", "new"):
+        raise HTTPException(status_code=400, detail="status must be known|unsure|new")
+    if body.status == "new":
+        await db.vocab_mastery.update_one(
+            {"user_id": user["user_id"]},
+            {"$unset": {f"mastery.{body.word}": ""},
+             "$set": {"updated_at": datetime.now(timezone.utc).isoformat()}},
+            upsert=True,
+        )
+    else:
+        await db.vocab_mastery.update_one(
+            {"user_id": user["user_id"]},
+            {"$set": {f"mastery.{body.word}": body.status,
+                      "updated_at": datetime.now(timezone.utc).isoformat()}},
+            upsert=True,
         )
     return {"ok": True}
 
