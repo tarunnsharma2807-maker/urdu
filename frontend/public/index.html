@@ -2339,25 +2339,45 @@ function speakUrdu(text){
 </script>
 <div id="root" style="display:none"></div>
 <script>
-// Safety net: remove any platform-injected support / badge widgets if they appear
+// Safety net: remove platform-injected support / badge widgets (by selector AND by content)
 (function(){
+  const KEYWORDS = ['emergent', 'made with emergent', 'how can i help', 'support', 'chat with us', 'built with', 'powered by emergent'];
+  const SELECTORS = [
+    '#emergent-badge', '[id*="emergent-badge"]', '[id*="emergent-support"]',
+    '[class*="emergent-badge"]', '[class*="emergent-support"]',
+    '[id^="emergent"]', '[class^="emergent"]',
+    'iframe[src*="emergent"]', 'iframe[src*="support"]', 'iframe[src*="intercom"]', 'iframe[src*="crisp"]',
+    'iframe[title*="support" i]', 'iframe[title*="chat" i]', 'iframe[title*="help" i]',
+    'a[href*="emergent.sh"]', 'a[href*="emergent.app"]', 'a[href*="emergent.com"]',
+    '[data-emergent]', '#__emergent-widget',
+    '.emergent-widget', '.emergent-launcher', '.support-launcher', '.support-bubble',
+    '[aria-label*="support" i]', '[aria-label*="emergent" i]',
+  ];
+  function killEl(el){ try{ el.remove(); }catch(e){ try{ el.style.cssText = 'display:none !important;visibility:hidden !important;opacity:0 !important;pointer-events:none !important;'; }catch(e2){} } }
   function nukeWidgets(){
-    const selectors = [
-      '#emergent-badge', '[id*="emergent-badge"]', '[id*="emergent-support"]',
-      '[class*="emergent-badge"]', '[class*="emergent-support"]',
-      'iframe[src*="emergent"]', 'iframe[src*="support"]',
-      'a[href*="emergent.sh"]', 'a[href*="emergent.app"]',
-      '[data-emergent]', '#__emergent-widget',
-    ];
-    selectors.forEach(sel => {
-      document.querySelectorAll(sel).forEach(el => el.remove());
-    });
+    // 1) selector-based
+    SELECTORS.forEach(sel => { try{ document.querySelectorAll(sel).forEach(killEl); }catch(e){} });
+    // 2) content-based: any fixed/sticky element near the viewport edges with widget-y text
+    const all = document.querySelectorAll('body *');
+    for(let i=0;i<all.length;i++){
+      const el = all[i];
+      if(!el || el.id === 'mascot' || el.closest('#bdayOverlay') || el.closest('#appShell') || el.closest('#loginScreen')) continue;
+      const cs = el.ownerDocument && el.ownerDocument.defaultView ? el.ownerDocument.defaultView.getComputedStyle(el) : null;
+      if(!cs) continue;
+      if(cs.position !== 'fixed' && cs.position !== 'sticky') continue;
+      const rect = el.getBoundingClientRect();
+      if(rect.width === 0 || rect.height === 0) continue;
+      const txt = (el.innerText || el.textContent || '').toLowerCase().trim();
+      if(!txt || txt.length > 200) continue;
+      for(const k of KEYWORDS){
+        if(txt.includes(k)){ killEl(el); break; }
+      }
+    }
   }
   nukeWidgets();
-  document.addEventListener('DOMContentLoaded', nukeWidgets);
-  window.addEventListener('load', nukeWidgets);
-  // Continuous: any future injection gets removed
-  new MutationObserver(nukeWidgets).observe(document.documentElement, {childList:true, subtree:true});
+  ['DOMContentLoaded','load'].forEach(ev => document.addEventListener(ev, nukeWidgets));
+  setInterval(nukeWidgets, 1500); // belt + suspenders for late injectors
+  try{ new MutationObserver(nukeWidgets).observe(document.documentElement, {childList:true, subtree:true}); }catch(e){}
 })();
 </script>
 </body>
