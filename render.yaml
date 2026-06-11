@@ -2,20 +2,19 @@ services:
   - type: web
     name: urdu-backend
     runtime: python
-    pythonVersion: 3.11
+    pythonVersion: "3.11"
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r backend/requirements.txt
     startCommand: cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11
-      - key: PORT
-        value: 8000
-    env: python
+      - key: MONGO_URL
+        scope: build
+      - key: DB_NAME
+        scope: build
+      - key: EMERGENT_LLM_KEY
+        scope: build
     region: oregon
-    scaling:
-      minInstances: 1
-      maxInstances: 1
+    healthCheckPath: /docs
 
   - type: web
     name: urdu-frontend
@@ -26,7 +25,7 @@ services:
     envVars:
       - key: NODE_ENV
         value: production
+      - key: REACT_APP_API_URL
+        scope: build
     region: oregon
-    scaling:
-      minInstances: 1
-      maxInstances: 1
+    healthCheckPath: /
