@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: urdu-backend
+    runtime: python
+    pythonVersion: 3.11
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && uvicorn server:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11
+      - key: PORT
+        value: 8000
+    env: python
+    region: oregon
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+
+  - type: web
+    name: urdu-frontend
+    runtime: node
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    startCommand: cd frontend && npx serve -s build -l $PORT
+    envVars:
+      - key: NODE_ENV
+        value: production
+    region: oregon
+    scaling:
+      minInstances: 1
+      maxInstances: 1
