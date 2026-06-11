@@ -434,6 +434,18 @@ canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
 .prog-bar-fill{height:100%;background:var(--pb);border-radius:100px;transition:width .9s cubic-bezier(.34,1.4,.64,1);}
 .prog-xp{font-size:11px;font-weight:700;color:var(--pb);min-width:44px;text-align:right;}
 
+/* Hide any platform-injected badge / support widget */
+#emergent-badge, [id*="emergent-badge"], [id*="emergent-support"],
+[class*="emergent-badge"], [class*="emergent-support"],
+iframe[src*="emergent"], iframe[src*="support"],
+a[href*="emergent.sh"], a[href*="emergent.app"],
+[data-emergent], #__emergent-widget {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* LOADING */
 .ai-loading{text-align:center;padding:24px;color:var(--muted);font-size:13px;font-weight:600;}
 .spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pb);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;}
@@ -2326,5 +2338,27 @@ function speakUrdu(text){
 })();
 </script>
 <div id="root" style="display:none"></div>
+<script>
+// Safety net: remove any platform-injected support / badge widgets if they appear
+(function(){
+  function nukeWidgets(){
+    const selectors = [
+      '#emergent-badge', '[id*="emergent-badge"]', '[id*="emergent-support"]',
+      '[class*="emergent-badge"]', '[class*="emergent-support"]',
+      'iframe[src*="emergent"]', 'iframe[src*="support"]',
+      'a[href*="emergent.sh"]', 'a[href*="emergent.app"]',
+      '[data-emergent]', '#__emergent-widget',
+    ];
+    selectors.forEach(sel => {
+      document.querySelectorAll(sel).forEach(el => el.remove());
+    });
+  }
+  nukeWidgets();
+  document.addEventListener('DOMContentLoaded', nukeWidgets);
+  window.addEventListener('load', nukeWidgets);
+  // Continuous: any future injection gets removed
+  new MutationObserver(nukeWidgets).observe(document.documentElement, {childList:true, subtree:true});
+})();
+</script>
 </body>
 </html>
