@@ -1,0 +1,2373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#003153">
+<title>UrduDuo - for Srushti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+<script>window.__BACKEND_URL__ = "%REACT_APP_BACKEND_URL%";</script>
+<style>
+:root {
+  --pb: #003153;
+  --pb2: #00264a;
+  --pb3: #01406e;
+  --pb-l: #e8f4fd;
+  --pb-ll: #f0f8ff;
+  --gold: #c9a84c;
+  --gold-l: #fdf6e3;
+  --teal: #0d7377;
+  --teal-l: #e6f4f4;
+  --rose: #c0392b;
+  --rose-l: #fdecea;
+  --sand: #f5f0e8;
+  --ink: #1a1a2e;
+  --muted: #6b7280;
+  --border: #dde3ed;
+  --white: #ffffff;
+  --shadow: 0 2px 12px rgba(0,49,83,.10);
+  --shadow-lg: 0 8px 32px rgba(0,49,83,.16);
+  --urdu: 'Noto Nastaliq Urdu', serif;
+  --body: 'DM Sans', sans-serif;
+  --display: 'Fraunces', serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:var(--body);background:var(--sand);color:var(--ink);overflow-x:hidden;}
+
+/* ══════════════════════════════════════════════════
+   BIRTHDAY OVERLAY - lavish, cinematic redesign
+══════════════════════════════════════════════════ */
+#bdayOverlay{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:32px;text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse at 60% 30%, #0a1f3a 0%, #001428 55%, #000c1a 100%);
+}
+.bday-stars{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.bday-star{position:absolute;border-radius:50%;background:#fff;animation:twinkle var(--d,3s) var(--delay,0s) ease-in-out infinite;}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(1)}50%{opacity:.9;transform:scale(1.4)}}
+.bday-orb{position:absolute;border-radius:50%;filter:blur(60px);animation:orbDrift var(--od,14s) ease-in-out infinite alternate;pointer-events:none;}
+@keyframes orbDrift{0%{transform:translate(0,0)}100%{transform:translate(var(--dx,30px),var(--dy,20px))}}
+.bday-particles{position:absolute;inset:0;pointer-events:none;}
+.bday-urdu-bg{
+  font-family:var(--urdu);font-size:clamp(80px,18vw,220px);
+  color:rgba(201,168,76,.04);
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  direction:rtl;pointer-events:none;line-height:1;
+  animation:urduBgFloat 8s ease-in-out infinite;
+}
+@keyframes urduBgFloat{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-50%,-53%) scale(1.03)}}
+.bday-portrait-wrap{position:relative;margin-bottom:20px;width:148px;height:148px;flex-shrink:0;}
+.bday-portrait-halo{
+  position:absolute;inset:-12px;border-radius:52% 44% 48% 56% / 48% 52% 44% 54%;
+  background:conic-gradient(from 0deg,#c9a84c,#fdf6e3,#c9a84c,#9a7a2a,#c9a84c);
+  animation:haloSpin 4s linear infinite;filter:blur(3px);
+}
+@keyframes haloSpin{to{transform:rotate(360deg)}}
+.bday-portrait-ring{
+  position:absolute;inset:-5px;border-radius:52% 44% 48% 56% / 48% 52% 44% 54%;
+  background:linear-gradient(135deg,#c9a84c,#fdf6e3 50%,#c9a84c);
+  animation:haloSpin 6s linear infinite reverse;
+}
+.bday-portrait{
+  width:144px;height:144px;object-fit:cover;object-position:top center;
+  border-radius:52% 44% 48% 56% / 48% 52% 44% 54%;
+  border:4px solid #001428;
+  box-shadow:0 0 40px rgba(201,168,76,.5),0 12px 40px rgba(0,0,0,.6);
+  position:absolute;top:2px;left:2px;z-index:2;
+  animation:portraitPop .9s cubic-bezier(.2,.9,.2,1);
+}
+@keyframes portraitPop{0%{transform:translateY(40px) scale(.7);opacity:0}65%{transform:translateY(-10px) scale(1.07);opacity:1}100%{transform:translateY(0) scale(1)}}
+.bday-icon{font-size:40px;margin-bottom:4px;animation:floatIcon 3s ease-in-out infinite;}
+@keyframes floatIcon{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-14px) rotate(4deg)}}
+.bday-title{
+  font-family:var(--display);font-style:italic;
+  font-size:clamp(36px,7vw,76px);
+  background:linear-gradient(135deg,#c9a84c 0%,#fdf6e3 50%,#c9a84c 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:4px;line-height:1.05;
+  animation:titleReveal .8s .3s cubic-bezier(.2,.9,.2,1) both;
+  filter:drop-shadow(0 0 20px rgba(201,168,76,.35));
+}
+@keyframes titleReveal{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.bday-name{
+  font-family:var(--display);font-size:clamp(20px,4.5vw,46px);
+  color:#fff;margin-bottom:16px;opacity:.92;
+  animation:titleReveal .8s .5s cubic-bezier(.2,.9,.2,1) both;
+  letter-spacing:.02em;
+}
+.bday-urdu-main{
+  font-family:var(--urdu);font-size:clamp(30px,6vw,60px);
+  color:var(--gold);direction:rtl;margin-bottom:4px;line-height:1.7;
+  animation:titleReveal .8s .65s cubic-bezier(.2,.9,.2,1) both;
+  text-shadow:0 0 30px rgba(201,168,76,.4);
+}
+.bday-roman{
+  font-size:16px;color:rgba(255,255,255,.6);margin-bottom:2px;letter-spacing:.8px;
+  animation:titleReveal .8s .75s cubic-bezier(.2,.9,.2,1) both;
+}
+.bday-eng{
+  font-size:13px;color:rgba(255,255,255,.38);margin-bottom:18px;
+  animation:titleReveal .8s .8s cubic-bezier(.2,.9,.2,1) both;
+}
+.bday-msg-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(201,168,76,.22);
+  border-radius:20px;padding:16px 22px;
+  max-width:480px;margin-bottom:22px;
+  backdrop-filter:blur(12px);
+  animation:titleReveal .8s .9s cubic-bezier(.2,.9,.2,1) both;
+}
+.bday-msg{font-size:14px;color:rgba(255,255,255,.78);line-height:1.8;font-style:italic;margin:0;}
+.bday-shayari{
+  font-family:var(--urdu);font-size:20px;direction:rtl;
+  color:var(--gold);margin-top:10px;line-height:1.9;
+  text-shadow:0 0 16px rgba(201,168,76,.3);
+}
+.bday-shayari-roman{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px;letter-spacing:.3px;}
+.bday-btns{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;animation:titleReveal .8s 1.05s cubic-bezier(.2,.9,.2,1) both;}
+.bday-enter{
+  background:linear-gradient(135deg,#c9a84c,#e8c96a);
+  color:#001428;border:none;border-radius:14px;
+  padding:14px 30px;
+  font-family:var(--display);font-size:16px;font-weight:700;
+  cursor:pointer;
+  box-shadow:0 6px 24px rgba(201,168,76,.4),0 2px 0 #9a7a2a;
+  transition:transform .15s,box-shadow .15s;letter-spacing:.3px;
+}
+.bday-enter:hover{transform:translateY(-3px);box-shadow:0 10px 32px rgba(201,168,76,.5),0 2px 0 #9a7a2a;}
+.bday-enter:active{transform:translateY(2px);box-shadow:0 2px 8px rgba(201,168,76,.3);}
+.bday-enter-alt{
+  background:rgba(255,255,255,.07);
+  border:1.5px solid rgba(255,255,255,.18);
+  color:rgba(255,255,255,.65);
+  border-radius:14px;padding:13px 20px;
+  font-family:var(--body);font-size:13px;font-weight:600;
+  cursor:pointer;transition:all .15s;
+}
+.bday-enter-alt:hover{background:rgba(255,255,255,.13);color:#fff;}
+.confetti-piece{position:absolute;width:8px;height:8px;border-radius:2px;animation:confettiFall linear infinite;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+.bday-petal{position:absolute;font-size:clamp(14px,2vw,22px);animation:petalFloat linear infinite;pointer-events:none;opacity:.6;}
+@keyframes petalFloat{0%{transform:translateY(-40px) rotate(0deg) translateX(0);opacity:.8}50%{transform:translateY(50vh) rotate(180deg) translateX(30px);opacity:.5}100%{transform:translateY(105vh) rotate(360deg) translateX(-20px);opacity:0}}
+/* Avatar + feedback animations */
+.avatar-bounce{animation:avatarBounce .8s cubic-bezier(.2,.9,.2,1);} 
+@keyframes avatarBounce{0%{transform:translateY(0) scale(1)}30%{transform:translateY(-18px) scale(1.12)}60%{transform:translateY(4px) scale(.98)}100%{transform:translateY(0) scale(1)}}
+.avatar-shake{animation:avatarShake .5s ease-in-out;}
+@keyframes avatarShake{0%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}100%{transform:translateX(0)}}
+.confetti-burst{position:absolute;pointer-events:none;width:220px;height:120px;left:12px;top:8px;z-index:9998}
+.burst-piece{position:absolute;width:10px;height:10px;border-radius:3px;opacity:0;transform-origin:center;}
+
+/* Mascot - cutout sticker style (like Duolingo owl) */
+.mascot{position:fixed;right:24px;bottom:24px;width:110px;z-index:99999;pointer-events:none;display:flex;align-items:flex-end;flex-direction:column;gap:8px;transform:translateY(40px) scale(.8) rotate(6deg);opacity:0;transition:transform .5s cubic-bezier(.2,.9,.2,1),opacity .35s}
+.mascot.visible{transform:translateY(0) scale(1) rotate(-3deg);opacity:1}
+.mascot-img-wrap{position:relative;width:110px;height:110px;flex-shrink:0;}
+.mascot-img-wrap::before{content:'';position:absolute;inset:-7px;background:#fff;border-radius:50% 44% 48% 52% / 48% 50% 52% 44%;z-index:0;box-shadow:0 8px 28px rgba(0,49,83,.22),0 2px 6px rgba(0,0,0,.14);}
+.mascot img{position:relative;z-index:1;width:110px;height:110px;object-fit:cover;object-position:top center;border-radius:50% 44% 48% 52% / 48% 50% 52% 44%;}
+.mascot-bubble{background:#fff;border-radius:14px;padding:8px 12px;border:1px solid var(--border);box-shadow:0 6px 20px rgba(0,0,0,.12);font-size:13px;color:var(--pb);max-width:220px;margin-bottom:4px;text-align:left}
+.mascot.happy .mascot-img-wrap{animation:cutoutPop .7s cubic-bezier(.2,1.4,.4,1)}
+.mascot.sad .mascot-img-wrap{animation:cutoutShake .45s ease-in-out}
+@keyframes cutoutPop{0%{transform:scale(.85) rotate(-2deg)}50%{transform:scale(1.12) rotate(4deg)}75%{transform:scale(.97) rotate(-1deg)}100%{transform:scale(1) rotate(0deg)}}
+@keyframes cutoutShake{0%,100%{transform:rotate(-3deg)}25%{transform:rotate(6deg) translateX(4px)}75%{transform:rotate(-7deg) translateX(-4px)}}
+
+/* ── LOGIN ── */
+#loginScreen{position:fixed;inset:0;background:var(--sand);z-index:8888;display:flex;align-items:center;justify-content:center;padding:20px;}
+.login-card{background:var(--white);border-radius:28px;padding:44px 40px;max-width:420px;width:100%;box-shadow:var(--shadow-lg);border:1.5px solid var(--border);text-align:center;}
+.login-logo{font-family:var(--display);font-size:32px;font-weight:900;color:var(--pb);margin-bottom:4px;}
+.login-logo-urdu{font-family:var(--urdu);font-size:22px;color:var(--muted);direction:rtl;margin-bottom:24px;}
+.login-tabs{display:flex;background:var(--sand);border-radius:12px;padding:4px;margin-bottom:24px;gap:4px;}
+.login-tab{flex:1;padding:9px;border:none;background:none;border-radius:9px;font-family:var(--body);font-size:13px;font-weight:600;cursor:pointer;color:var(--muted);transition:all .15s;}
+.login-tab.active{background:var(--white);color:var(--pb);box-shadow:var(--shadow);}
+.login-field{width:100%;border:1.5px solid var(--border);border-radius:12px;padding:13px 16px;font-family:var(--body);font-size:14px;color:var(--ink);outline:none;margin-bottom:12px;transition:border-color .15s;background:#fff;}
+.login-field:focus{border-color:var(--pb);}
+.login-btn{width:100%;background:var(--pb);color:#fff;border:none;border-radius:14px;padding:14px;font-family:var(--body);font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 0 var(--pb2);transition:transform .1s;margin-bottom:10px;}
+.login-btn:hover{transform:translateY(-1px);}
+.login-btn:active{transform:translateY(3px);box-shadow:none;}
+.login-err{color:var(--rose);font-size:13px;margin-bottom:10px;min-height:18px;}
+.login-note{font-size:12px;color:var(--muted);margin-top:8px;}
+.login-guest{background:none;border:1.5px solid var(--border);color:var(--muted);border-radius:12px;padding:10px;width:100%;font-family:var(--body);font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;transition:all .15s;}
+.login-guest:hover{border-color:var(--pb);color:var(--pb);}
+
+/* ── LAYOUT ── */
+.app-layout{display:flex;min-height:100vh;}
+#appShell{display:none;}
+.sidebar{width:240px;background:var(--pb);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;z-index:200;padding:0;}
+.sb-brand{padding:28px 22px 24px;border-bottom:1px solid rgba(255,255,255,.1);}
+.sb-brand-name{font-family:var(--display);font-size:24px;font-weight:900;color:#fff;letter-spacing:-.3px;}
+.sb-brand-urdu{font-family:var(--urdu);font-size:16px;color:rgba(255,255,255,.5);margin-top:3px;direction:rtl;}
+.nav-list{padding:12px 10px;flex:1;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:12px;cursor:pointer;font-size:13px;font-weight:600;color:rgba(255,255,255,.6);transition:all .15s;margin-bottom:3px;}
+.nav-item:hover{background:rgba(255,255,255,.08);color:rgba(255,255,255,.9);}
+.nav-item.active{background:rgba(255,255,255,.14);color:#fff;}
+.nav-icon{font-size:17px;width:22px;text-align:center;flex-shrink:0;}
+.sb-bottom{padding:14px 16px;border-top:1px solid rgba(255,255,255,.1);}
+.sb-user{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.sb-avatar{width:36px;height:36px;border-radius:52% 44% 48% 56% / 48% 52% 44% 54%;background:var(--gold);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:var(--pb2);flex-shrink:0;outline:2.5px solid rgba(255,255,255,.35);outline-offset:2px;}
+.sb-username{font-size:13px;font-weight:600;color:#fff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sb-logout{background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.5);border-radius:8px;padding:6px 10px;font-size:11px;font-weight:600;font-family:var(--body);cursor:pointer;transition:all .15s;width:100%;}
+.sb-logout:hover{background:rgba(255,255,255,.15);color:#fff;}
+.sb-stats{display:flex;gap:8px;}
+.sb-stat{flex:1;background:rgba(255,255,255,.08);border-radius:9px;padding:8px 6px;text-align:center;}
+.sb-stat-val{font-size:16px;font-weight:700;color:#fff;}
+.sb-stat-label{font-size:9px;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.06em;margin-top:1px;}
+.main-area{margin-left:240px;flex:1;min-height:100vh;}
+
+/* ── SCREENS ── */
+.screen{display:none;}
+.screen.active{display:block;animation:screenIn .22s ease;}
+@keyframes screenIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HOME ── */
+.home-wrap{max-width:660px;margin:0 auto;padding:36px 28px;}
+.home-banner{background:var(--pb);border-radius:22px;padding:30px 32px;color:#fff;margin-bottom:28px;position:relative;overflow:hidden;}
+.home-banner-bg{font-family:var(--urdu);font-size:130px;color:rgba(255,255,255,.05);position:absolute;right:12px;top:-10px;pointer-events:none;direction:rtl;line-height:1;}
+.home-banner h1{font-family:var(--display);font-size:26px;font-weight:900;font-style:italic;margin-bottom:7px;}
+.home-banner p{font-size:13px;opacity:.75;max-width:320px;line-height:1.6;}
+.xp-row{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.xp-pill{background:rgba(255,255,255,.15);border-radius:100px;padding:5px 14px;font-size:12px;font-weight:700;backdrop-filter:blur(4px);}
+.section-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:16px;}
+
+/* PATH */
+.path-container{position:relative;}
+.path-spine{position:absolute;left:50%;transform:translateX(-50%);width:3px;top:0;bottom:0;background:var(--border);z-index:0;}
+.path-section-header{text-align:center;margin:8px 0 18px;position:relative;z-index:2;}
+.path-section-chip{display:inline-block;background:var(--pb);color:rgba(255,255,255,.85);border-radius:100px;padding:5px 16px;font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.unit-row{display:flex;flex-direction:column;align-items:center;margin-bottom:20px;position:relative;z-index:1;}
+.unit-bubble{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer;border:none;transition:transform .15s;position:relative;margin-bottom:10px;font-family:var(--body);}
+.unit-bubble:not(.locked-b2):hover{transform:translateY(-3px);}
+.unit-bubble.done{background:var(--pb);box-shadow:0 5px 0 var(--pb2);}
+.unit-bubble.current{background:var(--gold);box-shadow:0 5px 0 #9a7a2a;animation:unitPulse 2s infinite;}
+.unit-bubble.locked-b2{background:#e2e8f0;box-shadow:0 5px 0 #c8d0dc;cursor:default;opacity:.55;}
+@keyframes unitPulse{0%,100%{box-shadow:0 5px 0 #9a7a2a,0 0 0 0 rgba(201,168,76,.4)}50%{box-shadow:0 5px 0 #9a7a2a,0 0 0 14px rgba(201,168,76,0)}}
+.unit-star{position:absolute;top:-4px;right:-4px;background:var(--gold);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid #fff;}
+.unit-card{background:#fff;border:1.5px solid var(--border);border-radius:18px;padding:14px 18px;text-align:center;min-width:220px;max-width:260px;box-shadow:var(--shadow);}
+.unit-card-title{font-family:var(--display);font-size:15px;font-weight:700;margin-bottom:3px;color:var(--ink);}
+.unit-card-sub{font-size:11px;color:var(--muted);margin-bottom:11px;line-height:1.4;}
+.start-btn{background:var(--pb);color:#fff;border:none;border-radius:11px;padding:9px 20px;font-size:12px;font-weight:700;font-family:var(--body);cursor:pointer;box-shadow:0 3px 0 var(--pb2);transition:transform .1s;width:100%;}
+.start-btn:hover{transform:translateY(-1px);}
+.start-btn:active{transform:translateY(2px);box-shadow:none;}
+.start-btn.locked-s{background:#e2e8f0;color:var(--muted);box-shadow:0 3px 0 #c8d0dc;cursor:default;}
+.start-btn.locked-s:hover,.start-btn.locked-s:active{transform:none;}
+.unit-xp{font-size:11px;color:var(--pb);font-weight:700;margin-top:6px;}
+
+/* ── LESSON ── */
+.lesson-shell{min-height:100vh;display:flex;flex-direction:column;max-width:620px;margin:0 auto;padding:0 22px;}
+.lesson-nav{display:flex;align-items:center;gap:14px;padding:18px 0;}
+.close-btn{background:none;border:none;cursor:pointer;color:var(--muted);font-size:20px;padding:4px;line-height:1;transition:color .15s;font-family:var(--body);}
+.close-btn:hover{color:var(--rose);}
+.progress-track{flex:1;height:14px;background:#e8edf5;border-radius:100px;overflow:hidden;border:1.5px solid var(--border);}
+.progress-fill{height:100%;background:var(--pb);border-radius:100px;transition:width .5s cubic-bezier(.34,1.4,.64,1);}
+.hearts-row{display:flex;gap:2px;font-size:16px;}
+.lesson-body{flex:1;padding-top:16px;}
+.lesson-prompt{font-family:var(--display);font-size:21px;font-weight:700;margin-bottom:22px;color:var(--ink);line-height:1.3;}
+
+/* INFO */
+.info-card{background:var(--pb-ll);border:1.5px solid var(--border);border-radius:20px;padding:28px;text-align:center;margin-bottom:18px;}
+.info-urdu-big{font-family:var(--urdu);font-size:72px;direction:rtl;color:var(--pb);line-height:1.5;margin-bottom:4px;}
+.info-roman{font-size:21px;color:var(--pb3);font-weight:700;margin-bottom:6px;}
+.info-eng{font-size:15px;color:var(--ink);font-weight:600;margin-bottom:4px;}
+.info-hindi{font-size:13px;color:var(--muted);font-weight:500;}
+.info-hint{display:block;background:var(--gold-l);border:1.5px solid var(--gold);border-radius:12px;padding:12px 16px;margin-top:16px;font-size:13px;color:var(--ink);line-height:1.6;text-align:left;}
+
+/* MCQ */
+.mcq-card{background:#f8fafd;border:1.5px solid var(--border);border-radius:18px;padding:24px;text-align:center;margin-bottom:18px;}
+.mcq-urdu{font-family:var(--urdu);font-size:56px;direction:rtl;color:var(--ink);line-height:1.5;}
+.mcq-roman{font-size:14px;color:var(--muted);font-weight:600;margin-top:2px;}
+.opts-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;}
+.opt-btn{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:14px 11px;font-size:13px;font-weight:600;font-family:var(--body);cursor:pointer;color:var(--ink);transition:all .1s;box-shadow:0 2px 0 var(--border);text-align:center;}
+.opt-btn:hover:not(:disabled){border-color:var(--pb);transform:translateY(-1px);}
+.opt-btn.correct{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d!important;}
+.opt-btn.wrong{border-color:var(--rose)!important;background:var(--rose-l)!important;color:var(--rose)!important;}
+.opt-btn.reveal{border-color:#16a34a!important;background:#dcfce7!important;color:#15803d!important;}
+.opt-urdu{font-family:var(--urdu);font-size:22px;direction:rtl;display:block;}
+
+/* MATCH */
+.match-cols{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;}
+.match-col{display:flex;flex-direction:column;gap:8px;}
+.match-item{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:12px 10px;font-size:12px;font-weight:600;font-family:var(--body);cursor:pointer;color:var(--ink);transition:all .12s;text-align:center;box-shadow:0 2px 0 var(--border);}
+.match-item.urdu-m{font-family:var(--urdu);font-size:24px;direction:rtl;}
+.match-item:hover{border-color:var(--pb);transform:translateY(-1px);}
+.match-item.selected{border-color:var(--pb);background:var(--pb-ll);}
+.match-item.matched{border-color:#16a34a;background:#dcfce7;color:#15803d;opacity:.7;pointer-events:none;}
+.match-item.shake{animation:shake .35s;border-color:var(--rose)!important;background:var(--rose-l)!important;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* READ */
+.read-card{background:#f3f8ff;border:1.5px solid #c3d9f0;border-radius:20px;padding:28px;text-align:center;margin-bottom:18px;}
+.read-urdu{font-family:var(--urdu);font-size:52px;direction:rtl;color:var(--pb);line-height:1.6;margin-bottom:6px;}
+.read-roman{font-size:18px;color:var(--pb3);font-weight:700;}
+.read-eng{font-size:14px;color:var(--ink);font-weight:600;margin-top:4px;}
+.mic-btn{background:var(--pb);color:#fff;border:none;border-radius:50%;width:66px;height:66px;font-size:26px;cursor:pointer;box-shadow:0 5px 0 var(--pb2);transition:transform .1s;display:flex;align-items:center;justify-content:center;margin:20px auto 0;}
+.mic-btn:hover{transform:scale(1.05);}
+.mic-btn.listening{background:var(--rose);box-shadow:0 5px 0 #922;animation:micPulse 1s infinite;}
+@keyframes micPulse{0%,100%{box-shadow:0 5px 0 #922,0 0 0 0 rgba(192,57,43,.4)}50%{box-shadow:0 5px 0 #922,0 0 0 14px rgba(192,57,43,0)}}
+.mic-label{font-size:12px;font-weight:600;color:var(--muted);text-align:center;margin-top:9px;}
+.speech-result{background:#fff;border:1.5px solid var(--border);border-radius:11px;padding:11px 15px;margin-top:12px;font-size:13px;font-weight:600;color:var(--ink);min-height:42px;text-align:center;}
+
+/* FEEDBACK */
+.feedback-wrap{margin-bottom:12px;}
+.fb-box{border-radius:16px;padding:14px 18px;display:flex;align-items:flex-start;gap:11px;}
+.fb-box.correct{background:#dcfce7;border:1.5px solid #86efac;}
+.fb-box.wrong{background:var(--rose-l);border:1.5px solid #fca5a5;}
+.fb-icon{font-size:22px;margin-top:1px;}
+.fb-title{font-size:14px;font-weight:700;margin-bottom:2px;}
+.fb-box.correct .fb-title{color:#15803d;}
+.fb-box.wrong .fb-title{color:var(--rose);}
+.fb-detail{font-size:12px;color:var(--muted);line-height:1.5;}
+
+/* ACTION */
+.action-row{padding:12px 0 22px;}
+.action-btn{width:100%;padding:15px;border-radius:14px;border:none;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;letter-spacing:.04em;text-transform:uppercase;transition:transform .1s;}
+.action-btn.check{background:var(--pb);color:#fff;box-shadow:0 4px 0 var(--pb2);}
+.action-btn.check:hover{transform:translateY(-1px);}
+.action-btn.check:active{transform:translateY(3px);box-shadow:none;}
+.action-btn.check:disabled{background:#e2e8f0;color:var(--muted);box-shadow:0 3px 0 #c8d0dc;cursor:default;transform:none;}
+.action-btn.go-next{background:var(--pb);color:#fff;box-shadow:0 4px 0 var(--pb2);}
+.action-btn.go-wrong{background:var(--rose);color:#fff;box-shadow:0 4px 0 #922;}
+
+/* COMPLETE */
+.complete-wrap{max-width:480px;margin:0 auto;padding:56px 28px;text-align:center;}
+.complete-trophy{font-size:72px;margin-bottom:12px;animation:bounceIn .6s ease;}
+@keyframes bounceIn{0%{transform:scale(.4)}60%{transform:scale(1.1)}100%{transform:scale(1)}}
+.complete-title{font-family:var(--display);font-size:36px;font-weight:900;font-style:italic;color:var(--pb);margin-bottom:6px;}
+.complete-sub{font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.6;}
+.complete-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:28px;}
+.cstat{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--shadow);}
+.cstat-val{font-family:var(--display);font-size:28px;font-weight:900;color:var(--pb);}
+.cstat-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;margin-top:3px;}
+.continue-btn{background:var(--pb);color:#fff;border:none;border-radius:14px;padding:16px 40px;font-size:14px;font-weight:700;font-family:var(--body);cursor:pointer;box-shadow:0 4px 0 var(--pb2);letter-spacing:.04em;text-transform:uppercase;width:100%;transition:transform .1s;}
+.continue-btn:hover{transform:translateY(-2px);}
+
+/* ALPHABET */
+.page-wrap{max-width:680px;margin:0 auto;padding:32px 28px;}
+.page-title{font-family:var(--display);font-size:26px;font-weight:900;color:var(--pb);margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.cat-chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px;}
+.cat-chip{padding:6px 14px;border-radius:100px;border:1.5px solid var(--border);font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:var(--muted);transition:all .15s;font-family:var(--body);}
+.cat-chip:hover{border-color:var(--pb);color:var(--pb);}
+.cat-chip.active{background:var(--pb);color:#fff;border-color:var(--pb);}
+.letter-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;margin-bottom:22px;}
+.letter-tile{background:#fff;border:1.5px solid var(--border);border-radius:14px;padding:13px 6px;text-align:center;cursor:pointer;transition:all .15s;box-shadow:var(--shadow);}
+.letter-tile:hover{border-color:var(--pb);transform:translateY(-2px);}
+.letter-tile.sel{border-color:var(--pb);background:var(--pb-ll);}
+.tile-urdu{font-family:var(--urdu);font-size:30px;direction:rtl;color:var(--ink);}
+.tile-name{font-size:10px;font-weight:700;color:var(--muted);margin-top:3px;}
+.letter-detail{background:#fff;border:1.5px solid var(--border);border-radius:22px;padding:26px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;box-shadow:var(--shadow);}
+.detail-big{font-family:var(--urdu);font-size:88px;direction:rtl;color:var(--pb);line-height:1.3;}
+.detail-right{flex:1;min-width:180px;}
+.detail-name{font-family:var(--display);font-size:21px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.detail-roman{font-size:14px;color:var(--pb3);font-weight:700;margin-bottom:5px;}
+.detail-sound{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:14px;}
+.forms-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.form-box{background:var(--sand);border:1.5px solid var(--border);border-radius:10px;padding:8px;text-align:center;}
+.form-urdu{font-family:var(--urdu);font-size:22px;direction:rtl;color:var(--pb);}
+.form-label{font-size:9px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-top:2px;}
+.tip-box{background:var(--gold-l);border:1.5px solid var(--gold);border-radius:10px;padding:10px 13px;margin-top:12px;font-size:12px;color:var(--ink);line-height:1.5;}
+
+/* WRITING */
+.write-card{background:#fff;border:1.5px solid var(--border);border-radius:22px;padding:24px;text-align:center;margin-bottom:16px;box-shadow:var(--shadow);}
+.write-instruction{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.09em;margin-bottom:16px;}
+.canvas-frame{position:relative;display:inline-block;border:2px solid var(--border);border-radius:16px;overflow:hidden;background:#fafffe;}
+canvas#wCanvas{display:block;cursor:crosshair;touch-action:none;}
+.ghost-letter{font-family:var(--urdu);font-size:128px;color:rgba(0,49,83,.1);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;direction:rtl;line-height:1;}
+.w-btns{display:flex;gap:8px;justify-content:center;margin-top:13px;flex-wrap:wrap;}
+.w-btn{padding:10px 18px;border-radius:11px;border:1.5px solid var(--border);font-size:12px;font-weight:700;font-family:var(--body);cursor:pointer;background:#fff;color:var(--ink);box-shadow:0 2px 0 var(--border);transition:transform .1s;}
+.w-btn:hover{transform:translateY(-1px);}
+.w-btn.pb{background:var(--pb);color:#fff;border-color:var(--pb);box-shadow:0 3px 0 var(--pb2);}
+.write-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.write-ctr{font-size:12px;font-weight:600;color:var(--muted);}
+
+/* PRONUNCIATION */
+.pron-card{background:#f3f8ff;border:1.5px solid #c3d9f0;border-radius:22px;padding:30px;text-align:center;margin-bottom:16px;box-shadow:var(--shadow);}
+.pron-urdu{font-family:var(--urdu);font-size:52px;direction:rtl;color:var(--pb);}
+.pron-roman{font-size:20px;font-weight:700;color:var(--pb3);margin-top:4px;}
+.pron-eng{font-size:15px;font-weight:600;color:var(--ink);margin-top:4px;}
+.pron-hindi{font-size:12px;color:var(--muted);margin-top:3px;}
+.speak-btn{background:var(--pb);color:#fff;border:none;border-radius:12px;padding:13px 26px;font-size:13px;font-weight:700;font-family:var(--body);cursor:pointer;box-shadow:0 4px 0 var(--pb2);display:flex;align-items:center;gap:7px;margin:0 auto 16px;transition:transform .1s;}
+.speak-btn:hover{transform:translateY(-1px);}
+.pron-nav{display:flex;gap:10px;justify-content:center;align-items:center;}
+.pron-nav-btn{padding:10px 18px;border:1.5px solid var(--border);border-radius:11px;font-size:12px;font-weight:700;cursor:pointer;background:#fff;font-family:var(--body);box-shadow:0 2px 0 var(--border);transition:transform .1s;color:var(--ink);}
+.pron-nav-btn:hover{transform:translateY(-1px);}
+.pron-nav-btn:disabled{opacity:.35;cursor:default;transform:none;}
+.pron-ctr{font-size:12px;font-weight:600;color:var(--muted);}
+
+/* AI CHAT */
+.chat-outer{max-width:660px;margin:0 auto;padding:28px 28px 0;display:flex;flex-direction:column;height:calc(100vh - 0px);max-height:calc(100vh);}
+.chat-header{margin-bottom:10px;flex-shrink:0;}
+.chat-msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding-bottom:8px;}
+.chat-msg{display:flex;gap:9px;align-items:flex-end;}
+.chat-msg.user{flex-direction:row-reverse;}
+.chat-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.chat-av.bot{background:var(--pb-ll);}
+.chat-av.user{background:var(--gold-l);}
+.chat-bubble{padding:11px 14px;border-radius:16px;max-width:74%;font-size:13px;font-weight:500;line-height:1.65;}
+.chat-msg.bot .chat-bubble{background:#fff;border:1.5px solid var(--border);color:var(--ink);border-bottom-left-radius:4px;}
+.chat-msg.user .chat-bubble{background:var(--pb);color:#fff;border-bottom-right-radius:4px;}
+.bubble-urdu{font-family:var(--urdu);font-size:20px;direction:rtl;display:block;margin-bottom:5px;color:var(--pb);}
+.chat-msg.user .bubble-urdu{color:rgba(255,255,255,.9);}
+.typing-dots{display:flex;gap:4px;padding:3px 0;}
+.typing-dots span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:tdot 1.2s infinite;}
+.typing-dots span:nth-child(2){animation-delay:.2s;}
+.typing-dots span:nth-child(3){animation-delay:.4s;}
+@keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}
+.chat-sugs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;flex-shrink:0;}
+.sug-chip{background:#fff;border:1.5px solid var(--border);border-radius:100px;padding:6px 12px;font-size:11px;font-weight:700;cursor:pointer;font-family:var(--body);color:var(--muted);transition:all .15s;}
+.sug-chip:hover{border-color:var(--pb);color:var(--pb);}
+.chat-input-row{display:flex;gap:8px;padding:12px 0 20px;flex-shrink:0;}
+.chat-input{flex:1;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;font-family:var(--body);font-size:13px;font-weight:500;outline:none;color:var(--ink);transition:border-color .15s;background:#fff;}
+.chat-input:focus{border-color:var(--pb);}
+.chat-send{background:var(--pb);color:#fff;border:none;border-radius:12px;padding:0 16px;font-size:17px;cursor:pointer;box-shadow:0 3px 0 var(--pb2);transition:transform .1s;}
+.chat-send:hover{transform:translateY(-1px);}
+
+/* PROGRESS */
+.prog-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:22px;}
+.prog-stat{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:16px;text-align:center;box-shadow:var(--shadow);}
+.prog-stat-val{font-family:var(--display);font-size:26px;font-weight:900;color:var(--pb);}
+.prog-stat-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-top:3px;}
+.prog-unit{background:#fff;border:1.5px solid var(--border);border-radius:15px;padding:14px 16px;margin-bottom:8px;display:flex;align-items:center;gap:11px;box-shadow:var(--shadow);}
+.prog-emoji{font-size:20px;}
+.prog-info{flex:1;}
+.prog-unit-name{font-size:12px;font-weight:700;margin-bottom:5px;}
+.prog-bar-bg{height:8px;background:var(--sand);border-radius:100px;overflow:hidden;}
+.prog-bar-fill{height:100%;background:var(--pb);border-radius:100px;transition:width .9s cubic-bezier(.34,1.4,.64,1);}
+.prog-xp{font-size:11px;font-weight:700;color:var(--pb);min-width:44px;text-align:right;}
+
+/* Hide any platform-injected badge / support widget */
+#emergent-badge, [id*="emergent-badge"], [id*="emergent-support"],
+[class*="emergent-badge"], [class*="emergent-support"],
+iframe[src*="emergent"], iframe[src*="support"],
+a[href*="emergent.sh"], a[href*="emergent.app"],
+[data-emergent], #__emergent-widget {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* LOADING */
+.ai-loading{text-align:center;padding:24px;color:var(--muted);font-size:13px;font-weight:600;}
+.spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--pb);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ═══════ DUOLINGO OWL - constant mascot on bday ═══════ */
+.duo-owl{position:absolute;bottom:18px;left:18px;width:120px;height:130px;z-index:5;animation:owlBob 3.4s ease-in-out infinite;pointer-events:none;filter:drop-shadow(0 8px 16px rgba(88,204,2,.35));}
+@keyframes owlBob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-10px) rotate(2deg)}}
+.duo-owl-speech{position:absolute;bottom:150px;left:140px;background:#fff;color:var(--ink);border-radius:14px;padding:9px 13px;font-size:12px;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,.18);max-width:160px;line-height:1.45;animation:speechIn .8s 1.4s both;z-index:6;}
+.duo-owl-speech::after{content:'';position:absolute;bottom:-7px;left:18px;width:14px;height:14px;background:#fff;transform:rotate(45deg);}
+@keyframes speechIn{from{opacity:0;transform:translateY(8px) scale(.85)}to{opacity:1;transform:translateY(0) scale(1)}}
+
+/* New poem card */
+.bday-poem{
+  background:linear-gradient(135deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  border:1px solid rgba(201,168,76,.35);
+  border-radius:18px;padding:22px 26px;max-width:520px;margin:18px auto 4px;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  animation:titleReveal .9s .8s cubic-bezier(.2,.9,.2,1) both;
+}
+.bday-poem-urdu{font-family:var(--urdu);font-size:clamp(20px,3.4vw,28px);direction:rtl;color:#fdf6e3;line-height:2.1;text-align:center;letter-spacing:.3px;}
+.bday-poem-roman{font-family:var(--display);font-style:italic;font-size:clamp(13px,2vw,15px);color:rgba(255,255,255,.72);line-height:1.7;margin-top:14px;text-align:center;}
+.bday-poem-en{font-size:clamp(12px,1.8vw,13px);color:rgba(255,255,255,.55);line-height:1.7;margin-top:12px;text-align:center;font-style:italic;}
+.bday-poem-sig{font-family:var(--display);font-style:italic;font-size:12px;color:var(--gold);text-align:right;margin-top:14px;letter-spacing:.5px;}
+
+/* ═══════ RESPONSIVE - mobile first refinements ═══════ */
+.mobile-toggle{display:none;position:fixed;top:14px;left:14px;z-index:300;background:var(--pb);color:#fff;border:none;width:42px;height:42px;border-radius:12px;font-size:20px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.18);}
+.sidebar-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.42);z-index:199;}
+.sidebar-backdrop.open{display:block;}
+
+@media (max-width: 900px){
+  .home-banner h1{font-size:22px;}
+  .info-urdu-big{font-size:54px;}
+  .mcq-urdu{font-size:44px;}
+  .read-urdu{font-size:40px;}
+  .detail-big{font-size:64px;}
+  .ghost-letter{font-size:96px;}
+  .complete-title{font-size:28px;}
+}
+
+@media (max-width: 760px){
+  .mobile-toggle{display:flex;align-items:center;justify-content:center;}
+  .sidebar{transform:translateX(-110%);transition:transform .28s ease;width:260px;box-shadow:8px 0 32px rgba(0,0,0,.25);}
+  .sidebar.open{transform:translateX(0);}
+  .main-area{margin-left:0;padding-top:62px;}
+  .home-wrap, .page-wrap, .lesson-shell, .complete-wrap, .chat-outer{padding-left:16px;padding-right:16px;}
+  .home-wrap{padding-top:18px;}
+  .home-banner{padding:22px 20px;}
+  .home-banner h1{font-size:20px;}
+  .home-banner-bg{font-size:90px;}
+  .unit-card{min-width:0;width:100%;max-width:300px;}
+  .opts-grid{grid-template-columns:1fr;}
+  .match-cols{gap:6px;}
+  .letter-grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;}
+  .tile-urdu{font-size:24px;}
+  .letter-detail{padding:18px;gap:14px;}
+  .detail-big{font-size:54px;}
+  .chat-outer{padding:14px 14px 0;height:calc(100vh - 62px);max-height:calc(100vh - 62px);}
+  .chat-bubble{max-width:82%;font-size:13px;}
+  .bubble-urdu{font-size:18px;}
+  .complete-stats{grid-template-columns:1fr 1fr 1fr;gap:6px;}
+  .cstat{padding:12px 6px;}
+  .cstat-val{font-size:22px;}
+  .prog-stats{gap:6px;}
+  .prog-stat{padding:12px 8px;}
+  .prog-stat-val{font-size:22px;}
+  .login-card{padding:32px 24px;border-radius:22px;}
+  /* Birthday overlay scrollable on small screens */
+  #bdayOverlay{padding:20px 16px;justify-content:flex-start;overflow-y:auto;}
+  .bday-portrait-wrap{width:120px;height:120px;margin-top:24px;}
+  .bday-title{font-size:clamp(28px,7vw,40px) !important;}
+  .bday-name{font-size:clamp(34px,9vw,52px) !important;}
+  .bday-urdu-main{font-size:clamp(28px,7vw,40px) !important;}
+  .bday-msg-card{padding:18px 18px !important;}
+  .duo-owl{width:80px;height:88px;bottom:12px;left:12px;}
+  .duo-owl-speech{display:none;}
+}
+
+@media (max-width: 420px){
+  .home-banner h1{font-size:18px;}
+  .home-banner p{font-size:12px;}
+  .xp-pill{font-size:11px;padding:4px 11px;}
+  .unit-bubble{width:58px;height:58px;font-size:22px;}
+  .letter-grid{grid-template-columns:repeat(auto-fill,minmax(62px,1fr));}
+  .opt-btn{padding:12px 8px;font-size:12px;}
+  .login-card{padding:26px 18px;}
+  .login-logo{font-size:26px;}
+}
+
+/* ═══════ VOCABULARY ═══════ */
+.vocab-controls{margin:14px 0 22px;display:flex;flex-direction:column;gap:14px;}
+.vocab-search{width:100%;padding:13px 18px;border:1.5px solid var(--border);border-radius:14px;font-size:14px;font-weight:500;background:#fff;color:var(--ink);transition:all .15s;font-family:var(--display);}
+.vocab-search:focus{outline:none;border-color:var(--pb);box-shadow:0 0 0 4px rgba(0,49,83,.08);}
+.vocab-cats{display:flex;flex-wrap:wrap;gap:7px;}
+.vocab-cat-btn{padding:7px 14px;border-radius:999px;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;}
+.vocab-cat-btn:hover{border-color:var(--pb);color:var(--pb);}
+.vocab-cat-btn.active{background:var(--pb);color:#fff;border-color:var(--pb);}
+.vocab-cat-btn .count{opacity:.7;margin-left:5px;font-weight:500;}
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;}
+.vocab-card{
+  background:#fff;border-radius:18px;padding:18px 16px;border:1.5px solid var(--border);
+  text-align:center;cursor:pointer;position:relative;
+  transition:transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .25s;
+  transform-style:preserve-3d;perspective:1000px;
+  min-height:138px;display:flex;flex-direction:column;justify-content:center;gap:6px;
+}
+.vocab-card:hover{box-shadow:0 8px 24px rgba(0,49,83,.08);transform:translateY(-2px);}
+.vocab-card.flipped{background:linear-gradient(135deg,#003153,#0a4a7a);border-color:#003153;color:#fff;}
+.vocab-card .v-urdu{font-family:var(--urdu);font-size:30px;direction:rtl;color:var(--pb);line-height:1.4;}
+.vocab-card.flipped .v-urdu{color:#fdf6e3;}
+.vocab-card .v-roman{font-family:var(--display);font-style:italic;font-size:12px;color:var(--muted);letter-spacing:.4px;}
+.vocab-card.flipped .v-roman{color:rgba(253,246,227,.85);}
+.vocab-card .v-en{font-size:14px;font-weight:600;color:var(--ink);}
+.vocab-card.flipped .v-en{color:#fff;}
+.vocab-card .v-hi{font-size:12.5px;color:var(--muted);font-weight:500;}
+.vocab-card.flipped .v-hi{color:#a8d8ea;}
+.vocab-card .v-cat-badge{position:absolute;top:8px;right:10px;font-size:10px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:1px;opacity:.7;}
+.vocab-card.flipped .v-cat-badge{color:var(--gold);}
+.vocab-card .v-speaker{position:absolute;top:8px;left:10px;background:transparent;border:none;font-size:16px;cursor:pointer;opacity:.55;}
+.vocab-card .v-speaker:hover{opacity:1;transform:scale(1.15);}
+.vocab-card .v-status-dot{position:absolute;bottom:8px;right:10px;width:8px;height:8px;border-radius:50%;}
+.vocab-card .v-status-dot.known{background:#58cc02;box-shadow:0 0 0 3px rgba(88,204,2,.18);}
+.vocab-card .v-status-dot.unsure{background:#f7c948;box-shadow:0 0 0 3px rgba(247,201,72,.18);}
+.vocab-card .v-status-dot.new{display:none;}
+.vocab-mastery{display:flex;gap:6px;justify-content:center;margin-top:10px;}
+.vocab-card .vocab-mastery button{
+  flex:1;padding:6px 8px;border-radius:10px;border:1.5px solid var(--border);
+  background:#fff;color:#0b1220;font-size:11px;font-weight:700;
+  cursor:pointer;font-family:var(--body);transition:all .15s;letter-spacing:.3px;
+}
+.vocab-card.flipped .vocab-mastery button{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.3);}
+.vocab-card .vocab-mastery button:hover{background:rgba(0,49,83,.05);}
+.vocab-card.flipped .vocab-mastery button:hover{background:rgba(255,255,255,.18);}
+.vocab-card .vocab-mastery button.act-known{border-color:#58cc02;color:#3ea301;}
+.vocab-card .vocab-mastery button.act-known.on{background:#58cc02;border-color:#58cc02;color:#fff;}
+.vocab-card .vocab-mastery button.act-unsure{border-color:#f7c948;color:#a87f00;}
+.vocab-card .vocab-mastery button.act-unsure.on{background:#f7c948;border-color:#f7c948;color:#003153;}
+.vocab-card .vocab-mastery button.act-new{border-color:var(--border);color:#64748b;}
+.vocab-card .vocab-mastery button.act-new.on{background:rgba(0,49,83,.08);border-color:var(--pb);color:var(--pb);}
+.vocab-card.flipped .vocab-mastery button.act-known{color:#a8f060;}
+.vocab-card.flipped .vocab-mastery button.act-unsure{color:#ffd76b;}
+.vocab-card.flipped .vocab-mastery button.act-new{color:rgba(255,255,255,.7);}
+.vocab-card.flipped .vocab-mastery button.on{color:#fff;}
+.vocab-summary{display:flex;gap:14px;margin-bottom:18px;font-size:13px;color:var(--muted);font-weight:600;flex-wrap:wrap;}
+.vocab-summary .vfilter{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1.5px solid transparent;cursor:pointer;transition:all .15s;}
+.vocab-summary .vfilter:hover{background:rgba(0,49,83,.05);}
+.vocab-summary .vfilter.on{background:rgba(0,49,83,.08);border-color:var(--pb);color:var(--pb);}
+.vocab-summary .dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.vocab-empty{padding:60px 20px;text-align:center;color:var(--muted);font-size:14px;}
+
+@media (max-width: 760px){
+  .vocab-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+  .vocab-card{padding:14px 12px;min-height:120px;}
+  .vocab-card .v-urdu{font-size:24px;}
+}
+
+/* Touch / no-hover device tweaks */
+@media (hover: none){
+  .unit-bubble:not(.locked-b2):hover, .opt-btn:hover, .start-btn:hover, .login-btn:hover{transform:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- BIRTHDAY OVERLAY -->
+<div id="bdayOverlay" style="display:none;">
+  <!-- Starfield -->
+  <div class="bday-stars" id="bdayStars"></div>
+  <!-- Bokeh orbs -->
+  <div class="bday-orb" style="width:400px;height:400px;background:rgba(201,168,76,.12);top:-100px;right:-100px;--od:18s;--dx:-60px;--dy:40px;"></div>
+  <div class="bday-orb" style="width:300px;height:300px;background:rgba(0,49,83,.3);bottom:-80px;left:-80px;--od:14s;--dx:40px;--dy:-30px;"></div>
+  <div class="bday-orb" style="width:200px;height:200px;background:rgba(201,168,76,.08);bottom:20%;right:10%;--od:10s;--dx:-20px;--dy:-40px;"></div>
+  <!-- Confetti & petals -->
+  <div class="bday-particles" id="bdayParticles"></div>
+  <!-- Giant Urdu calligraphy watermark -->
+  <div class="bday-urdu-bg">تم سے محبت</div>
+  <!-- Portrait with golden halo -->
+  <div class="bday-portrait-wrap">
+    <div class="bday-portrait-halo"></div>
+    <div class="bday-portrait-ring"></div>
+    <img id="bdayImage" class="bday-portrait" alt="Srushti" style="display:none" onerror="this.style.display='none'">
+    <div id="bdayPortraitFallback" style="position:absolute;inset:0;border-radius:50%;background:linear-gradient(135deg,#fdf6e3,#c9a84c);display:flex;align-items:center;justify-content:center;font-size:64px;">🌼</div>
+  </div>
+  <!-- Icon -->
+  <div class="bday-icon">🌼</div>
+  <!-- Title -->
+  <div class="bday-title">Happy Birthday</div>
+  <div class="bday-name" id="bdayName">Srushti</div>
+  <div class="bday-eng" style="margin-top:10px;">A year written for you in marigold and ink ✨</div>
+
+  <div class="bday-poem">
+    <div class="bday-poem-urdu">
+     
+     جانے کب تک تری تصویر نگاہوں میں رہی   
+ہو گئی رات ترے عکس کو تکتے تکتے  
+  
+میں نے پھر ترے تصور کے کسی لمحے میں
+تری تصویر پہ لب رکھ دیے آہستہ سے         
+      
+    </div>
+   
+    <div class="bday-poem-sig">- for you, always 🌼</div>
+  </div>
+
+  <!-- Buttons -->
+  <div class="bday-btns">
+    <button class="bday-enter" onclick="closeBday()">Begin your journey ✨</button>
+    <button class="bday-enter-alt" onclick="document.getElementById('bdayFile').click()">Choose your portrait</button>
+  </div>
+  <input id="bdayFile" type="file" accept="image/*" style="display:none" onchange="handleBdayUpload(event)">
+
+  <!-- Duolingo Owl (constant) -->
+  <svg class="duo-owl" viewBox="0 0 200 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <ellipse cx="100" cy="200" rx="60" ry="10" fill="rgba(0,0,0,.25)"></ellipse>
+    <ellipse cx="100" cy="130" rx="78" ry="80" fill="#58cc02"></ellipse>
+    <ellipse cx="100" cy="150" rx="56" ry="58" fill="#89e219"></ellipse>
+    <path d="M30 130 q-12 38 22 64 q6 4 14 -2 q-18 -28 -10 -68 q-14 -2 -26 6 z" fill="#3ea301"></path>
+    <path d="M170 130 q12 38 -22 64 q-6 4 -14 -2 q18 -28 10 -68 q14 -2 26 6 z" fill="#3ea301"></path>
+    <circle cx="72" cy="100" r="28" fill="#fff"></circle>
+    <circle cx="128" cy="100" r="28" fill="#fff"></circle>
+    <circle cx="72" cy="100" r="11" fill="#0b0b0b"></circle>
+    <circle cx="128" cy="100" r="11" fill="#0b0b0b"></circle>
+    <circle cx="76" cy="96" r="4" fill="#fff"></circle>
+    <circle cx="132" cy="96" r="4" fill="#fff"></circle>
+    <path d="M88 122 q12 14 24 0 q-12 -10 -24 0 z" fill="#ff9600"></path>
+    <path d="M82 62 q4 -18 18 -12 q14 -6 18 12 q-18 8 -36 0 z" fill="#3ea301"></path>
+    <path d="M78 208 q4 -10 14 -10 q4 4 -2 10 z" fill="#ff9600"></path>
+    <path d="M108 208 q4 -10 14 -10 q4 4 -2 10 z" fill="#ff9600"></path>
+  </svg>
+  <div class="duo-owl-speech">Happy birthday, Srushti! May this year bloom 🌼</div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo">UrduDuo</div>
+    <div class="login-logo-urdu">اردو سیکھیں</div>
+    <div id="loginErr" class="login-err"></div>
+    <button class="login-btn" id="googleBtn" onclick="doGoogleLogin()" style="display:flex;align-items:center;justify-content:center;gap:10px;background:#fff;color:#1f1f1f;border:1.5px solid var(--border);box-shadow:0 2px 0 #e5e7eb;">
+      <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg"><path d="M17.64 9.2c0-.64-.06-1.25-.16-1.84H9v3.48h4.84a4.14 4.14 0 0 1-1.79 2.72v2.26h2.9c1.7-1.56 2.69-3.87 2.69-6.62z" fill="#4285f4"/><path d="M9 18c2.43 0 4.47-.8 5.96-2.18l-2.9-2.26c-.8.54-1.84.86-3.06.86-2.35 0-4.34-1.59-5.05-3.72H.96v2.34A9 9 0 0 0 9 18z" fill="#34a853"/><path d="M3.95 10.7A5.4 5.4 0 0 1 3.65 9c0-.6.1-1.17.3-1.7V4.96H.96A9 9 0 0 0 0 9c0 1.45.35 2.82.96 4.04l2.99-2.34z" fill="#fbbc05"/><path d="M9 3.58c1.32 0 2.5.45 3.44 1.34l2.58-2.58A9 9 0 0 0 9 0 9 9 0 0 0 .96 4.96L3.95 7.3C4.66 5.17 6.65 3.58 9 3.58z" fill="#ea4335"/></svg>
+      Continue with Google
+    </button>
+    <button class="login-guest" onclick="guestLogin()" style="margin-top:14px;">Continue as guest</button>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="appShell">
+<button class="mobile-toggle" onclick="toggleSidebar()" aria-label="Menu">☰</button>
+<div class="sidebar-backdrop" id="sbBackdrop" onclick="toggleSidebar(false)"></div>
+<div class="app-layout">
+<nav class="sidebar">
+  <div class="sb-brand">
+    <div class="sb-brand-name">UrduDuo</div>
+    <div class="sb-brand-urdu">اردو سیکھیں</div>
+  </div>
+  <div class="nav-list">
+    <div class="nav-item active" onclick="go('home')"><span class="nav-icon">🏠</span> Learn</div>
+    <div class="nav-item" onclick="go('vocab')"><span class="nav-icon">📚</span> Vocabulary</div>
+    <div class="nav-item" onclick="go('alphabet')"><span class="nav-icon">ا</span> Alphabet</div>
+    <div class="nav-item" onclick="go('writing')"><span class="nav-icon">✍️</span> Writing</div>
+    <div class="nav-item" onclick="go('pronounce')"><span class="nav-icon">🔊</span> Pronunciation</div>
+    <div class="nav-item" onclick="go('chat')"><span class="nav-icon">💬</span> Tutor</div>
+    <div class="nav-item" onclick="go('progress')"><span class="nav-icon">📊</span> Progress</div>
+    <div class="nav-item" onclick="showBday()" style="margin-top:8px;color:#f7c948;"><span class="nav-icon">🎉</span> Birthday wish</div>
+  </div>
+  <div class="sb-bottom">
+    <div class="sb-user">
+      <div class="sb-avatar" id="sbAvatar">?</div>
+      <div class="sb-username" id="sbUsername">Guest</div>
+    </div>
+    <div class="sb-stats">
+      <div class="sb-stat"><div class="sb-stat-val" id="sStreak">1</div><div class="sb-stat-label">Streak</div></div>
+      <div class="sb-stat"><div class="sb-stat-val" id="sXP">0</div><div class="sb-stat-label">XP</div></div>
+      <div class="sb-stat"><div class="sb-stat-val" id="sLives">3</div><div class="sb-stat-label">Lives</div></div>
+    </div>
+    <button class="sb-logout" onclick="doLogout()" style="margin-top:10px;">Sign out</button>
+  </div>
+</nav>
+<main class="main-area">
+
+<div id="screen-home" class="screen active">
+  <div class="home-wrap">
+    <div class="home-banner">
+      <div class="home-banner-bg">اردو</div>
+      <h1>Your Urdu journey 🌸</h1>
+      <p>Learn the script, the sounds, and unlock the world of Urdu poetry.</p>
+      <div class="xp-row">
+        <div class="xp-pill">🔥 <span id="streakBig">1</span> day streak</div>
+        <div class="xp-pill">⭐ <span id="xpBig">0</span> XP</div>
+      </div>
+    </div>
+    <div class="section-label">Your path</div>
+    <div class="path-container">
+      <div class="path-spine"></div>
+      <div id="pathUnits"></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-lesson" class="screen">
+  <div class="lesson-shell">
+    <div class="lesson-nav">
+      <button class="close-btn" onclick="go('home')">✕</button>
+      <div class="progress-track"><div class="progress-fill" id="lessonBar" style="width:0%"></div></div>
+      <div class="hearts-row" id="heartsRow"></div>
+    </div>
+    <div class="lesson-body">
+      <div class="lesson-prompt" id="lessonPrompt"></div>
+      <div id="lessonContent"></div>
+    </div>
+    <div class="feedback-wrap" id="feedbackWrap" style="display:none"></div>
+    <div class="action-row">
+      <button class="action-btn check" id="actionBtn" disabled onclick="handleAction()">Check</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-complete" class="screen">
+  <div class="complete-wrap">
+    <div class="complete-trophy">🏆</div>
+    <div class="complete-title">Lesson done!</div>
+    <div class="complete-sub" id="completeMsg"></div>
+    <div class="complete-stats">
+      <div class="cstat"><div class="cstat-val" id="cXP">+0</div><div class="cstat-label">XP</div></div>
+      <div class="cstat"><div class="cstat-val" id="cAcc">0%</div><div class="cstat-label">Accuracy</div></div>
+      <div class="cstat"><div class="cstat-val" id="cTime">0s</div><div class="cstat-label">Time</div></div>
+    </div>
+    <button class="continue-btn" onclick="go('home')">Continue</button>
+  </div>
+</div>
+
+<div id="screen-alphabet" class="screen">
+  <div class="page-wrap">
+    <div class="page-title">The Urdu Alphabet</div>
+    <div class="page-sub">Tap any letter to explore its forms and sounds</div>
+    <div class="cat-chips" id="catChips"></div>
+    <div class="letter-grid" id="letterGrid"></div>
+    <div class="letter-detail" id="letterDetail"></div>
+  </div>
+</div>
+
+<div id="screen-writing" class="screen">
+  <div class="page-wrap">
+    <div class="page-title">Writing Practice</div>
+    <div class="page-sub">Trace the ghost letter to practise each stroke</div>
+    <div id="writeContent"></div>
+  </div>
+</div>
+
+<div id="screen-pronounce" class="screen">
+  <div class="page-wrap">
+    <div class="page-title">Pronunciation</div>
+    <div class="page-sub">Tap the speaker to hear each word</div>
+    <div id="pronContent"></div>
+  </div>
+</div>
+
+<div id="screen-chat" class="screen">
+  <div class="chat-outer">
+    <div class="chat-header">
+      <div class="page-title">Tutor</div>
+      <div class="page-sub">Ask anything - grammar, meanings, shayari</div>
+    </div>
+    <div class="chat-sugs" id="chatSugs"></div>
+    <div class="chat-msgs" id="chatMsgs"></div>
+    <div class="chat-input-row">
+      <input class="chat-input" id="chatInput" placeholder="Ask anything in English or Urdu..." onkeydown="if(event.key==='Enter')sendChat()">
+      <button class="chat-send" onclick="sendChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-progress" class="screen">
+  <div class="page-wrap">
+    <div class="page-title">Progress</div>
+    <div class="page-sub">Every lesson brings you closer to fluency</div>
+    <div id="progContent"></div>
+  </div>
+</div>
+
+<!-- VOCABULARY -->
+<div id="screen-vocab" class="screen">
+  <div class="page-wrap">
+    <div class="page-title">Vocabulary <span style="font-family:var(--urdu);font-size:24px;color:var(--gold);">لغویات</span></div>
+    <div class="page-sub">Tap a card to flip. Mark words as Known, Unsure or New to track mastery.</div>
+    <div class="vocab-controls">
+      <input id="vocabSearch" class="vocab-search" placeholder="Search Urdu / Roman / English…" oninput="renderVocab()">
+      <div id="vocabSummary" class="vocab-summary"></div>
+      <div id="vocabCats" class="vocab-cats"></div>
+    </div>
+    <div id="vocabGrid" class="vocab-grid"></div>
+  </div>
+</div>
+
+</main>
+</div>
+</div>
+
+<script>
+  // ── Backend API ─────────────────────────────────────────────
+  // REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+  const BACKEND_URL = window.__BACKEND_URL__ || '';
+  const API = BACKEND_URL + '/api';
+  // ──────────────────────────────────────────────────────────
+
+  function toggleSidebar(force){
+    const sb = document.querySelector('.sidebar');
+    const bd = document.getElementById('sbBackdrop');
+    if(!sb) return;
+    const open = force===undefined ? !sb.classList.contains('open') : force;
+    sb.classList.toggle('open', open);
+    bd.classList.toggle('open', open);
+  }
+
+// ════════════════════════════════════════════════
+// LETTERS DATA
+// ════════════════════════════════════════════════
+const LETTERS = [
+  {u:'ا',n:'Alif',r:'a/aa',s:'Like "aa" in art',cat:'Vowel',f:{i:'ا',m:'ـا',fi:'ـا',iso:'ا'},tip:'First letter, vowel carrier at word starts. Think of it as the pillar everything hangs from.'},
+  {u:'ب',n:'Be',r:'b',s:'"b" as in bat',cat:'Basic',f:{i:'بـ',m:'ـبـ',fi:'ـب',iso:'ب'},tip:'1 dot below. Same sound as ब in Hindi - your first familiar face!'},
+  {u:'پ',n:'Pe',r:'p',s:'"p" as in pan',cat:'Basic',f:{i:'پـ',m:'ـپـ',fi:'ـپ',iso:'پ'},tip:'3 dots below. Unique to Urdu - Arabic doesn\'t have this. Like प in Hindi.'},
+  {u:'ت',n:'Te',r:'t',s:'"t" as in top',cat:'Basic',f:{i:'تـ',m:'ـتـ',fi:'ـت',iso:'ت'},tip:'2 dots above the same base shape as ب. Just like त.'},
+  {u:'ٹ',n:'Ṭe',r:'ṭ',s:'Retroflex t',cat:'Retroflex',f:{i:'ٹـ',m:'ـٹـ',fi:'ـٹ',iso:'ٹ'},tip:'Like ट - tongue curls back. The small loop above marks it retroflex.'},
+  {u:'ث',n:'Se',r:'s',s:'"s" sound',cat:'Basic',f:{i:'ثـ',m:'ـثـ',fi:'ـث',iso:'ث'},tip:'3 dots above. Arabic origin, same sound as स. Rare in everyday Urdu.'},
+  {u:'ج',n:'Jeem',r:'j',s:'"j" as in jam',cat:'Basic',f:{i:'جـ',m:'ـجـ',fi:'ـج',iso:'ج'},tip:'Like ज. 1 dot below inside the bowl shape.'},
+  {u:'چ',n:'Che',r:'ch',s:'"ch" as in chai',cat:'Basic',f:{i:'چـ',m:'ـچـ',fi:'ـچ',iso:'چ'},tip:'3 dots below. Like च - purely Urdu/Persian. You use this sound in "chai"!'},
+  {u:'ح',n:'Bari He',r:'h',s:'Deep chest h',cat:'Special',f:{i:'حـ',m:'ـحـ',fi:'ـح',iso:'ح'},tip:'No dots. Breathier than ह, comes from the chest. Hard to tell apart in casual speech.'},
+  {u:'خ',n:'Khe',r:'kh',s:'Guttural kh',cat:'Basic',f:{i:'خـ',m:'ـخـ',fi:'ـخ',iso:'خ'},tip:'Like a harder ख़ from the back of the throat. Used in خوبصورت (beautiful).'},
+  {u:'د',n:'Daal',r:'d',s:'"d" sound',cat:'Non-joiner',f:{i:'د',m:'ـد',fi:'ـد',iso:'د'},tip:'Non-joiner - never links left. Like द. See it in دل (dil = heart).'},
+  {u:'ڈ',n:'Ḍaal',r:'ḍ',s:'Retroflex d',cat:'Retroflex',f:{i:'ڈ',m:'ـڈ',fi:'ـڈ',iso:'ڈ'},tip:'Like ड - the loop on top marks it retroflex. Used in ڈر (dar = fear).'},
+  {u:'ذ',n:'Zaal',r:'z',s:'"z" sound',cat:'Non-joiner',f:{i:'ذ',m:'ـذ',fi:'ـذ',iso:'ذ'},tip:'1 dot above Daal. Non-joiner. Arabic origin, sounds like ज़.'},
+  {u:'ر',n:'Re',r:'r',s:'Rolled r',cat:'Non-joiner',f:{i:'ر',m:'ـر',fi:'ـر',iso:'ر'},tip:'Like र - rolled, non-joiner. Simple curved stroke.'},
+  {u:'ڑ',n:'Ṛe',r:'ṛ',s:'Retroflex flap r',cat:'Retroflex',f:{i:'ڑ',m:'ـڑ',fi:'ـڑ',iso:'ڑ'},tip:'Like ड़ - the flapped retroflex r. Has a small loop.'},
+  {u:'ز',n:'Ze',r:'z',s:'"z" sound',cat:'Non-joiner',f:{i:'ز',m:'ـز',fi:'ـز',iso:'ز'},tip:'1 dot above Re. Non-joiner. Like ज़ in ज़िंदगी.'},
+  {u:'س',n:'Seen',r:'s',s:'"s" sound',cat:'Basic',f:{i:'سـ',m:'ـسـ',fi:'ـس',iso:'س'},tip:'Three "teeth" on the baseline. Like स. Used in سلام (salaam).'},
+  {u:'ش',n:'Sheen',r:'sh',s:'"sh" as in shoe',cat:'Basic',f:{i:'شـ',m:'ـشـ',fi:'ـش',iso:'ش'},tip:'Three teeth plus 3 dots above. Like श. Think شایری (shaayri).'},
+  {u:'ص',n:'Suaad',r:'s',s:'Emphatic s',cat:'Emphatic',f:{i:'صـ',m:'ـصـ',fi:'ـص',iso:'ص'},tip:'Loop with a tail. Arabic emphatic sound, same as स in practice.'},
+  {u:'ض',n:'Zuaad',r:'z',s:'Emphatic z',cat:'Emphatic',f:{i:'ضـ',m:'ـضـ',fi:'ـض',iso:'ض'},tip:'1 dot above Suaad. Sounds like ज़ in everyday Urdu.'},
+  {u:'ط',n:'Toe',r:'t',s:'Emphatic t',cat:'Emphatic',f:{i:'طـ',m:'ـطـ',fi:'ـط',iso:'ط'},tip:'Bowl with an upward stroke. Sounds like त in spoken Urdu.'},
+  {u:'ع',n:'Ain',r:"'",s:'Deep throat vowel',cat:'Special',f:{i:'عـ',m:'ـعـ',fi:'ـع',iso:'ع'},tip:'No Hindi equivalent. A deep glottal stop from the throat. In practice, just start the vowel firmly.'},
+  {u:'غ',n:'Ghain',r:'gh',s:'Guttural gh',cat:'Special',f:{i:'غـ',m:'ـغـ',fi:'ـغ',iso:'غ'},tip:'Like ग़ - a guttural sound from deep in the throat. Imagine gargling softly.'},
+  {u:'ف',n:'Fe',r:'f',s:'"f" as in fan',cat:'Basic',f:{i:'فـ',m:'ـفـ',fi:'ـف',iso:'ف'},tip:'Like फ़. 1 dot above a loop. Used in فن (art/skill).'},
+  {u:'ق',n:'Qaaf',r:'q',s:'Deep throat k',cat:'Special',f:{i:'قـ',m:'ـقـ',fi:'ـق',iso:'ق'},tip:'Like क़ - but deeper from the back of the throat. Used in قسمت (kismet).'},
+  {u:'ک',n:'Kaaf',r:'k',s:'"k" as in key',cat:'Basic',f:{i:'کـ',m:'ـکـ',fi:'ـک',iso:'ک'},tip:'Like क. Note: Urdu uses ک not the Arabic ك shape.'},
+  {u:'گ',n:'Gaaf',r:'g',s:'"g" as in go',cat:'Basic',f:{i:'گـ',m:'ـگـ',fi:'ـگ',iso:'گ'},tip:'Like ग. An extra stroke above Kaaf makes the "g" sound. Used in گھر (home).'},
+  {u:'ل',n:'Laam',r:'l',s:'"l" as in love',cat:'Basic',f:{i:'لـ',m:'ـلـ',fi:'ـل',iso:'ل'},tip:'Like ल. Tall vertical stroke - easy to spot and write.'},
+  {u:'م',n:'Meem',r:'m',s:'"m" as in man',cat:'Basic',f:{i:'مـ',m:'ـمـ',fi:'ـم',iso:'م'},tip:'Like म. Small loop with a tail. Used in محبت (love).'},
+  {u:'ن',n:'Noon',r:'n',s:'"n" as in new',cat:'Basic',f:{i:'نـ',m:'ـنـ',fi:'ـن',iso:'ن'},tip:'Like न. 1 dot above a bowl shape. Used in نام (name).'},
+  {u:'و',n:'Wao',r:'w/o',s:'"w" or long oo',cat:'Vowel',f:{i:'و',m:'ـو',fi:'ـو',iso:'و'},tip:'Non-joiner. Either "w" consonant like व, or long "oo/o" vowel like ओ/ऊ.'},
+  {u:'ہ',n:'Choti He',r:'h',s:'Breathy h',cat:'Basic',f:{i:'ہـ',m:'ـہـ',fi:'ـہ',iso:'ہ'},tip:'Like ह but breathier. Has 4 very different forms across positions - worth memorising each.'},
+  {u:'ی',n:'Ye',r:'y/i',s:'"y" or long ee',cat:'Vowel',f:{i:'یـ',m:'ـیـ',fi:'ـی',iso:'ی'},tip:'Like य as consonant, long ई as vowel. 2 dots below in final/isolated position.'},
+  {u:'ے',n:'Bari Ye',r:'e/ay',s:'"ay" sound',cat:'Vowel',f:{i:'ے',m:'ـے',fi:'ـے',iso:'ے'},tip:'Only ever appears at word-end. Makes the "ay" sound like ए.'},
+];
+
+const PRON_WORDS = [
+  {u:'محبت',r:'Mohabbat',e:'Love',c:'Feelings'},
+  {u:'دوست',r:'Dost',e:'Friend',c:'Relationships'},
+  {u:'خوبصورت',r:'Khubsurat',e:'Beautiful',c:'Adjectives'},
+  {u:'زندگی',r:'Zindagi',e:'Life',c:'Abstract'},
+  {u:'خواب',r:'Khwaab',e:'Dream',c:'Abstract'},
+  {u:'وقت',r:'Waqt',e:'Time',c:'Abstract'},
+  {u:'دل',r:'Dil',e:'Heart',c:'Feelings'},
+  {u:'آنکھیں',r:'Aankhein',e:'Eyes',c:'Body'},
+  {u:'بات',r:'Baat',e:'Talk / Matter',c:'Communication'},
+  {u:'یاد',r:'Yaad',e:'Memory',c:'Abstract'},
+  {u:'خوشی',r:'Khushi',e:'Happiness',c:'Feelings'},
+  {u:'غم',r:'Gham',e:'Sorrow',c:'Feelings'},
+  {u:'سچ',r:'Sach',e:'Truth',c:'Abstract'},
+  {u:'راز',r:'Raaz',e:'Secret',c:'Abstract'},
+  {u:'کہانی',r:'Kahaani',e:'Story',c:'Communication'},
+  {u:'شاعری',r:'Shaayri',e:'Poetry',c:'Arts'},
+  {u:'گانا',r:'Gaana',e:'Song',c:'Arts'},
+  {u:'آواز',r:'Awaaz',e:'Voice',c:'Communication'},
+  {u:'سفر',r:'Safar',e:'Journey',c:'Abstract'},
+  {u:'رشتہ',r:'Rishta',e:'Relationship',c:'Relationships'},
+  {u:'احساس',r:'Ehsaas',e:'Feeling',c:'Feelings'},
+  {u:'عشق',r:'Ishq',e:'Intense love',c:'Feelings'},
+  {u:'جنون',r:'Junoon',e:'Obsession',c:'Feelings'},
+  {u:'انتظار',r:'Intezaar',e:'Waiting',c:'Abstract'},
+  {u:'چاند',r:'Chaand',e:'Moon',c:'Nature'},
+];
+
+// ════════════════════════════════════════════════
+// CURRICULUM (AI-generated content fetched dynamically + fallback)
+// ════════════════════════════════════════════════
+const CURRICULUM = [
+  // ═════════════════════════════════════════════════════════════════════
+  // REDESIGNED CURRICULUM: 19-Unit Deep Learning for Hindi Speakers
+  // Focus: Nuance, Context, Etymology, Literary Depth - NOT quantity
+  // ═════════════════════════════════════════════════════════════════════
+
+  // ═══════════════ SCRIPT MASTERY - 15 Lessons ═══════════════
+
+  // ══ INTRODUCTION: Script Philosophy (before Lesson 1) ══
+  {sec:'Script',id:'script0',t:'Introduction: How Urdu Script Works',sub:'The big picture before your first letter',e:'🌿',xp:15,aiUnit:false,steps:[
+    {type:'info',u:'اردو - ایک خوبصورت زبان',r:'Urdu - a beautiful language',en:'Urdu is an Indo-Aryan language. Its script comes from Arabic and Persian, adapted for South Asian sounds.',hint:'You already speak Urdu sounds - every Hindi word like दिल، یاد، زندگی lives in Urdu too. What you\'re learning here is just the script to write what you already know.'},
+    {type:'info',u:'دائیں سے بائیں ← ← ←',r:'Right to Left',en:'Urdu is written and read from RIGHT to LEFT. It opens from the right.',hint:'Think of it as a mirror of Hindi. The sounds are the same; the direction is reversed. Your eye will adjust within a few lessons - it becomes natural.'},
+    {type:'info',u:'نستعلیق - خوشخطی کا طرز',r:'Nastaliq - the calligraphic style',en:'Urdu is written in Nastaliq (نستعلیق) - a cursive, flowing script where letters hang downward like music on a staff.',hint:'Nastaliq evolved over centuries to be beautiful AND fast to write. Letters connect to each other in flowing clusters. This is why Urdu looks like poetry even when it\'s just a grocery list.'},
+    {type:'info',u:'جوڑنے والے اور نہ جوڑنے والے',r:'Connectors and Non-connectors',en:'Every Urdu letter is one of two types:\n• CONNECTORS join the letter on both sides in a word.\n• NON-CONNECTORS only join the letter to their RIGHT (the preceding letter). They always "break" the word after them.',hint:'Non-connectors are introduced FIRST because they\'re simpler. Once you know which letters break the chain, reading clusters becomes easy. The non-connectors are: ا د ڈ ذ ر ڑ ز ژ و'},
+    {type:'info',u:'لمبے اور چھوٹے واول',r:'Long vowels and short vowels',en:'Long vowels ARE written: alif (ا) = aa, vao (و) = o/oo, ye (ی/ے) = i/e.\nShort vowels are usually NOT written - readers infer them from context.',hint:'This is like reading "wnt" and knowing it\'s "want" - Urdu readers fill in short vowels automatically. When you\'re learning, short vowel marks (zabar ◌َ, zer ◌ِ, pesh ◌ُ) may be shown to help you. In real text they\'re usually absent.'},
+    {type:'info',u:'ہم آواز حروف - ایک آواز، کئی شکلیں',r:'Duplicate letters - same sound, different spellings',en:'Urdu has multiple letters for the same sound, preserved from Arabic:\n• ت and ط both say "t"\n• س، ص، ث all say "s"\n• ز، ذ، ض، ظ all say "z"\n• ح and ہ both say "h"',hint:'Think of English "f" vs "ph" - same sound, but you must spell correctly or it looks wrong. In Urdu, using ص instead of س in the wrong word marks you as uneducated. Spelling is cultural knowledge. The lessons will teach you which is which.'},
+    {type:'info',u:'خاص نشانات',r:'Special marks to know',en:'Three important extras not in the traditional alphabet:\n• Nun-ghunna (ں) - nasalises the preceding vowel, like "n" in "sang"\n• Do-chashmi He (ھ) - marks aspiration: بھ = bh, کھ = kh, گھ = gh\n• Hamza (ء) - marks where two vowels meet in a word',hint:'Do-chashmi He (ھ) is the key to writing Hindi aspirated consonants in Urdu. Without it you can\'t write گھر (ghar), کھانا (khaana), بھائی (bhaai). You\'ll meet each of these in later lessons.'},
+    {type:'info',u:'سیکھنے کا طریقہ',r:'How these lessons work',en:'The lessons introduce letters in a GRADED order - not traditional alphabetical order.\nEasy non-connectors come first. Connectors and complex shapes come later.\nEach lesson adds new letters and uses them in real words you already know.',hint:'This lesson sequence is designed scientifically. By Lesson 3 you\'ll already read آم، دادا، دال، ڈول. By Lesson 6 you\'ll read آج، آگ، ناچ. Real words from the very first day.'},
+    {type:'mcq',q:'In Urdu, "non-connector" letters are special because they:',ans:'Always break the word after them - the next letter starts fresh',opts:['Have no sound','Always break the word after them - the next letter starts fresh','Only appear at the beginning of words','Are borrowed from Hindi']},
+    {type:'mcq',q:'Urdu has letters like ت and ط that both say "t". Why are both kept?',ans:'Preserved from Arabic - spelling carries cultural and etymological meaning',opts:['They sound different in poetry','One is for Hindi words, one for Arabic','Preserved from Arabic - spelling carries cultural and etymological meaning','It is a printing error from history']},
+  ]},
+
+  // Lesson 1: alif (ا), alif-mad (آ), mim (م), dal (د), vao (و), choti-ye (ی)
+  {sec:'Script',id:'script1',t:'Lesson 1: First Letters',sub:'alif · alif-mad · mim · dal · vao · choti-ye',e:'✍️',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'اردو دائیں سے بائیں لکھی جاتی ہے',r:'Urdu is written RIGHT to LEFT',en:'Every Urdu word flows from right to left - like a river going its own way.',hint:'Hindi (Devanagari) goes left-to-right. Urdu is the mirror image. Start from the right edge of the page.'},
+    {type:'info',u:'ا',r:'alif  (a / aa)',en:'The first letter - carries vowels at the start of words.',hint:'Alif is a simple vertical stroke. When it carries the mad sign (آ), it says "aa" as in आम (aam = mango).'},
+    {type:'info',u:'م',r:'mim  (m)',en:'Mim - the "m" sound. Like म in Hindi.',hint:'Mim has a small round loop with a tail. In initial position it connects forward: مـ. You\'ll see it in آم (aam = mango).'},
+    {type:'info',u:'د',r:'daal  (d)',en:'Daal - the "d" sound. A NON-CONNECTOR: it never joins to the LEFT.',hint:'Daal looks like a small angled stroke. Because it\'s a non-connector, the word breaks after it: دادا (daadaa) = paternal grandfather.'},
+    {type:'info',u:'و',r:'vao  (v / o)',en:'Vao - "v" at the start of a word, long "o/oo" sound elsewhere.',hint:'Vao is also a non-connector. In دو (do = two) it gives the "o" sound. Like ओ in ओर.'},
+    {type:'info',u:'ی',r:'choti ye  (i / y)',en:'Choti Ye - long "ee" sound or "y" consonant.',hint:'Choti means "small". In دادی (daadi = paternal grandmother) it gives the long "ee". Like ई in Hindi.'},
+    {type:'read',u:'آم',r:'aam',en:'Mango',hint:'آ (aa) + م (m) = aam. Your very first Urdu word! The mad sign (∼) on alif makes it "aa".'},
+    {type:'read',u:'دادا',r:'daadaa',en:'Paternal grandfather',hint:'د (d) + ا (aa) + د (d) + ا (aa). Notice: each دا is a non-connector pair. Reads right to left.'},
+    {type:'read',u:'دو',r:'do',en:'Two',hint:'د (d) + و (o) = do. دو is also the Urdu word for "two" - same as Hindi दो!'},
+    {type:'mcq',q:'In Urdu, daal (د) is called a "non-connector". What does this mean?',ans:'It never joins to the letter that follows it',opts:['It has no sound','It never joins to the letter that follows it','It only appears at the end of words','It is a vowel letter']},
+  ]},
+
+  // Lesson 2: bari-ye (ے), re (ر), sin (س)
+  {sec:'Script',id:'script2',t:'Lesson 2: Re · Sin · Bari Ye',sub:'Three more non-connectors - ر · س · ے',e:'📖',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ر',r:'re  (r)',en:'Re - rolled "r" sound. A NON-CONNECTOR like daal.',hint:'Re looks like a small curved stroke slanting down. Like ر in راس (raas). Non-connector: breaks the chain.'},
+    {type:'info',u:'س',r:'sin  (s)',en:'Sin - "s" sound. A CONNECTOR with three humps on the baseline.',hint:'Sin has three small humps or "teeth." Like स in सलाम. It IS a connector - it joins the next letter: سـ (sin-e).'},
+    {type:'info',u:'ے',r:'bari ye  (e / ay)',en:'Bari Ye - the "ay/e" sound (as in aye). ONLY appears at the end of words.',hint:'Bari means "big/elder." Bari Ye is the elder sister of choti ye. It ONLY occurs word-finally. Like ए in दे (de).'},
+    {type:'read',u:'دس',r:'das',en:'Ten',hint:'د (d) + س (s) = das. Sin connects TO dal here - reads right to left. Same as Hindi दस!'},
+    {type:'read',u:'راس',r:'raas',en:'Juice (of fruit)',hint:'ر (r) + ا (aa) + س (s) = raas. Three non/connector letters, reads smoothly.'},
+    {type:'read',u:'دار',r:'daar',en:'Gallows / strong',hint:'د (d) + ا (aa) + ر (r) = daar. Two non-connectors around alif.'},
+    {type:'read',u:'دے',r:'de',en:'Give (imperative)',hint:'د (d) + ے (e) = de. Bari ye at the end, as always! Same as Hindi दे.'},
+    {type:'match',pairs:[{u:'ر',e:'Non-connector, rolled r'},{u:'س',e:'Connector, 3-hump s'},{u:'ے',e:'Word-final "ay" sound'},{u:'آم',e:'Mango (from Lesson 1)'}]},
+  ]},
+
+  // Lesson 3: dal (ڈ), lam (ل) - connector concept introduced
+  {sec:'Script',id:'script3',t:'Lesson 3: Ḍal · Lam',sub:'Retroflex ḍ and first connector ل',e:'🔗',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ڈ',r:'ḍaal  (ḍ)',en:'Retroflex D - tongue curls back. Like ड in Hindi.',hint:'ڈ looks like دال (d) but with a small loop on top. The loop = retroflex marker. Non-connector. Like ड in डाल.'},
+    {type:'info',u:'ل',r:'laam  (l)',en:'Laam - the "l" sound. A CONNECTOR that changes shape when joined.',hint:'Laam is a CONNECTOR. It joins to following letters: لـ (initial), ـلـ (medial), ـل (final). A tall vertical stroke that leans and curves when connected.'},
+    {type:'info',u:'کنیکٹر اور نان-کنیکٹر',r:'Connectors and Non-connectors',en:'Connectors join both sides. Non-connectors only join to the RIGHT (preceding letter).',hint:'So far non-connectors: ا د ڈ ر ے و. Connectors seen: م س ل. When a non-connector appears, it "breaks" the word visually.'},
+    {type:'read',u:'ڈول',r:'ḍol',en:'A small drum / bucket',hint:'ڈ (ḍ) + و (o) + ل (l) = ḍol. See how lam connects to vao: ول flows together.'},
+    {type:'read',u:'دال',r:'daal',en:'Lentils',hint:'د (d) + ا (aa) + ل (l) = daal. The beloved daal! Non-connector dal, then alif, then lam at the end.'},
+    {type:'read',u:'مال',r:'maal',en:'Goods / wealth',hint:'م (m) + ا (aa) + ل (l) = maal. Mim connects forward, alif separates, lam at end.'},
+    {type:'mcq',q:'Laam (ل) is a connector. When it appears in the MIDDLE of a word, it looks like:',ans:'ـلـ (joined on both sides)',opts:['ـلـ (joined on both sides)','ل (standalone)','ـل (joined only on right)','لـ (joined only on left)']},
+  ]},
+
+  // Lesson 4: be (ب), pe (پ), te (ت) - the tooth family, connector concept deepens
+  {sec:'Script',id:'script4',t:'Lesson 4: Be · Pe · Te',sub:'The connector tooth-family: ب · پ · ت',e:'🦷',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ب',r:'be  (b)',en:'Be - "b" sound. A CONNECTOR. Same base shape as پ ت ث.',hint:'Be has 1 dot BELOW. The base shape (like a shallow bowl) is shared by پ ت ث - only the dots differ! Like ब in Hindi.'},
+    {type:'info',u:'پ',r:'pe  (p)',en:'Pe - "p" sound. 3 dots below. Unique to Urdu/Persian - not in Arabic!',hint:'Pe is purely South Asian. Arabic has no "p" sound. Like प in पان. 3 dots below the same bowl shape as be.'},
+    {type:'info',u:'ت',r:'te  (t)',en:'Te - "t" sound. 2 dots ABOVE the same base shape.',hint:'Te (ت) has 2 dots ABOVE. The bowl is the same as be and pe. Like त in Hindi. Connects on both sides in a word.'},
+    {type:'read',u:'آب',r:'aab',en:'Water (literary/poetic)',hint:'آ (aa) + ب (b) = aab. Poetic Urdu for water. You\'ll see it in آب و ہوا (climate).'},
+    {type:'read',u:'بات',r:'baat',en:'Talk / matter',hint:'ب (b) + ا (aa) + ت (t) = baat. Same as Hindi बात! Be connects to alif? No - alif is non-connector. So ب stands, then ا, then ت.'},
+    {type:'read',u:'رات',r:'raat',en:'Night',hint:'ر (r) + ا (aa) + ت (t) = raat. Same as Hindi रात! Re doesn\'t connect left, alif is standalone, te at the end.'},
+    {type:'read',u:'آپ',r:'aap',en:'You (formal)',hint:'آ (aa) + پ (p) = aap. The respectful "you" - same in Hindi/Urdu. Pe has 3 dots below.'},
+    {type:'match',pairs:[{u:'ب',e:'1 dot below - b'},{u:'پ',e:'3 dots below - p'},{u:'ت',e:'2 dots above - t'},{u:'رات',e:'raat (night)'}]},
+  ]},
+
+  // Lesson 5: nun (ن), kaf (ک)
+  {sec:'Script',id:'script5',t:'Lesson 5: Nun · Kaf',sub:'ن and ک - and how they join',e:'🔤',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ن',r:'nun  (n)',en:'Nun - "n" sound. A CONNECTOR with 1 dot above a bowl shape.',hint:'Nun looks like a deeper bowl than te, with 1 dot above. Like न. Connects forward: نـ. In final position: ـن.'},
+    {type:'info',u:'ک',r:'kaaf  (k)',en:'Kaaf - "k" sound. Note: Urdu uses ک, not the Arabic ك shape.',hint:'Urdu Kaaf has a distinctive internal stroke unlike Arabic. A CONNECTOR. Like क. Appears in کام (kaam = work), کہنا (kehna = to say).'},
+    {type:'read',u:'ناک',r:'naak',en:'Nose',hint:'ن (n) + ا (aa) + ک (k) = naak. Same as Hindi नाक! Nun connects to alif? No - alif is non-connector. So the sequence breaks after alif.'},
+    {type:'read',u:'پان',r:'paan',en:'Betel leaf',hint:'پ (p) + ا (aa) + ن (n) = paan. Same as Hindi पान! Pe → alif (break) → nun (end).'},
+    {type:'read',u:'نان',r:'naan',en:'Bread',hint:'ن (n) + ا (aa) + ن (n) = naan. The beloved naan! First nun connects right, alif breaks, final nun at end.'},
+    {type:'read',u:'کام',r:'kaam',en:'Work',hint:'ک (k) + ا (aa) + م (m) = kaam. Kaaf connects to alif? No - alif non-connector. کـا, then م.'},
+    {type:'mcq',q:'The word ناک (naak = nose) has how many letters?',ans:'3',opts:['2','3','4','5']},
+  ]},
+
+  // Lesson 6: jim (ج), ce (چ), gaf (گ)
+  {sec:'Script',id:'script6',t:'Lesson 6: Jim · Ce · Gaf',sub:'ج · چ · گ - the bowl-family',e:'🎯',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ج',r:'jeem  (j)',en:'Jeem - "j" sound. Like ज in Hindi. 1 dot below inside the bowl.',hint:'Jeem looks like a wide hook/bowl shape with a dot inside below. A CONNECTOR. Changes shape in joined words.'},
+    {type:'info',u:'چ',r:'che  (ch)',en:'Che - "ch" sound as in chai. 3 dots below. Unique to Urdu/Persian.',hint:'Same bowl as jim but 3 dots below instead of 1. Like च. Purely Urdu/Persian - not in Arabic. You already know this sound from "chai" (چائے).'},
+    {type:'info',u:'گ',r:'gaaf  (g)',en:'Gaaf - "g" sound. Like ग. An extra stroke above Kaaf makes the "g".',hint:'Gaaf looks like Kaaf (ک) but with an extra small stroke inside at the top. Like ग in Hindi. A CONNECTOR.'},
+    {type:'read',u:'جاگ',r:'jaag',en:'Wake up (imperative)',hint:'ج (j) + ا (aa) + گ (g) = jaag. Same as Hindi जाग!'},
+    {type:'read',u:'آج',r:'aaj',en:'Today',hint:'آ (aa) + ج (j) = aaj. Same as Hindi आज! Alif-mad + jeem.'},
+    {type:'read',u:'ناچ',r:'naach',en:'Dance',hint:'ن (n) + ا (aa) + چ (ch) = naach. Same as Hindi नाच! Nun, alif, che.'},
+    {type:'read',u:'آگ',r:'aag',en:'Fire',hint:'آ (aa) + گ (g) = aag. Same as Hindi आग! Alif-mad + gaaf.'},
+    {type:'match',pairs:[{u:'ج',e:'1 dot below bowl - j'},{u:'چ',e:'3 dots below bowl - ch'},{u:'گ',e:'Stroke inside - g'},{u:'آج',e:'aaj (today)'}]},
+  ]},
+
+  // Lesson 7: ye (ی/ے) combinations, re (ر) combinations, ze (ز), re (ڑ)
+  {sec:'Script',id:'script7',t:'Lesson 7: Ye · Ze · Ṛe',sub:'ی و ز ڑ - combinations and jazm',e:'✨',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ز',r:'ze  (z)',en:'Ze - "z" sound. Like ज़ in Hindi. Non-connector.',hint:'Ze looks exactly like Re (ر) but with 1 dot above. So ز = "z" and ر = "r" - only the dot tells them apart! Non-connector.'},
+    {type:'info',u:'ڑ',r:'ṛe  (ṛ)',en:'Ṛe - retroflex flap "r". Like ड़ in Hindi (as in पड़ना).',hint:'Ṛe has a small loop below the dot, making it look different from ze. The retroflex flap is South-Asian - not in Arabic.'},
+    {type:'info',u:'جزم (سکون)',r:'Jazm (Sukoon)',en:'A small superscript mark above a letter meaning: NO vowel follows it.',hint:'In دَرزی (darzi = tailor), the re has a jazm - meaning dar-ZI not dara-ZI. Short vowel markers are usually omitted in print, but shown here to help.'},
+    {type:'read',u:'دَرزی',r:'darzi',en:'Tailor',hint:'د (d) + ر+jazm (r, no vowel) + ز (z) + ی (ee) = darzi. The jazm on re confirms it\'s "dar" not "dara". Same as Hindi दर्ज़ी!'},
+    {type:'read',u:'آیا',r:'aaya',en:'Came / male nursemaid',hint:'آ (aa) + ی (y/consonant) + ا (aa) = aaya. Choti ye acts as consonant "y" here.'},
+    {type:'read',u:'کار',r:'kaar',en:'Work / car',hint:'ک (k) + ا (aa) + ر (r) = kaar. Same as Hindi कार!'},
+    {type:'mcq',q:'Ze (ز) and Re (ر) look almost identical. The difference is:',ans:'Ze has 1 dot above; Re has no dot',opts:['Ze is a connector; Re is not','Ze has 1 dot above; Re has no dot','Ze is bigger','They are the same letter']},
+  ]},
+
+  // Lesson 8: choti he (ہ), aspiration marks (do-chashmi he), short vowels
+  {sec:'Script',id:'script8',t:'Lesson 8: He · Aspiration · Short Vowels',sub:'ہ · ھ · zabar · zer · pesh',e:'💨',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ہ',r:'choti he  (h)',en:'Choti He - breathy "h" sound. Has 4 very different forms across positions!',hint:'Choti He is tricky because it looks different in each position: ہـ (initial), ـہـ (medial), ـہ (final), ہ (isolated). Like ह but breathier.'},
+    {type:'info',u:'ھ',r:'do-chashmi he  (aspiration mark)',en:'Do-chashmi He - not an independent letter. It marks ASPIRATION (a puff of air).',hint:'Added after a consonant to make it aspirated: ب + ھ = بھ (bh, like भ), ک + ھ = کھ (kh = ख), گ + ھ = گھ (gh = घ). Key to Urdu writing Hindi sounds!'},
+    {type:'info',u:'زبر · زیر · پیش',r:'Zabar (a) · Zer (i) · Pesh (u)',en:'Short vowel marks - usually OMITTED in normal Urdu text.',hint:'Zabar (∧) above = short "a". Zer (∘) below = short "i". Pesh (o̊) above = short "u". In real Urdu text these are skipped - readers infer vowels from context, like in Arabic.'},
+    {type:'read',u:'گھر',r:'ghar',en:'House / home',hint:'گ (g) + ھ (aspiration) + ر (r) = ghar (घर). Do-chashmi he makes it "gh" not "g-h-r"!'},
+    {type:'read',u:'کھانا',r:'khaanaa',en:'Food / to eat',hint:'ک (k) + ھ (aspiration) + ا (aa) + ن (n) + ا (aa) = khaanaa. Same as Hindi खाना!'},
+    {type:'read',u:'بھائی',r:'bhaai',en:'Brother',hint:'ب + ھ (bh) + ا + ئ + ی = bhaai. Same as Hindi भाई! Aspiration makes ب→ بھ (bh).'},
+    {type:'mcq',q:'In کھانا (khaanaa), do-chashmi he (ھ) after kaaf means:',ans:'Kaaf is pronounced with a puff of air - "kh" like ख',opts:['Kaaf is silent','Kaaf is doubled','Kaaf is pronounced with a puff of air - "kh" like ख','It is a separate letter between k and h']},
+  ]},
+
+  // Lesson 9: aspirated sounds, shin (ش), te (ٹ), hamza (ء)
+  {sec:'Script',id:'script9',t:'Lesson 9: Shin · Ṭe · Hamza',sub:'ش · ٹ · ء - aspiration and special characters',e:'🌟',xp:20,aiUnit:false,steps:[
+    {type:'info',u:'ش',r:'sheen  (sh)',en:'Sheen - "sh" sound. Like श. Three humps (like sin) + 3 dots above.',hint:'Sheen looks exactly like Sin (س) but with 3 dots above. Sin (s) = no dots above. Sheen (sh) = 3 dots above. Like श in Hindi.'},
+    {type:'info',u:'ٹ',r:'ṭe  (ṭ)',en:'Ṭe - retroflex T. Like ट in Hindi. A small loop above marks it.',hint:'Te (ت) = dental t (like English "t"). Ṭe (ٹ) = retroflex t (like Hindi ट). The small loop above ٹ is the retroflex marker, like ڈ for ḍ.'},
+    {type:'info',u:'ء',r:'hamza',en:'Hamza - marks where two vowel sounds meet mid-word (glottal stop).',hint:'Hamza (ء) appears in بھائی (bhaai), چائے (chaae = tea). It shows the meeting of two vowels - a slight "break" in the throat. Not a full consonant, just a marker.'},
+    {type:'read',u:'شام',r:'shaam',en:'Evening',hint:'ش (sh) + ا (aa) + م (m) = shaam. Same as Hindi शाम!'},
+    {type:'read',u:'چائے',r:'chaae',en:'Tea',hint:'چ (ch) + ا (aa) + ئ (hamza on ye) + ے (ay) = chaae. The "chai" everyone loves!'},
+    {type:'read',u:'ٹوپی',r:'ṭopi',en:'Hat / cap',hint:'ٹ (ṭ) + و (o) + پ (p) + ی (ee) = ṭopi. Same as Hindi टोपी!'},
+    {type:'match',pairs:[{u:'ش',e:'sh sound - 3 dots above sin'},{u:'ٹ',e:'Retroflex ṭ - loop above'},{u:'ء',e:'Hamza - marks vowel junction'},{u:'شام',e:'shaam (evening)'}]},
+  ]},
+
+  // Lesson 10: bari he (ح), khay (خ), qaf (ق), sae (ث), ain (ع), ghain (غ)
+  {sec:'Script',id:'script10',t:'Lesson 10: Deep Throat Letters',sub:'ح · خ · ق · ع · غ - Arabic-origin sounds',e:'🔊',xp:25,aiUnit:false,steps:[
+    {type:'info',u:'ح',r:'bari he  (h)',en:'Bari He - a deeper, more breathy "h" from the chest. Arabic origin.',hint:'Bari He (ح) and Choti He (ہ) both say "h" in everyday Urdu. Bari He comes from Arabic where it was distinctly different. In practice, they sound the same - but you MUST spell correctly!'},
+    {type:'info',u:'خ',r:'khe  (kh)',en:'Khe - guttural "kh" from the back of the throat. Like a hard ख़.',hint:'Imagine gargling softly. This "kh" is deeper than Hindi ख. In خوش (khush = happy) it sounds like خ not just x. Used in خدا (khuda = God).'},
+    {type:'info',u:'ق',r:'qaaf  (q)',en:'Qaaf - deep "k" from the very back of the throat. Like क़.',hint:'Qaaf is deeper than Kaaf (ک). Like the difference between Hindi क and क़ in क़िस्मत (kismat). In قدرت (qudrat = nature/power) the "q" is distinctly back-of-throat.'},
+    {type:'info',u:'ع',r:'ain',en:'Ain - a deep glottal vowel from the throat. No Hindi equivalent.',hint:'Ain (ع) has no Hindi equivalent. It\'s a voiced pharyngeal - a deep "squeeze" before a vowel. In عشق (ishq) the ain at the start is just "i" to most speakers. Don\'t worry - just start the vowel firmly.'},
+    {type:'info',u:'غ',r:'ghain  (gh)',en:'Ghain - guttural "gh" like gargling. Like ग़.',hint:'Ghain is the voiced version of Khe. Like ग़ in ग़ालिब (Ghalib). Imagine gargling softly - that\'s ghain. It appears in غم (gham = sorrow).'},
+    {type:'read',u:'خدا',r:'khudaa',en:'God',hint:'خ (kh) + د (d) + ا (aa) = khudaa. Deep khe at the start. Common in Urdu greetings and poetry.'},
+    {type:'read',u:'عشق',r:'ishq',en:'Intense love',hint:'ع (ain/i) + ش (sh) + ق (q) = ishq. The ain is "i" in practice. Deep qaaf at the end. The quintessential Urdu word!'},
+    {type:'read',u:'غم',r:'gham',en:'Sorrow',hint:'غ (gh) + م (m) = gham. Ghain at the start. One of the most poetic Urdu words.'},
+    {type:'mcq',q:'Both ح (bari he) and ہ (choti he) say "h". Why do both exist?',ans:'Arabic origin - they were distinct sounds; Urdu preserved both spellings',opts:['They are actually different sounds in Urdu','Arabic origin - they were distinct sounds; Urdu preserved both spellings','One is used at start of words, the other at end','They are completely interchangeable with no rules']},
+  ]},
+
+  // Lesson 11: fe (ف), suaad (ص), zuaad (ض), toe (ط), zoe (ظ)
+  {sec:'Script',id:'script11',t:'Lesson 11: Fe · Emphatics',sub:'ف · ص · ض · ط · ظ - emphatic Arabic letters',e:'📚',xp:25,aiUnit:false,steps:[
+    {type:'info',u:'ف',r:'fe  (f)',en:'Fe - "f" sound. Like फ़. 1 dot above a loop with a tail.',hint:'Fe is simple - just one dot above a loop shape. Like फ़ in फ़न (fan = art). Connects forward: فـ.'},
+    {type:'info',u:'ص ض ط ظ',r:'swāad · zwāad · toe · zoe',en:'The "emphatic" letters - Arabic origin. In spoken Urdu, mostly sound like s, z, t, z.',hint:'These four come from Arabic where they had distinct emphatic (heavier) sounds. In everyday Urdu: ص ث س all say "s"; ض ظ ذ ز all say "z"; ط ت both say "t". Spelling matters - must learn which word uses which letter!'},
+    {type:'info',u:'صرف درست ہجے',r:'Spelling matters',en:'Even if sounds overlap, wrong spelling marks you as uneducated in Urdu culture.',hint:'صبر (sabr = patience) MUST be spelled with ص not س. Getting this wrong is like writing "fone" for "phone" in English. The letters carry identity.'},
+    {type:'read',u:'صبر',r:'sabr',en:'Patience / perseverance',hint:'ص (s) + ب (b) + ر (r) = sabr. Must use ص here, not س. Arabic root.'},
+    {type:'read',u:'ضرور',r:'zaroor',en:'Definitely / surely',hint:'ض (z) + ر (r) + و (o) + ر (r) = zaroor. Same as Hindi ज़रूर! Uses ض for z.'},
+    {type:'read',u:'فن',r:'fan',en:'Art / skill',hint:'ف (f) + ن (n) = fan. Arabic origin, means art, craft, skill. Used in فنکار (fankar = artist).'},
+    {type:'mcq',q:'In Urdu, ص and س both say "s". Why must you use the correct one?',ans:'They appear in different words by convention - wrong spelling looks illiterate',opts:['They are pronounced differently in modern Urdu','They appear in different words by convention - wrong spelling looks illiterate','ص is only used in Arabic loanwords','There is no difference - use either']},
+  ]},
+
+  // Lesson 12: lam-alif, mim combinations, full sentence reading
+  {sec:'Script',id:'script12',t:'Lesson 12: Lam-Alif · Reading Sentences',sub:'لا · special combinations · reading fluency',e:'📝',xp:25,aiUnit:false,steps:[
+    {type:'info',u:'لا',r:'laa  (lam + alif)',en:'Lam-Alif is a special ligature - must learn to recognise it as one unit.',hint:'When Lam (ل) is followed by Alif (ا), they form a special joined shape: لا. It\'s not a separate letter - just a visual rule. You\'ll see it everywhere: لا (no/laa), لال (laal = red), لاکھ (laakh = 100,000).'},
+    {type:'read',u:'لال',r:'laal',en:'Red',hint:'ل (l) + ا (aa) + ل (l) = laal. The lam-alif ligature appears at the start: لا + ل. Same as Hindi लाल!'},
+    {type:'read',u:'ہماری راج دھانی',r:'hamaari raaj dhaani',en:'Our capital (city)',hint:'Three separate words: ہماری (hamaari = our) + راج (raaj = rule/king) + دھانی (dhaani = capital). Read each word right-to-left, then words left-to-right as a phrase.'},
+    {type:'read',u:'سارے جہاں سے اچھا',r:'saare jahaan se achhaa',en:'Better than all the world (Allama Iqbal)',hint:'The famous line from Iqbal\'s Taranaa-e-Hindi. سارے (all) + جہاں (world) + سے (than) + اچھا (better). Reading a full sentence!'},
+    {type:'info',u:'جملہ پڑھنا',r:'Reading full sentences',en:'Words separate naturally at non-connectors. Read each cluster, then assemble.',hint:'Look for the non-connectors (ا د ڈ ر ڑ ز ژ و) - they create natural "breaks" in the word string. Each cluster between breaks is one unit. Read cluster by cluster.'},
+    {type:'mcq',q:'Which of these is the special lam-alif ligature?',ans:'لا',opts:['لل','ال','لا','لاَ']},
+  ]},
+
+  // Lesson 13: Eid Mubarak - reading cultural text
+  {sec:'Script',id:'script13',t:'Lesson 13: عید مبارک',sub:'Reading cultural and festive expressions',e:'🌙',xp:25,aiUnit:false,steps:[
+    {type:'read',u:'عید مبارک',r:'Eid Mubarak',en:'Blessed Eid - the classic festival greeting.',hint:'عید (eid = festival) + مبارک (mubarak = blessed/congratulations). مبارک also appears in مبارکباد (Mubarak ho!). Same root as Hindi मुबारक!'},
+    {type:'read',u:'اردو حروف',r:'Urdu huroof',en:'Urdu letters / Urdu alphabet',hint:'حروف (huroof) = letters (plural of harf = letter). So اردو حروف = "the letters of Urdu." حـ is bari-he here.'},
+    {type:'read',u:'مبارکباد',r:'mubarakbaad',en:'Congratulations',hint:'مبارک (mubarak = blessed) + باد (baad = may it be) = Congratulations! Same as Hindi मुबारकबाद. Persian compound.'},
+    {type:'info',u:'پڑھنا اور لکھنا',r:'Parhnaa aur Likhnaa',en:'Reading and writing - the two skills of script mastery.',hint:'پڑھنا (to read) uses retroflex ڑ. لکھنا (to write) uses کھ (aspirated). By now you can read both!'},
+    {type:'mcq',q:'مبارک (mubarak) means:',ans:'Blessed / Congratulations',opts:['Festival','Night','Blessed / Congratulations','Letter']},
+  ]},
+
+  // Lesson 14: Full alphabet - traditional order review
+  {sec:'Script',id:'script14',t:'Lesson 14: اردو حروف - Full Alphabet',sub:'All 36 letters in traditional sequence',e:'🔤',xp:25,aiUnit:false,steps:[
+    {type:'info',u:'ا ب پ ت ٹ ث ج چ ح خ',r:'alif · be · pe · te · ṭe · se · jim · ce · bari-he · khe',en:'First ten - starting with vowel carrier alif, then the tooth-family (ب پ ت ٹ ث) and bowl-family (ج چ ح خ).',hint:'Notice the pattern: ب پ ت ٹ all share the same base shape - only dots differ. ج چ ح خ share the bowl shape. These "families" make the alphabet easier to memorise.'},
+    {type:'info',u:'د ڈ ذ ر ڑ ز ژ س ش',r:'daal · ḍaal · zaal · re · ṛe · ze · zhe · sin · shin',en:'Non-connectors group: daal, ḍaal, zaal, re, ṛe, ze, zhe - then connectors sin and shin.',hint:'All the dal/re family letters are non-connectors. Sin (س) and Shin (ش) are the same shape, again - just dots differ.'},
+    {type:'info',u:'ص ض ط ظ ع غ ف ق ک گ ل م ن و ہ ی ے',r:'swāad · zwāad · toe · zoe · ain · ghain · fe · qaaf · kaaf · gaaf · laam · meem · nun · vao · choti-he · ye · bari-ye',en:'The remaining letters - emphatics, throat letters, and the familiar connectors.',hint:'You\'ve met all these in Lessons 1–13. This is the review in traditional Urdu alphabetical order.'},
+    {type:'match',pairs:[{u:'ث س ص',e:'All say "s" - different spellings'},{u:'ذ ز ض ظ',e:'All say "z" - different spellings'},{u:'ت ط',e:'Both say "t"'},{u:'ح ہ',e:'Both say "h"'}]},
+  ]},
+
+  // Lesson 15: Reading flowing text - poem / full passage
+  {sec:'Script',id:'script15',t:'Lesson 15: سارے جہاں سے اچھا',sub:'Reading a full poem - graduation lesson!',e:'🏆',xp:30,aiUnit:false,steps:[
+    {type:'info',u:'مکمل متن پڑھنا',r:'Reading complete text',en:'You are now ready to read connected Urdu text - poems, sentences, signs.',hint:'Key strategy: 1) Find the non-connectors - they mark word boundaries. 2) Read each cluster. 3) Assemble into words. 4) Now you\'re reading Urdu!'},
+    {type:'read',u:'سارے جہاں سے اچھا',r:'saare jahaan se achhaa',en:'Better than all the world (Iqbal)',hint:'The famous patriotic poem by Allama Iqbal. س+ا+ر+ے (saare), then space, then ج+ہ+ا+ں (jahaan), then سے (se), then اچھا (achhaa).'},
+    {type:'read',u:'ہندوستاں ہمارا',r:'Hindustan hamaaraa',en:'Our Hindustan',hint:'ہ+ن+د+و+س+ت+ا+ں (Hindustan) + space + ہ+م+ا+ر+ا (hamaaraa). Read the clusters!'},
+    {type:'read',u:'محبت کی زبان',r:'mohabbat ki zabaan',en:'The language of love',hint:'محبت (mohabbat) + کی (ki) + زبان (zabaan = language). زبان - same as Hindi ज़बान!'},
+    {type:'read',u:'اردو ہماری پہچان ہے',r:'Urdu hamaari pahchaan hai',en:'Urdu is our identity',hint:'اردو (Urdu) + ہماری (our) + پہچان (pahchaan = identity) + ہے (hai). All familiar words - you can read this sentence!'},
+    {type:'mcq',q:'You have completed all 15 script lessons. The best next step is:',ans:'Read real Urdu text - signs, books, song lyrics - using what you know',opts:['Start from Lesson 1 again','Memorise all 36 letters in order first','Read real Urdu text - signs, books, song lyrics - using what you know','Wait until you know every word']},
+  ]},
+
+  // ═══════════════ VOCABULARY DEPTH (6 UNITS - ADVANCED NUANCE) ═══════════════
+  {sec:'Vocabulary',id:'vocab1',t:'Love & Longing - Degrees of Intensity',sub:'محبت/عشق/اُنس/والَہ - why words for love are never equal',e:'❤️',xp:25,aiUnit:true,aiTopic:'Mohabbat vs Ishq vs Uns vs Waleh - emotional gradations, Sufi undertones, when each is used in poetry vs daily speech, Hindi parallels like चाहत vs प्रेम vs इश्क़',fallback:[
+    {type:'info',u:'محبت',r:'Mohabbat',en:'Affection - warm, steady, nurturing love',hint:'Think: माँ की मोहब्बत। Gentle, devoted. Same word in Hindi-Urdu. Persian origin - محب (lover).'},
+    {type:'info',u:'عشق',r:'Ishq',en:'Passion - consuming, ecstatic, even self-annihilating love',hint:'Sufi concept: الله سے عشق = love of God. In ghazals: عشق destroys the ego to reveal truth. MORE than इश्क़ in Bollywood - this is the real thing.'},
+    {type:'info',u:'اُنس',r:'Uns',en:'Intimacy - quiet familiarity, attachment from closeness',hint:'No clean Hindi word for this. اُنس is what happens after عشق settles. The comfort of knowing someone completely.'},
+    {type:'info',u:'والَہ',r:'Waleh',en:'Bewildered by love - lost, dazed, enamoured',hint:'والَہ و شیدا (waleh o sheyda) - utterly spellbound. Ghalib used it. Stronger than सम्मोहित.'},
+    {type:'mcq',q:'Which word describes quiet, long-term attachment - not passion, but deep familiarity?',ans:'اُنس',opts:['عشق','محبت','اُنس','والَہ']},
+  ]},
+
+  {sec:'Vocabulary',id:'vocab2',t:'Inner States with No Hindi Twin',sub:'کیف/وجد/حسرت/کرب - where Hindi approximates but never arrives',e:'🌊',xp:25,aiUnit:true,aiTopic:'Kayf, Wajd, Hasrat, Karab - Urdu emotional vocabulary with no Hindi equivalent, Sufi ecstasy, poetic grief, how to recognise them in literature',fallback:[
+    {type:'info',u:'کَیف',r:'Kayf',en:'Blissful intoxication - a pleasurable altered state of being',hint:'Not happiness - subtler. کیف is the feeling of a beautiful sunset or an oud melody. Hindi says "मस्ती" but کیف is deeper, quieter.'},
+    {type:'info',u:'وجد',r:'Wajd',en:'Ecstatic transport - overwhelmed by divine/beautiful emotion',hint:'Qawwali singers enter وجد - beyond tears, beyond words. The Sufi who sways and loses himself. No Hindi equivalent. From Arabic وجَد (to find).'},
+    {type:'info',u:'حسرت',r:'Hasrat',en:'Wistful longing - for what was missed or never was',hint:'حسرت ≠ آرزو (hope). حسرت looks BACK at what was missed. The Bollywood song "हज़ारों ख्वाहिशें ऐसी" is full of حسرت.'},
+    {type:'info',u:'کرب',r:'Karab',en:'Anguish - a gnawing, visceral inner torment',hint:'Stronger than درد (dard). کرب twists from inside. Arabic root - کربلا (Karbala). Heavier, darker. Faiz used it for political suffering.'},
+    {type:'mcq',q:'A Sufi enters a trance during qawwali, overwhelmed by divine feeling. This state is called?',ans:'وجد',opts:['کیف','وجد','حسرت','کرب']},
+  ]},
+
+  {sec:'Vocabulary',id:'vocab3',t:'Mind & Thought - Layers of Cognition',sub:'ذہن/خیال/فکر/وہم/وسوسہ - not all thinking is the same',e:'🧠',xp:25,aiUnit:true,aiTopic:'Zehn vs Khayal vs Fikr vs Wahm vs Waswasa - degrees of thought, from sharp intellect to paranoid delusion, how Urdu encodes mental states with Persian-Arabic precision',fallback:[
+    {type:'info',u:'ذہن',r:'Zehn',en:'Intellect - sharp, deliberate, conscious mind',hint:'"Zehn mein aana" = to come to mind deliberately. ذہین (zehin) = brilliant. ज़हीन exists in Hindi-Urdu both.'},
+    {type:'info',u:'خیال',r:'Khayal',en:'Thought - what arises naturally; also imagination and care',hint:'"Ek khayal aaya" = a thought occurred. ALSO: خیال رکھنا = take care of someone. Same as हिंदुस्तानी usage.'},
+    {type:'info',u:'وہم',r:'Wahm',en:'Unfounded fear - a delusion, suspicion without basis',hint:'وہم is irrational. "Yeh sirf tera wahm hai" = this is your delusion. وہمی = paranoid. Stronger than mere doubt.'},
+    {type:'info',u:'وسوسہ',r:'Waswasa',en:'Whispered doubt - nagging inner voice of temptation or suspicion',hint:'Quranic word. وسوسہ is the devil\'s whisper in the heart. More intimate than وہم - it speaks TO you.'},
+    {type:'mcq',q:'The persistent inner voice that tempts or creates doubt - like a devil whispering - is called?',ans:'وسوسہ',opts:['ذہن','فکر','وہم','وسوسہ']},
+  ]},
+
+  {sec:'Vocabulary',id:'vocab4',t:'Separation & Its Many Faces',sub:'ہجر/فراق/غربت/تنہائی - the architecture of loss',e:'💔',xp:25,aiUnit:true,aiTopic:'Hijr vs Firaq vs Ghurbat vs Tanhaai - each word for separation encodes different emotional weight, poetic tradition, Ghalib vs Faiz usage, Arabic vs Persian etymology',fallback:[
+    {type:'info',u:'ہجر',r:'Hijr',en:'Estrangement - separation that BURNS, especially from the beloved',hint:'ہجر is ACTIVE, painful, ongoing. The ghazal tradition lives here. Ghalib wrote: "ہجر میں مر گئے ہم". Not just being apart - being BURNED by it.'},
+    {type:'info',u:'فراق',r:'Firaq',en:'Parting - the state of being apart; more refined and literary',hint:'فراق is Persian, slightly more refined than ہجر. Firaq Gorakhpuri (poet) took this as his pen name. فراق میں جینا = to live in separation.'},
+    {type:'info',u:'غربت',r:'Ghurbat',en:'Exile - outer AND inner displacement from home or self',hint:'IMPORTANT: غربت ≠ poverty in poetry. In Urdu verse, غربت is the condition of the soul far from its origin - Sufi meaning. The exile inside you.'},
+    {type:'info',u:'تنہائی',r:'Tanhaai',en:'Solitude - can be beautiful or devastating, depending on the heart',hint:'تنہائی can be peaceful (writer\'s solitude) or devastating (grief\'s emptiness). اکیلا = alone (state). تنہائی = loneliness (feeling). Like अकेलापन but with more texture.'},
+    {type:'match',pairs:[{u:'ہجر',e:'Burning separation'},{u:'غربت',e:'Soul in exile'},{u:'تنہائی',e:'Felt solitude'},{u:'فراق',e:'Literary parting'}]},
+  ]},
+
+  {sec:'Vocabulary',id:'vocab5',t:'Speech, Utterance & Silence',sub:'کہنا/فرمانا/عرض/خاموشی - HOW you say something changes everything',e:'🗣️',xp:25,aiUnit:true,aiTopic:'Kehna vs Bolna vs Farmana vs Arz karna vs Guftugu - formality ladder, how register shifts meaning, silence as eloquence in Urdu tradition',fallback:[
+    {type:'info',u:'کہنا',r:'Kehna',en:'To say - neutral reporting, most common',hint:'Most common. "Usne kaha ki..." = He said that. Reports speech neutrally.'},
+    {type:'info',u:'فرمانا',r:'Farmana',en:'To graciously say - speech of the respected or revered',hint:'Used when speaking OF someone respected. "Aap ne farmaya..." = You were gracious enough to say. فرمانا is for the powerful.'},
+    {type:'info',u:'عرض کرنا',r:'Arz karna',en:'To humbly submit - self-lowering, deferential speech',hint:'"Main arz karta hoon ke..." = I humbly submit that. The opposite of فرمانا - one is for the great, one from the humble. Court language.'},
+    {type:'info',u:'خاموشی',r:'Khamoshi',en:'Silence - but in Urdu, silence speaks',hint:'"Teri khamoshi ne bahut kuch keh diya" = Your silence said everything. In ghazal tradition, the most powerful emotion is often unspoken. خاموشی = eloquence of restraint.'},
+    {type:'mcq',q:'Which word do you use to respectfully report what an elder or revered person said?',ans:'فرمانا',opts:['کہنا','بولنا','فرمانا','عرض کرنا']},
+  ]},
+
+  {sec:'Vocabulary',id:'vocab6',t:'Time, Impermanence & Decline',sub:'لمحہ/فنا/زوال/بقا - how Urdu feels the passage of time',e:'⏳',xp:25,aiUnit:true,aiTopic:'Lamha vs Pal vs Aan - micro-moments; Fana (annihilation) vs Baqa (permanence) - Sufi concept; Zawaal (decline), philosophy of impermanence in Urdu-Persian poetry',fallback:[
+    {type:'info',u:'لمحہ',r:'Lamha',en:'A moment - a flash of present time, precious precisely because it passes',hint:'"Yeh lamha" = this moment. لمحہ بھر کے لیے = just for a moment. Persian. Carries the sense that moments ARE all we have.'},
+    {type:'info',u:'فنا',r:'Fana',en:'Annihilation of self - the Sufi concept of ego-death in love or God',hint:'فنا is not death - it\'s transcendence. فنا فی اللہ = annihilation in God. جو فنا ہوا وہی زندہ ہوا = He who was annihilated truly lived. The highest Sufi state.'},
+    {type:'info',u:'زوال',r:'Zawaal',en:'Decline - the inevitable fall of greatness, beauty, and empires',hint:'زوال کے بعد کوئی نہیں رہا - after decline, nothing remains. Mughal empire, personal glory - Urdu poetry is haunted by زوال. Ghalib lived through it.'},
+    {type:'read',u:'ہر شمع کو ایک دن بجھنا ہے',r:'Har shamma ko ek din bujhna hai',en:'Every candle must one day be extinguished',hint:'Classic Urdu wisdom. زوال encoded in one image. شمع (shamma) = candle - Persian. The candle burns brightest before it dies.'},
+  ]},
+
+  // ═══════════════ GRAMMAR DEPTH (4 UNITS - URDU-SPECIFIC) ═══════════════
+  {sec:'Grammar',id:'gram1',t:'Case System - How Urdu Differs',sub:'nominative, oblique, possessive - the architecture',e:'📐',xp:30,aiUnit:true,aiTopic:'Urdu case system vs Hindi, oblique case, when Hindi has no equivalent, verb agreement patterns',fallback:[
+    {type:'info',u:'نام کی حالت = nominative',r:'Nominative (subject)',en:'The base form - unchanged',hint:'She loves him: وہ اسے محبت کرتی ہے - "woh" stays "woh"'},
+    {type:'info',u:'مائل کی حالت = oblique',r:'Oblique (object/possessive)',en:'Changes the word - when dependent',hint:'But: "Her love" = اس کی محبت - notice "us" (oblique) + possessive marker.'},
+    {type:'mcq',q:'She saw him. Which case for "she"?',ans:'Nominative (subject, no change)',opts:['Nominative (subject, no change)','Oblique (object)','Possessive','None - Urdu ignores case']},
+  ]},
+
+  {sec:'Grammar',id:'gram2',t:'Gender Agreement & Hidden Gender',sub:'Every noun has gender - and Urdu SHOWS it',e:'♀️♂️',xp:30,aiUnit:true,aiTopic:'Masculine/feminine in Urdu, adjective agreement, verb conjugation with gender, identifying gender',fallback:[
+    {type:'info',u:'مذکّر = masculine',r:'Masculine nouns end in consonants usually',en:'Like: لڑکا (boy), دن (day), کتاب (book)',hint:'In sentences, they trigger masculine agreement.'},
+    {type:'info',u:'مؤنّث = feminine',r:'Feminine nouns end in ی or ہ usually',en:'Like: لڑکی (girl), رات (night), گھر (house)',hint:'Trigger feminine agreement in verbs/adjectives.'},
+    {type:'read',u:'وہ لڑکا خوب صورت ہے، وہ لڑکی خوب صورت ہے۔',r:'Woh ladka khubsurat hai, woh ladki khubsurat hai.',en:'That boy is beautiful, that girl is beautiful.',hint:'Notice: ہے + masculine خوب صورت ہے + masculine | خوب صورت ہے + feminine. Agreement!'},
+  ]},
+
+  {sec:'Grammar',id:'gram3',t:'Formal vs Informal Registers',sub:'Aap, Tum, Tu - and EVERYTHING changes',e:'🎭',xp:30,aiUnit:true,aiTopic:'Formal (Aap), informal (Tum), intimate (Tu), verb conjugation, politeness, code-switching',fallback:[
+    {type:'info',u:'آپ = formal',r:'Aap (you) - respectful, plural-like',en:'Use with elders, strangers, authority',hint:'Verb always plural form: "Aap ja rahe ho" (even if 1 person).'},
+    {type:'info',u:'تم = informal',r:'Tum (you) - peer-level, friendly',en:'Friends, younger people, casual',hint:'Verb: "Tum ja rahe ho".'},
+    {type:'info',u:'تو = intimate',r:'Tu (you) - very close, lovers, family',en:'Parents to small kids, lovers, close friends',hint:'Verb: "Tu ja raha hai".'},
+    {type:'mcq',q:'Speaking to your professor?',ans:'آپ',opts:['تو','تم','آپ','any is fine']},
+  ]},
+
+  {sec:'Grammar',id:'gram4',t:'Subjunctive & Conditionals',sub:'agar...to - expressing possibilities',e:'🌀',xp:30,aiUnit:true,aiTopic:'Conditional sentences, subjunctive mood, hota/hoti forms, counterfactual, literary subjunctive',fallback:[
+    {type:'info',u:'اگر...تو',r:'Agar...to',en:'If...then structure',hint:'Creates hypothetical. "Agar tum aao, to main khush hoon" = If you come, I\'ll be happy.'},
+    {type:'info',u:'ہوتا/ہوتی',r:'Hota/hoti',en:'Would be/would have (subjunctive form)',hint:'"Agar tum aate, to main khush hota" = If you had come, I would have been happy.'},
+    {type:'read',u:'اگر میں امیر ہوتا، تو میں سفر کرتا۔',r:'Agar main amir hota, to main safar karta.',en:'If I were rich, I would travel.',hint:'Counterfactual: not rich, but imagining what would happen.'},
+  ]},
+
+  // ═══════════════ LITERATURE DEPTH (3 UNITS - CULTURAL) ═══════════════
+  {sec:'Literature',id:'lit1',t:'Ghalib: The Master (1797-1869)',sub:'Reading poetry with historical context',e:'👑',xp:40,aiUnit:true,aiTopic:'Mirza Ghalib biography, poetic themes, famous couplets, historical context (Mughal decline)',fallback:[
+    {type:'info',u:'غالب',r:'Ghalib',en:'Mirza Asadullah Khan Ghalib - lived during Mughal collapse',hint:'Witnessed British takeover of Delhi. His poetry = witness to empire\'s end.'},
+    {type:'info',u:'دوہے/غزلیں',r:'Dohas/Ghazals',en:'His preferred form - independent couplets',hint:'Each couplet stands alone philosophically, but connected by emotion.'},
+    {type:'read',u:'ہزاروں خواہشیں ایسی کے ہر خواہش پے دم نکلے\nبہت نکلے مرے ارغوان ے عمر کے پھول',r:'Hazaron khwahishen aisi ke har khwahish pe dam nikle',en:'A thousand desires such that every desire worth dying for - Many I\'ve exhausted in life\'s spring',hint:'Ghalib on desire and mortality. Life = spring that passes.'},
+  ]},
+
+  {sec:'Literature',id:'lit2',t:'Ghazal Structure: Architecture of Emotion',sub:'Radif, Qafia, Maqta - why form MEANS something',e:'🏗️',xp:40,aiUnit:true,aiTopic:'Ghazal structure (couplets, radif, qafia), emotional independence, why it matters, poetic genius',fallback:[
+    {type:'info',u:'مطلع = opening couplet',r:'Matlaq - both lines rhyme',en:'Must have radif-qafia in both lines', hint:'Only couplet where both lines close with rhyme.'},
+    {type:'info',u:'مقطع = poet signature',r:'Maqta - poet names themselves',en:'Last couplet. Poet uses their name/pen name',hint:'Ghalib signs: "Ke Ghalib ko dil ki bastiyan"'},
+    {type:'info',u:'ردیف = radif (refrain)',r:'Radif - repeated word at end of rhyme',en:'Same word/sound in every couplet\'s close',hint:'Example: all couplets might end with "-ay" sound.'},
+    {type:'info',u:'قافیہ = qafia (rhyme)',r:'Qafia - word that comes before radif',en:'Rhymes with radif, changes per couplet',hint:'Creates the specific rhyme pattern.'},
+  ]},
+
+  {sec:'Literature',id:'lit3',t:'Faiz & Political Poetry',sub:'Poetry with PURPOSE - Faiz Ahmed Faiz (1911-1984)',e:'✊',xp:40,aiUnit:true,aiTopic:'Faiz biography, socially conscious poetry, difference from Ghalib\'s existential style, freedom struggle',fallback:[
+    {type:'info',u:'فیض احمد فیض',r:'Faiz Ahmed Faiz',en:'Communist poet, freedom fighter, political activist',hint:'Born in Sialkot. Imprisoned by Pakistani govt. Poetry = resistance.'},
+    {type:'info',u:'سب سے الگ',r:'Different from Ghalib',en:'Ghalib = existential/philosophical. Faiz = political/social',hint:'Ghalib: "What is love?" Faiz: "Freedom is the right."'},
+    {type:'read',u:'یہ داغ داغ اجالا یہ شب گزیں ساحل\nیہ شاخِ نیّیں شاخِ پنہاں ہمیں دے دو',r:'Yeh daagh daagh ujala, yeh shab-guzeen sahil',en:'This stained dawn, this night-worn shore - Give us the Hidden Branch',hint:'Faiz at independence: dawn = stained (compromised revolution). Political disappointment.'},
+  ]},
+
+  // ═══════════════ AUTHENTIC URDU (3 UNITS - REAL SPEECH) ═══════════════
+  {sec:'Authentic',id:'auth1',t:'Real Cinema: Bollywood Urdu',sub:'How Urdu is ACTUALLY SPOKEN',e:'🎬',xp:35,aiUnit:true,aiTopic:'Authentic dialogue from famous films, code-switching analysis, colloquial patterns, register changes',fallback:[
+    {type:'read',u:'حسرت کے ہوں میں، خیال میں ہوں میں۔',r:'Hasrat ke hon main, khayal mein hon main.',en:'I am of sorrow, I am of thought.',hint:'Urdu cinema loves poetic registers. Pure Urdu, no Hindi mixing.'},
+    {type:'read',u:'تمہاری یاد میں رات بھر میں سو نہیں سکا۔',r:'Tumhari yaad mein raat bhar main so nahi ska.',en:'Because of you, I couldn\'t sleep the whole night.',hint:'Authentic emotional dialogue. Pure Urdu structure.'},
+  ]},
+
+  {sec:'Authentic',id:'auth2',t:'Code-Switching: Hindi-Urdu Blending',sub:'How people ACTUALLY mix languages',e:'🔀',xp:35,aiUnit:true,aiTopic:'Code-switching patterns, social meaning (identity, class), when/why, formal vs informal blending',fallback:[
+    {type:'read',u:'میری سہیلی نے کہا: "یار، میں bahut تھک گئی ہوں۔ کل exam ہے اور میں نہیں پڑھی۔"',r:'Meri saheli ne kaha: "Yar, main bahut thak gayi hun. Kal exam hai aur main nahi padhi."',en:'My friend said: "Girl, I\'m so tired. I have an exam tomorrow and I haven\'t studied."',hint:'Notice: Urdu greeting "یار" + Hindi "bahut thak gayi" + English "exam". Real speech!'},
+    {type:'info',u:'لڑکی بھی کہتی ہے کبھی hindi کے الفاظ',r:'Girls might use Hindi words mid-sentence in Urdu',en:'Social/casual mixing - sign of education, friendship level',hint:'Code-switching = trust, intimacy, playfulness. Very natural.'},
+  ]},
+
+  {sec:'Authentic',id:'auth3',t:'Lucknowi Urdu: Regional Poetry',sub:'How Lucknow spoke - the city variant',e:'🏙️',xp:35,aiUnit:true,aiTopic:'Lucknowi Urdu vs standard, softer pronunciation, cultural context (nawabs, tawaifs), literary history',fallback:[
+    {type:'info',u:'لکھنوی اردو',r:'Lucknawi Urdu',en:'Softer, more musical - city of nawabs',hint:'Lucknow was Mughal capital of poetry/culture. Specialized dialect.'},
+    {type:'info',u:'تواضع اور لطافت',r:'Courtesy and gentleness',en:'Lucknawi speech characterized by politeness',hint:'Nawab courts = refined, indirect speech. Influenced Lucknowi Urdu deeply.'},
+    {type:'read',u:'بجاۓ سیدھا بول نے بند ہو جاو، لکھنوی کہتے ہیں: "کاہے کو بیتاب ہو۔"',r:'Instead of direct speech, Lucknowi say: "Kahe ko betaab ho?"',en:'Rather than directly speak harshly, Lucknowi indirectly ask: "Why are you restless?"',hint:'Indirection = politeness. City of nawabs shaped entire dialect this way.'},
+  ]},
+];
+// STATE & STORAGE
+// ════════════════════════════════════════════════
+const S = {xp:0,streak:1,lives:3,done:[],unit:null,step:0,correct:0,total:0,start:0,matchU:null,matchE:null,matched:[],chatHist:[],currentUser:null,currentUserEmail:''};
+
+function storageKey(u){return 'urduduo_'+u;}
+function saveProgress(){
+  if(!S.currentUser)return;
+  const d={xp:S.xp,streak:S.streak,done:S.done};
+  localStorage.setItem(storageKey(S.currentUser),JSON.stringify(d));
+  if(S.currentUser!=='guest') pushCloudProgress();
+}
+function loadProgress(u){
+  try{const d=JSON.parse(localStorage.getItem(storageKey(u))||'{}');S.xp=d.xp||0;S.streak=d.streak||1;S.done=d.done||[];}
+  catch(e){S.xp=0;S.streak=1;S.done=[];}
+}
+function getAccounts(){try{return JSON.parse(localStorage.getItem('urduduo_accounts')||'{}');}catch(e){return {};}}
+function saveAccounts(a){localStorage.setItem('urduduo_accounts',JSON.stringify(a));}
+
+// ════════════════════════════════════════════════
+// BIRTHDAY
+// ════════════════════════════════════════════════
+function checkBirthday(name){
+  // Show birthday overlay when:
+  //  - user looks like Srushti (name OR email contains 'srushti')
+  //  - OR this account has not yet been shown the overlay on this device
+  //  - OR stored bday date matches today
+  const today = new Date();
+  const bdayDate = localStorage.getItem('urduduo_bday_date') || '2026-06-07';
+  const todayStr = today.toISOString().slice(0,10);
+  const n = (name||S.currentUser||'').toLowerCase();
+  const email = (S.currentUserEmail||'').toLowerCase();
+  if((n && n.indexOf('srushti')>-1) || (email && email.indexOf('srushti')>-1)) return true;
+  const seenKey = 'urduduo_bday_seen_'+(S.currentUser||'guest');
+  if(!localStorage.getItem(seenKey)) return true;
+  if(todayStr === bdayDate) return true;
+  return false;
+}
+function showBday(){
+  const overlay = document.getElementById('bdayOverlay');
+  // portrait
+  const data = localStorage.getItem('urduduo_bday_img');
+  const img = document.getElementById('bdayImage');
+  const fb = document.getElementById('bdayPortraitFallback');
+  if(data){
+    img.src=data; img.style.display='block';
+    if(fb) fb.style.display='none';
+  } else {
+    img.style.display='none';
+    if(fb) fb.style.display='flex';
+  }
+  overlay.style.display = 'flex';
+
+  // ── Starfield ──
+  const starsEl = document.getElementById('bdayStars');
+  if(starsEl && !starsEl.childElementCount){
+    for(let i=0;i<120;i++){
+      const s=document.createElement('div');s.className='bday-star';
+      const sz=Math.random()*2.5+.5;
+      s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--d:${2+Math.random()*4}s;--delay:${Math.random()*4}s;`;
+      starsEl.appendChild(s);
+    }
+  }
+
+  // ── Confetti ──
+  const particles = document.getElementById('bdayParticles');
+  particles.innerHTML='';
+  const colors = ['#c9a84c','#fdf6e3','#ffffff','#003153','#e8c96a','#a8d8ea','#ffb6c1'];
+  for(let i=0;i<80;i++){
+    const p=document.createElement('div');p.className='confetti-piece';
+    const sz=6+Math.random()*8;
+    p.style.cssText=`left:${Math.random()*100}%;top:-30px;width:${sz}px;height:${sz}px;background:${colors[i%colors.length]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${3+Math.random()*4}s;animation-delay:${Math.random()*5}s;`;
+    particles.appendChild(p);
+  }
+
+  // ── Floating petals ──
+  const petals=['🌸','🌺','✨','🌼','💫','🎉','🌹'];
+  for(let i=0;i<18;i++){
+    const p=document.createElement('div');p.className='bday-petal';
+    p.textContent=petals[i%petals.length];
+    p.style.cssText=`left:${Math.random()*100}%;top:-40px;animation-duration:${6+Math.random()*8}s;animation-delay:${Math.random()*8}s;font-size:${14+Math.random()*18}px;`;
+    particles.appendChild(p);
+  }
+
+  setTimeout(()=>{try{createBurst(document.getElementById('sbAvatar'));}catch(e){}},300);
+}
+function closeBday(){
+  const today = new Date().toISOString().slice(0,10);
+  localStorage.setItem('urduduo_bday_shown', today);
+  const seenKey = 'urduduo_bday_seen_'+(S.currentUser||'guest');
+  localStorage.setItem(seenKey, today);
+  const overlay = document.getElementById('bdayOverlay');
+  overlay.style.transition='opacity .45s ease';overlay.style.opacity=0;setTimeout(()=>{overlay.style.display='none';overlay.style.opacity=1;overlay.style.transition='';},460);
+}
+
+function handleBdayUpload(e){
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  // Compress before storing
+  const r=new FileReader();
+  r.onload=ev=>{
+    const img = new Image();
+    img.onload = () => {
+      const max = 480;
+      const scale = Math.min(1, max/Math.max(img.width,img.height));
+      const w = Math.round(img.width*scale), h = Math.round(img.height*scale);
+      const cv = document.createElement('canvas'); cv.width=w; cv.height=h;
+      cv.getContext('2d').drawImage(img,0,0,w,h);
+      const d = cv.toDataURL('image/jpeg', 0.82);
+      try{
+        localStorage.setItem('urduduo_bday_img',d);
+        document.getElementById('bdayImage').src=d;
+        document.getElementById('bdayImage').style.display='block';
+        updateBar();
+        if(S.currentUser && S.currentUser!=='guest') pushCloudProgress({portrait:d});
+      }catch(err){console.warn(err);}
+    };
+    img.src = ev.target.result;
+  };
+  r.readAsDataURL(f);
+}
+
+function createBurst(target){
+  if(!target) return;
+  const rect=target.getBoundingClientRect();
+  const parent=document.body;
+  const container=document.createElement('div');container.className='confetti-burst';
+  container.style.left=(rect.left-80)+'px';container.style.top=(rect.top-20)+'px';
+  for(let i=0;i<18;i++){const p=document.createElement('div');p.className='burst-piece';p.style.background=['#c9a84c','#fff','#003153','#fdf6e3','#e8f4fd'][i%5];p.style.left='50%';p.style.top='50%';container.appendChild(p);}
+  parent.appendChild(container);
+  // animate pieces
+  Array.from(container.children).forEach((el,idx)=>{const ang=(idx/(container.children.length))*Math.PI*2;const dist=40+Math.random()*60;el.style.transition=`transform .8s cubic-bezier(.2,.9,.2,1),opacity .8s`;el.style.opacity=1;setTimeout(()=>{el.style.transform=`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist}px) rotate(${Math.random()*720}deg)`;el.style.opacity=0;},10);});
+  setTimeout(()=>container.remove(),900);
+}
+
+// ════════════════════════════════════════════════
+// MASCOT: floating portrait that appears on events
+// ════════════════════════════════════════════════
+function showMascot(kind,txt,timeout=2200){
+  let m=document.getElementById('mascot');
+  if(!m){m=document.createElement('div');m.id='mascot';m.className='mascot';m.innerHTML=`<div class="mascot-bubble" id="mascotBubble"></div><div class="mascot-img-wrap"><div id="mascotImg" style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#fdf6e3,#c9a84c);display:flex;align-items:center;justify-content:center;font-size:30px;">🌼</div></div>`;document.body.appendChild(m);}
+  const img=document.getElementById('mascotImg');
+  const stored=localStorage.getItem('urduduo_bday_img');
+  if(stored){
+    img.style.backgroundImage = `url('${stored}')`;
+    img.style.backgroundSize='cover';img.style.backgroundPosition='center';
+    img.textContent='';
+  }
+  const bubble=document.getElementById('mascotBubble');bubble.textContent=txt||'';
+  m.classList.remove('happy','sad');
+  m.classList.add(kind==='happy'?'happy':kind==='sad'?'sad':'');
+  m.classList.add('visible');
+  if(kind==='happy')createBurst(m.querySelector('.mascot-img-wrap')||m);
+  setTimeout(()=>{m.classList.remove('visible');},timeout);
+}
+
+// ════════════════════════════════════════════════
+// LOGIN - Emergent Google Auth (cross-device)
+// REMINDER: DO NOT HARDCODE THE URL, OR ADD ANY FALLBACKS OR REDIRECT URLS, THIS BREAKS THE AUTH
+// ════════════════════════════════════════════════
+function doGoogleLogin(){
+  const redirectUrl = window.location.origin + window.location.pathname;
+  window.location.href = 'https://auth.emergentagent.com/?redirect=' + encodeURIComponent(redirectUrl);
+}
+
+async function processSessionFromHash(){
+  if(!window.location.hash || !window.location.hash.includes('session_id=')) return false;
+  const params = new URLSearchParams(window.location.hash.replace(/^#/,''));
+  const sid = params.get('session_id');
+  if(!sid) return false;
+  try{
+    const res = await fetch(API+'/auth/session', {
+      method:'POST',
+      credentials:'include',
+      headers:{'X-Session-ID': sid, 'Content-Type':'application/json'},
+    });
+    // remove hash regardless
+    history.replaceState(null,'',window.location.pathname);
+    if(!res.ok) throw new Error('session exchange failed');
+    return true;
+  }catch(e){
+    history.replaceState(null,'',window.location.pathname);
+    console.warn('Auth callback failed:', e);
+    return false;
+  }
+}
+
+async function fetchMe(){
+  try{
+    const r = await fetch(API+'/auth/me', {credentials:'include'});
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(e){return null;}
+}
+
+async function pullCloudProgress(){
+  try{
+    const r = await fetch(API+'/progress',{credentials:'include'});
+    if(!r.ok) return null;
+    return await r.json();
+  }catch(e){return null;}
+}
+
+async function pushCloudProgress(extra){
+  if(!S.currentUser || S.currentUser==='guest') return;
+  try{
+    await fetch(API+'/progress',{
+      method:'POST', credentials:'include',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(Object.assign({xp:S.xp,streak:S.streak,done:S.done}, extra||{}))
+    });
+  }catch(e){console.warn('progress push failed',e);}
+}
+
+function guestLogin(){loginUser('guest','Guest');}
+
+function loginUser(u, displayName, email){
+  S.currentUser=u;
+  S.currentUserEmail = email || '';
+  if(u==='guest'){loadProgress(u);}
+  localStorage.setItem('urduduo_lastuser',u);
+  loadVocabMasteryLocal();
+  loadVocabMasteryCloud(); // async, fine
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('appShell').style.display='block';
+  const name = displayName || u;
+  document.getElementById('sbUsername').textContent=name;
+  document.getElementById('sbAvatar').textContent=name[0].toUpperCase();
+  updateBar();
+  const av=document.getElementById('sbAvatar');if(av){av.classList.add('avatar-bounce');setTimeout(()=>av.classList.remove('avatar-bounce'),900);createBurst(av);} 
+  try{showMascot('happy',`Welcome ${name}`);}catch(e){}
+  if(checkBirthday(name))showBday();
+  go('home');
+}
+
+async function doLogout(){
+  if(S.currentUser && S.currentUser!=='guest'){
+    try{ await fetch(API+'/auth/logout',{method:'POST',credentials:'include'}); }catch(e){}
+  }
+  saveProgress();S.currentUser=null;S.xp=0;S.streak=1;S.done=[];S.chatHist=[];
+  localStorage.removeItem('urduduo_lastuser');
+  document.getElementById('appShell').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+  document.getElementById('loginErr').textContent='';
+}
+
+// ════════════════════════════════════════════════
+// NAV
+// ════════════════════════════════════════════════
+function go(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('screen-'+id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    n.classList.toggle('active',(n.getAttribute('onclick')||'').includes("'"+id+"'"));
+  });
+  toggleSidebar(false);
+  updateBar();
+  if(id==='home')buildHome();
+  if(id==='vocab'){renderVocabCats();renderVocab();}
+  if(id==='alphabet')buildAlphabet();
+  if(id==='writing')buildWriting();
+  if(id==='pronounce')buildPronounce();
+  if(id==='chat'){S.chatHist=[];initChat();}
+  if(id==='progress')buildProgress();
+}
+function updateBar(){
+  ['sStreak','streakBig'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=S.streak;});
+  ['sXP','xpBig'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=S.xp;});
+  const lv=document.getElementById('sLives');if(lv)lv.textContent=S.lives;
+  const av=document.getElementById('sbAvatar');
+  const storedImg=localStorage.getItem('urduduo_bday_img');
+  if(av&&S.currentUser){
+    if(storedImg){av.style.backgroundImage=`url('${storedImg}')`;av.style.backgroundSize='cover';av.style.backgroundPosition='center';av.textContent='';}
+    else{av.style.backgroundImage='';av.textContent=S.currentUser[0].toUpperCase();}
+  }
+}
+
+// ════════════════════════════════════════════════
+// HOME
+// ════════════════════════════════════════════════
+function buildHome(){
+  document.getElementById('streakBig').textContent=S.streak;
+  document.getElementById('xpBig').textContent=S.xp;
+  const wrap=document.getElementById('pathUnits');wrap.innerHTML='';
+  let lastSec='';
+  CURRICULUM.forEach((unit,i)=>{
+    const done=S.done.includes(unit.id);
+    const prev=i>0?CURRICULUM[i-1]:null;
+    const unlocked=!unit.locked||(prev&&S.done.includes(prev.id))||done;
+    const isCurrent=!done&&unlocked;
+    if(unit.sec!==lastSec){
+      lastSec=unit.sec;
+      const div=document.createElement('div');div.className='path-section-header';
+      div.innerHTML=`<span class="path-section-chip">${unit.sec}</span>`;
+      wrap.appendChild(div);
+    }
+    const row=document.createElement('div');row.className='unit-row';
+    row.innerHTML=`
+      <button class="unit-bubble ${done?'done':isCurrent?'current':'locked-b2'}" onclick="${unlocked?`startUnit('${unit.id}')`:''}" title="${unit.t}">
+        ${done?'✓':unit.e}${done?'<span class="unit-star">⭐</span>':''}
+      </button>
+      <div class="unit-card">
+        <div class="unit-card-title">${unit.t}</div>
+        <div class="unit-card-sub">${unit.sub}</div>
+        ${unlocked
+          ?`<button class="start-btn" onclick="startUnit('${unit.id}')">${done?'Practice':'Start lesson'}</button><div class="unit-xp">+${unit.xp} XP</div>`
+          :`<button class="start-btn locked-s" disabled>Complete previous first</button>`}
+      </div>`;
+    wrap.appendChild(row);
+  });
+}
+
+async function startUnit(id){
+  const unit=CURRICULUM.find(u=>u.id===id);if(!unit)return;
+  S.unit=unit;S.step=0;S.lives=3;S.correct=0;S.total=0;S.start=Date.now();S.matched=[];S.matchU=null;S.matchE=null;
+  go('lesson');
+  // Try AI-generated content
+  if(unit.aiUnit){
+    document.getElementById('lessonContent').innerHTML=`<div class="ai-loading"><div class="spinner"></div>Loading your lesson...</div>`;
+    document.getElementById('lessonPrompt').textContent='Preparing...';
+    document.getElementById('actionBtn').disabled=true;
+    try{
+      const steps=await fetchAISteps(unit.aiTopic,unit.id);
+      if(steps&&steps.length>=3){unit.steps=steps;}
+      else{unit.steps=unit.fallback;}
+    }catch(e){unit.steps=unit.fallback;}
+  } else if(!unit.steps){unit.steps=unit.fallback;}
+  renderStep();
+  try{showMascot('happy','Let\'s go!');}catch(e){}
+}
+
+async function fetchAISteps(topic,unitId){
+  const sys=`You are building lesson steps for an Urdu learning app for an English speaker who knows no Urdu script.
+Return ONLY a JSON array. No markdown. No preamble. No explanation.
+Topic: ${topic}
+
+Create 5-7 lesson steps. Each step is one of: info, mcq, match, read.
+Rules:
+- info: {type:"info", u:"Urdu text", r:"romanisation", en:"English meaning", hint:"clear English explanation of the letter/word"}
+- mcq: {type:"mcq", q:"question text", u:"Urdu word shown", r:"romanisation", ans:"correct answer string", opts:["a","b","c","d"], urduOpts:true/false}
+- match: {type:"match", pairs:[{u:"Urdu",e:"English meaning"},{u:"Urdu",e:"English"},{u:"Urdu",e:"English"}]}
+- read: {type:"read", u:"Urdu word/phrase", r:"romanisation", en:"English", hint:"pronunciation tip in clear English"}
+
+IMPORTANT: All hints and explanations must be in CLEAR ENGLISH only. Do NOT assume the learner knows Hindi or Devanagari. Use English phonetic comparisons ("like the 'b' in 'bat'", "soft 't' as in 'tea'") rather than Hindi script.
+Return ONLY the JSON array.`;
+  const res=await fetch(API+'/ai/chat',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({message:sys, system:'You are a JSON-only lesson generator. Respond with a raw JSON array, nothing else.', max_tokens:2000})
+  });
+  const data=await res.json();
+  const text=data.reply||'';
+  const clean=text.replace(/```json|```/g,'').trim();
+  return JSON.parse(clean);
+}
+
+// ════════════════════════════════════════════════
+// LESSON ENGINE
+// ════════════════════════════════════════════════
+function renderStep(){
+  const steps=S.unit.steps;
+  const pct=Math.round((S.step/steps.length)*100);
+  document.getElementById('lessonBar').style.width=pct+'%';
+  let h='';for(let i=0;i<3;i++)h+=`<span>${i<S.lives?'❤️':'🖤'}</span>`;
+  document.getElementById('heartsRow').innerHTML=h;
+  document.getElementById('feedbackWrap').style.display='none';
+  const step=steps[S.step];
+  const content=document.getElementById('lessonContent');
+  const btn=document.getElementById('actionBtn');
+  btn.className='action-btn check';btn.disabled=false;btn.onclick=handleAction;
+
+  if(step.type==='info'){
+    document.getElementById('lessonPrompt').textContent='New concept';
+    content.innerHTML=`
+      <div class="info-card">
+        ${step.u?`<div class="info-urdu-big">${step.u}</div>`:''}
+        ${step.r?`<div class="info-roman">${step.r}</div>`:''}
+        ${step.en?`<div class="info-eng">${step.en}</div>`:''}
+        
+        ${step.hint?`<div class="info-hint">💡 ${step.hint}</div>`:''}
+      </div>`;
+    btn.textContent='Got it';btn.disabled=false;btn.onclick=()=>advance(true,false);
+  }
+  else if(step.type==='mcq'){
+    S.total++;
+    document.getElementById('lessonPrompt').textContent=step.q;
+    content.innerHTML=`
+      <div class="mcq-card">
+        ${step.u?`<div class="mcq-urdu">${step.u}</div>`:''}
+        ${step.r?`<div class="mcq-roman">${step.r}</div>`:''}
+      </div>
+      <div class="opts-grid">
+        ${step.opts.map(o=>`
+          <button class="opt-btn" onclick="checkMCQ(this,'${esc(o)}','${esc(step.ans)}','${esc(step.hint||'')}')">
+            ${step.urduOpts?`<span class="opt-urdu">${o}</span>`:o}
+          </button>`).join('')}
+      </div>`;
+    btn.textContent='Check';btn.disabled=true;
+  }
+  else if(step.type==='match'){
+    S.total++;S.matched=[];S.matchU=null;S.matchE=null;
+    document.getElementById('lessonPrompt').textContent='Tap to match the pairs';
+    const pairs=step.pairs;
+    const shuffled=[...pairs].sort(()=>Math.random()-.5);
+    content.innerHTML=`
+      <div class="match-cols">
+        <div class="match-col">${pairs.map((p,i)=>`<button class="match-item urdu-m" data-i="${i}" data-side="u" onclick="pickMatch(this)">${p.u}</button>`).join('')}</div>
+        <div class="match-col">${shuffled.map(p=>`<button class="match-item" data-eng="${esc(p.e)}" data-side="e" onclick="pickMatch(this)">${p.e}</button>`).join('')}</div>
+      </div>`;
+    btn.textContent='Check';btn.disabled=true;
+  }
+  else if(step.type==='read'){
+    S.total++;
+    document.getElementById('lessonPrompt').textContent='Read this aloud 🎤';
+    content.innerHTML=`
+      <div class="read-card">
+        <div class="read-urdu">${step.u}</div>
+        <div class="read-roman">${step.r}</div>
+        <div class="read-eng">${step.en}</div>
+        
+        ${step.hint?`<div class="info-hint" style="margin:12px auto 0;max-width:380px;font-size:12px">💡 ${step.hint}</div>`:''}
+      </div>
+      <div style="text-align:center">
+        <button class="mic-btn" id="micBtn" onclick="startSpeech('${esc(step.r)}')">🎤</button>
+        <div class="mic-label" id="micLabel">Tap the mic and say: <strong>${step.r}</strong></div>
+        <div class="speech-result" id="speechResult">Your speech will appear here...</div>
+      </div>`;
+    btn.textContent='Skip';btn.disabled=false;
+    btn.onclick=()=>{
+      showFeedback(true,'Skipped','Tap the mic next time to practise speaking!');
+      const b=document.getElementById('actionBtn');b.textContent='Continue';b.className='action-btn go-next';b.onclick=()=>advance(true,false);
+    };
+  }
+}
+
+function esc(s){return(s||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+
+function checkMCQ(btn,chosen,ans,hint){
+  document.querySelectorAll('.opt-btn').forEach(b=>b.onclick=null);
+  const ok=chosen===ans;
+  if(ok){btn.classList.add('correct');S.correct++;showFeedback(true,'Correct!',hint||'Well done!');}
+  else{
+    btn.classList.add('wrong');
+    document.querySelectorAll('.opt-btn').forEach(b=>{
+      const t=b.querySelector('.opt-urdu')?.textContent.trim()||b.textContent.trim();
+      if(t===ans)b.classList.add('reveal');
+    });
+    S.lives=Math.max(0,S.lives-1);
+    let h='';for(let i=0;i<3;i++)h+=`<span>${i<S.lives?'❤️':'🖤'}</span>`;
+    document.getElementById('heartsRow').innerHTML=h;
+    showFeedback(false,'Not quite',`Right answer: ${ans}`);
+  }
+  const ab=document.getElementById('actionBtn');
+  ab.textContent='Continue';ab.className=ok?'action-btn go-next':'action-btn go-wrong';ab.disabled=false;ab.onclick=()=>advance(ok,true);
+}
+
+function pickMatch(btn){
+  const side=btn.dataset.side;
+  if(btn.classList.contains('matched'))return;
+  if(side==='u'){document.querySelectorAll('[data-side="u"]').forEach(b=>b.classList.remove('selected'));S.matchU=btn;}
+  else{document.querySelectorAll('[data-side="e"]').forEach(b=>b.classList.remove('selected'));S.matchE=btn;}
+  btn.classList.add('selected');
+  if(S.matchU&&S.matchE){
+    const idx=parseInt(S.matchU.dataset.i);
+    const pair=S.unit.steps[S.step].pairs[idx];
+    if(pair.e===S.matchE.dataset.eng){
+      S.matchU.classList.remove('selected');S.matchU.classList.add('matched');
+      S.matchE.classList.remove('selected');S.matchE.classList.add('matched');
+      S.matched.push(pair);S.matchU=null;S.matchE=null;
+      if(S.matched.length===S.unit.steps[S.step].pairs.length){
+        S.correct++;showFeedback(true,'All matched!','');
+        const ab=document.getElementById('actionBtn');ab.disabled=false;ab.textContent='Continue';ab.className='action-btn go-next';ab.onclick=()=>advance(true,true);
+      }
+    }else{
+      [S.matchU,S.matchE].forEach(b=>{b.classList.remove('selected');b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),400);});
+      S.lives=Math.max(0,S.lives-1);let h='';for(let i=0;i<3;i++)h+=`<span>${i<S.lives?'❤️':'🖤'}</span>`;
+      document.getElementById('heartsRow').innerHTML=h;
+      S.matchU=null;S.matchE=null;
+    }
+  }
+}
+
+let recognition=null;
+function startSpeech(expected){
+  const SpeechRec=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SpeechRec){document.getElementById('speechResult').textContent='Speech recognition not available. Try Chrome.';return;}
+  if(recognition){recognition.stop();recognition=null;}
+  recognition=new SpeechRec();recognition.lang='ur-PK';recognition.interimResults=false;recognition.maxAlternatives=5;
+  const btn=document.getElementById('micBtn');
+  const label=document.getElementById('micLabel');
+  const result=document.getElementById('speechResult');
+  btn.classList.add('listening');label.textContent='Listening... say: '+expected;result.textContent='';
+  recognition.onresult=e=>{
+    btn.classList.remove('listening');
+    const heard=Array.from(e.results[0]).map(r=>r.transcript.trim().toLowerCase())[0];
+    result.textContent='You said: "'+heard+'"';
+    const score=speechScore(heard,expected.toLowerCase());
+    if(score>=0.55){
+      S.correct++;showFeedback(true,'Great pronunciation!',`"${heard}" matches "${expected}" ✓`);
+      const ab=document.getElementById('actionBtn');ab.textContent='Continue';ab.className='action-btn go-next';ab.disabled=false;ab.onclick=()=>advance(true,true);
+    }else{
+      S.lives=Math.max(0,S.lives-1);let h='';for(let i=0;i<3;i++)h+=`<span>${i<S.lives?'❤️':'🖤'}</span>`;
+      document.getElementById('heartsRow').innerHTML=h;
+      showFeedback(false,'Try again',`Said "${heard}", need "${expected}".`);
+      const ab=document.getElementById('actionBtn');ab.textContent='Try again';ab.className='action-btn go-wrong';ab.disabled=false;
+      ab.onclick=()=>{document.getElementById('feedbackWrap').style.display='none';ab.textContent='Skip';ab.className='action-btn check';ab.onclick=()=>{showFeedback(true,'Skipped','');const b=document.getElementById('actionBtn');b.textContent='Continue';b.className='action-btn go-next';b.onclick=()=>advance(true,false);};};
+    }
+    label.textContent='Tap mic to try again';recognition=null;
+  };
+  recognition.onerror=e=>{btn.classList.remove('listening');result.textContent='Could not hear clearly ('+e.error+'). Try again.';label.textContent='Tap mic to try again';recognition=null;};
+  recognition.onend=()=>btn.classList.remove('listening');
+  recognition.start();
+}
+
+function speechScore(heard,expected){
+  const h=heard.replace(/[^a-z\s]/g,'').split(' ');
+  const e=expected.replace(/[^a-z\s]/g,'').split(' ');
+  let m=0;e.forEach(ew=>{if(h.some(hw=>hw===ew||hw.includes(ew)||ew.includes(hw)||lev(hw,ew)<=2))m++;});
+  return e.length>0?m/e.length:0;
+}
+function lev(a,b){
+  const m=a.length,n=b.length;
+  const dp=Array.from({length:m+1},(_,i)=>Array.from({length:n+1},(_,j)=>i===0?j:j===0?i:0));
+  for(let i=1;i<=m;i++)for(let j=1;j<=n;j++)dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);
+  return dp[m][n];
+}
+
+function showFeedback(ok,title,detail){
+  const fw=document.getElementById('feedbackWrap');fw.style.display='block';
+  fw.innerHTML=`<div class="fb-box ${ok?'correct':'wrong'}">
+    <div class="fb-icon">${ok?'✅':'❌'}</div>
+    <div class="fb-text"><div class="fb-title">${title}</div>${detail?`<div class="fb-detail">${detail}</div>`:''}</div>
+  </div>`;
+  // Avatar+feedback animations (Duolingo-like)
+  const av=document.getElementById('sbAvatar');
+  if(av){
+    av.classList.remove('avatar-bounce','avatar-shake');
+    if(ok){
+      av.classList.add('avatar-bounce');
+      createBurst(av);
+      setTimeout(()=>av.classList.remove('avatar-bounce'),900);
+    }else{
+      av.classList.add('avatar-shake');
+      setTimeout(()=>av.classList.remove('avatar-shake'),600);
+    }
+  }
+  try{showMascot(ok?'happy':'sad',title);}catch(e){}
+}
+
+function advance(ok,counted){
+  S.step++;S.matched=[];S.matchU=null;S.matchE=null;
+  if(S.step>=(S.unit.steps||[]).length)finishUnit();else renderStep();
+}
+function handleAction(){}
+
+function finishUnit(){
+  if(!S.done.includes(S.unit.id)){S.done.push(S.unit.id);S.xp+=S.unit.xp;saveProgress();}
+  const elapsed=Math.round((Date.now()-S.start)/1000);
+  const acc=S.total>0?Math.min(100,Math.round((S.correct/S.total)*100)):100;
+  document.getElementById('cXP').textContent='+'+S.unit.xp;
+  document.getElementById('cAcc').textContent=acc+'%';
+  document.getElementById('cTime').textContent=elapsed+'s';
+  document.getElementById('completeMsg').textContent='"'+S.unit.t+'" complete. Your Urdu is blossoming 🌸';
+  go('complete');updateBar();
+}
+
+// ════════════════════════════════════════════════
+// ALPHABET
+// ════════════════════════════════════════════════
+const ACATS=['All','Basic','Vowel','Non-joiner','Retroflex','Emphatic','Special'];
+let aCat='All';
+function buildAlphabet(){
+  const chips=document.getElementById('catChips');
+  if(!chips.children.length){
+    ACATS.forEach(c=>{
+      const b=document.createElement('button');b.className='cat-chip'+(c==='All'?' active':'');b.textContent=c;
+      b.onclick=()=>{aCat=c;document.querySelectorAll('.cat-chip').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderLetterGrid();};
+      chips.appendChild(b);
+    });
+  }
+  renderLetterGrid();showLetterDetail(0);
+}
+function renderLetterGrid(){
+  const grid=document.getElementById('letterGrid');grid.innerHTML='';
+  LETTERS.filter(l=>aCat==='All'||l.cat===aCat).forEach((l,i)=>{
+    const d=document.createElement('div');d.className='letter-tile'+(i===0?' sel':'');
+    d.innerHTML=`<div class="tile-urdu">${l.u}</div><div class="tile-name">${l.n}</div>`;
+    d.onclick=()=>{document.querySelectorAll('.letter-tile').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');showLetterDetail(LETTERS.indexOf(l));};
+    grid.appendChild(d);
+  });
+}
+function showLetterDetail(idx){
+  const l=LETTERS[idx];
+  document.getElementById('letterDetail').innerHTML=`
+    <div class="detail-big">${l.u}</div>
+    <div class="detail-right">
+      <div class="detail-name">${l.n}</div>
+      <div class="detail-roman">${l.r}</div>
+      <div class="detail-sound">${l.s}</div>
+      <div class="forms-grid">
+        <div class="form-box"><div class="form-urdu">${l.f.i}</div><div class="form-label">Initial</div></div>
+        <div class="form-box"><div class="form-urdu">${l.f.m}</div><div class="form-label">Medial</div></div>
+        <div class="form-box"><div class="form-urdu">${l.f.fi}</div><div class="form-label">Final</div></div>
+        <div class="form-box"><div class="form-urdu">${l.f.iso}</div><div class="form-label">Isolated</div></div>
+      </div>
+      <div class="tip-box">💡 ${l.tip}</div>
+    </div>`;
+}
+
+// ════════════════════════════════════════════════
+// WRITING
+// ════════════════════════════════════════════════
+let wIdx=0,drawing=false;
+function buildWriting(){wIdx=0;renderWrite();}
+function renderWrite(){
+  const l=LETTERS[wIdx];
+  document.getElementById('writeContent').innerHTML=`
+    <div class="write-card">
+      <div class="write-instruction">Trace: ${l.n} - ${l.r}</div>
+      <div class="canvas-frame">
+        <canvas id="wCanvas" width="320" height="230"></canvas>
+        <div class="ghost-letter">${l.u}</div>
+      </div>
+      <div style="font-size:12px;color:var(--muted);font-weight:600;margin-top:9px">${l.s}</div>
+      <div class="w-btns">
+        <button class="w-btn" onclick="clearW()">Clear</button>
+        <button class="w-btn pb" onclick="wNext()">Next</button>
+      </div>
+    </div>
+    <div class="write-nav">
+      <button class="w-btn" onclick="wPrev()" ${wIdx===0?'disabled':''}>Prev</button>
+      <div class="write-ctr">${wIdx+1} / ${LETTERS.length} - ${l.n}</div>
+      <button class="w-btn" onclick="wNext()" ${wIdx===LETTERS.length-1?'disabled':''}>Next</button>
+    </div>`;
+  const c=document.getElementById('wCanvas');if(!c)return;
+  const ctx=c.getContext('2d');ctx.strokeStyle='#003153';ctx.lineWidth=3.5;ctx.lineCap='round';ctx.lineJoin='round';
+  const pos=e=>{const r=c.getBoundingClientRect();const t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};};
+  c.onmousedown=c.ontouchstart=e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);e.preventDefault();};
+  c.onmousemove=c.ontouchmove=e=>{if(!drawing)return;const p=pos(e);ctx.lineTo(p.x,p.y);ctx.stroke();e.preventDefault();};
+  c.onmouseup=c.ontouchend=()=>drawing=false;c.onmouseleave=()=>drawing=false;
+}
+function clearW(){const c=document.getElementById('wCanvas');if(c)c.getContext('2d').clearRect(0,0,c.width,c.height);}
+function wNext(){if(wIdx<LETTERS.length-1){wIdx++;renderWrite();}}
+function wPrev(){if(wIdx>0){wIdx--;renderWrite();}}
+
+// ════════════════════════════════════════════════
+// PRONUNCIATION
+// ════════════════════════════════════════════════
+let pIdx=0;
+function buildPronounce(){pIdx=0;renderPron();}
+function renderPron(){
+  const item=PRON_WORDS[pIdx];
+  document.getElementById('pronContent').innerHTML=`
+    <div class="pron-card">
+      <div class="pron-urdu">${item.u}</div>
+      <div class="pron-roman">${item.r}</div>
+      <div class="pron-eng">${item.e}</div>
+      
+    </div>
+    <div style="text-align:center">
+      <button class="speak-btn" onclick="speak('${esc(item.r)}')">🔊 Hear it</button>
+    </div>
+    <div class="pron-nav">
+      <button class="pron-nav-btn" onclick="pNav(-1)" ${pIdx===0?'disabled':''}>Prev</button>
+      <div class="pron-ctr">${pIdx+1} / ${PRON_WORDS.length}</div>
+      <button class="pron-nav-btn" onclick="pNav(1)" ${pIdx===PRON_WORDS.length-1?'disabled':''}>Next</button>
+    </div>`;
+}
+function pNav(d){pIdx=Math.max(0,Math.min(PRON_WORDS.length-1,pIdx+d));renderPron();}
+function speak(t){if('speechSynthesis'in window){const u=new SpeechSynthesisUtterance(t);u.lang='ur-PK';u.rate=0.8;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}}
+
+// ════════════════════════════════════════════════
+// AI CHAT (fresh intro each open)
+// ════════════════════════════════════════════════
+const CHAT_SUGS=['How do I say "I miss you"?','Difference between عشق and محبت?','Teach me a shayari line','Quiz me on a word'];
+
+async function initChat(){
+  const msgs=document.getElementById('chatMsgs');msgs.innerHTML='';
+  S.chatHist=[];
+  document.getElementById('chatSugs').innerHTML=CHAT_SUGS.map(s=>`<button class="sug-chip" onclick="tapSug('${esc(s)}')">${s}</button>`).join('');
+  addTyping();
+  try{
+    const res=await fetch(API+'/ai/chat',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({message:'Generate a warm, unique opening greeting for an English-speaking learner who is starting out with Urdu. Mention one interesting thing about Urdu - a word, a concept, something beautiful. Keep it to 2-3 sentences. Include one Urdu word or phrase in script with its meaning. Be warm and specific, not generic. No lists. Do not reference Hindi.', max_tokens:300})
+    });
+    const data=await res.json();document.getElementById('typingDot')?.remove();
+    const reply=data.reply||defaultGreeting();
+    S.chatHist.push({role:'assistant',content:reply});
+    addBot('سلام 🌸',reply);
+  }catch(e){
+    document.getElementById('typingDot')?.remove();
+    addBot('سلام 🌸',defaultGreeting());
+  }
+}
+
+function defaultGreeting(){
+  const greetings=[
+    'Urdu has a word the Hindi dictionary struggles to hold: انتظار (intezaar) - a wait so full of longing it\'s its own kind of love. Welcome! Ask me anything about the script, words, or poetry.',
+    'You already know more Urdu than you think. Words like دل (dil), یاد (yaad), زندگی (zindagi) - these live in Hindi too. Let\'s make the script as familiar as the sounds.',
+    'The poet Ghalib wrote in Urdu, but you\'ve hummed his words in Bollywood songs your whole life. Let\'s close that gap between the feeling and the script.',
+  ];
+  return greetings[Math.floor(Math.random()*greetings.length)];
+}
+
+function addBot(urdu,eng){
+  const w=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='chat-msg bot';
+  d.innerHTML=`<div class="chat-av bot">🦜</div><div class="chat-bubble">${urdu?`<span class="bubble-urdu">${urdu}</span>`:''}${eng}</div>`;
+  w.appendChild(d);w.scrollTop=w.scrollHeight;
+}
+function addUser(txt){
+  const w=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='chat-msg user';
+  d.innerHTML=`<div class="chat-av user">😊</div><div class="chat-bubble">${txt}</div>`;
+  w.appendChild(d);w.scrollTop=w.scrollHeight;
+}
+function addTyping(){
+  const w=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='chat-msg bot';d.id='typingDot';
+  d.innerHTML=`<div class="chat-av bot">🦜</div><div class="chat-bubble"><div class="typing-dots"><span></span><span></span><span></span></div></div>`;
+  w.appendChild(d);w.scrollTop=w.scrollHeight;
+}
+
+async function sendChat(){
+  const inp=document.getElementById('chatInput');const txt=inp.value.trim();if(!txt)return;
+  inp.value='';document.getElementById('chatSugs').innerHTML='';
+  addUser(txt);S.chatHist.push({role:'user',content:txt});addTyping();
+  // Local fallback responder when remote AI is unavailable
+  function localFallbackResponse(userText){
+    const t=userText.toLowerCase();
+    if(t.includes('miss')||t.includes('yaad')) return 'یاد - Yaad - I miss you. Same as the Hindi "याद".';
+    if(t.includes('difference')&&t.includes('عشق')) return 'عشق (Ishq) - more intense than محبت (Mohabbat). जैसे फिल्मी इश्क़।';
+    if(t.includes('quiz')) return 'Quiz: What does محبت mean? A) Love B) Friend C) Dream D) Time';
+    if(t.includes('shayari')||t.includes('shayri')||t.includes('shayari')) return 'شاعری: دل کی بات - Dil ki baat. Read it slowly and feel the words.';
+    return 'میں آپ کی مدد کے لیے یہاں ہوں - Ask for a quick quiz or a word meaning (try "quiz me").';
+  }
+
+  try{
+    const res=await fetch(API+'/ai/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:txt, history:S.chatHist.slice(0,-1), max_tokens:600})});
+    let reply='';
+    if(!res.ok){
+      reply=localFallbackResponse(txt);
+    }else{
+      const data=await res.json();reply=data.reply||localFallbackResponse(txt);
+    }
+    document.getElementById('typingDot')?.remove();
+    S.chatHist.push({role:'assistant',content:reply});addBot('',reply);
+  }catch(e){
+    document.getElementById('typingDot')?.remove();
+    const reply=localFallbackResponse(txt);
+    S.chatHist.push({role:'assistant',content:reply});addBot('',reply);
+  }
+}
+function tapSug(t){document.getElementById('chatInput').value=t;sendChat();}
+
+// ════════════════════════════════════════════════
+// PROGRESS
+// ════════════════════════════════════════════════
+function buildProgress(){
+  const done=S.done.length,total=CURRICULUM.length;
+  document.getElementById('progContent').innerHTML=`
+    <div class="prog-stats">
+      <div class="prog-stat"><div class="prog-stat-val">${S.xp}</div><div class="prog-stat-label">Total XP</div></div>
+      <div class="prog-stat"><div class="prog-stat-val">${done}/${total}</div><div class="prog-stat-label">Units</div></div>
+      <div class="prog-stat"><div class="prog-stat-val">${S.streak}🔥</div><div class="prog-stat-label">Streak</div></div>
+    </div>
+    ${CURRICULUM.map(u=>{
+      const d=S.done.includes(u.id);
+      return`<div class="prog-unit">
+        <div class="prog-emoji">${u.e}</div>
+        <div class="prog-info">
+          <div class="prog-unit-name">${u.t}</div>
+          <div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${d?100:0}%"></div></div>
+        </div>
+        <div class="prog-xp">${d?'+'+u.xp+' XP':''}</div>
+      </div>`;
+    }).join('')}`;
+}
+
+// ════════════════════════════════════════════════
+// VOCABULARY (curated from real Urdu primer)
+// ════════════════════════════════════════════════
+const VOCAB = [
+  // GREETINGS
+  {u:'السلام علیکم',r:'assalāmu ʻalaikum',e:'peace be upon you',h:'सलाम (नमस्ते जैसा)',c:'Greetings'},
+  {u:'صبح بخیر',r:'subḥ bakhair',e:'good morning',h:'सुप्रभात',c:'Greetings'},
+  {u:'شام بخیر',r:'shām bakhair',e:'good evening',h:'शुभ संध्या',c:'Greetings'},
+  {u:'خدا حافظ',r:'khudā ḥāfiẓ',e:'goodbye',h:'अलविदा',c:'Greetings'},
+  {u:'شکریہ',r:'shukriya',e:'thank you',h:'धन्यवाद',c:'Greetings'},
+  {u:'معاف کیجیے',r:'muʻāf kījiye',e:'excuse me / sorry',h:'माफ कीजिए',c:'Greetings'},
+  {u:'جی ہاں',r:'jī hāṅ',e:'yes',h:'हाँ जी',c:'Greetings'},
+  {u:'نہیں',r:'nahīṅ',e:'no',h:'नहीं',c:'Greetings'},
+
+  // FAMILY / PEOPLE
+  {u:'خاندان',r:'khāndān',e:'family',h:'परिवार',c:'Family'},
+  {u:'والد',r:'wālid',e:'father',h:'पिता',c:'Family'},
+  {u:'والدہ',r:'wālida',e:'mother',h:'माँ',c:'Family'},
+  {u:'بیٹا',r:'beṭā',e:'son',h:'बेटा',c:'Family'},
+  {u:'بیٹی',r:'beṭī',e:'daughter',h:'बेटी',c:'Family'},
+  {u:'بھائی',r:'bhāī',e:'brother',h:'भाई',c:'Family'},
+  {u:'بہن',r:'behan',e:'sister',h:'बहन',c:'Family'},
+  {u:'دوست',r:'dost',e:'friend',h:'दोस्त',c:'Family'},
+  {u:'استاد',r:'ustād',e:'teacher',h:'शिक्षक',c:'Family'},
+  {u:'طالب علم',r:'ṭālib ʻilm',e:'student',h:'विद्यार्थी',c:'Family'},
+  {u:'بچے',r:'bacche',e:'children',h:'बच्चे',c:'Family'},
+  {u:'ڈاکٹر',r:'ḍākṭar',e:'doctor',h:'डॉक्टर',c:'Family'},
+
+  // FOOD
+  {u:'کھانا',r:'khānā',e:'food',h:'खाना',c:'Food'},
+  {u:'پانی',r:'pānī',e:'water',h:'पानी',c:'Food'},
+  {u:'چائے',r:'chāy',e:'tea',h:'चाय',c:'Food'},
+  {u:'کافی',r:'kāfī',e:'coffee',h:'कॉफ़ी',c:'Food'},
+  {u:'روٹی',r:'roṭī',e:'bread / roti',h:'रोटी',c:'Food'},
+  {u:'چاول',r:'chāval',e:'rice',h:'चावल',c:'Food'},
+  {u:'دال',r:'dāl',e:'lentils / daal',h:'दाल',c:'Food'},
+  {u:'سبزی',r:'sabzī',e:'vegetable',h:'सब्ज़ी',c:'Food'},
+  {u:'گوشت',r:'gosht',e:'meat',h:'गोश्त',c:'Food'},
+  {u:'مچھلی',r:'machhlī',e:'fish',h:'मछली',c:'Food'},
+  {u:'پھل',r:'phal',e:'fruit',h:'फल',c:'Food'},
+  {u:'بریانی',r:'biryānī',e:'biryani',h:'बिरयानी',c:'Food'},
+  {u:'سموسہ',r:'samosā',e:'samosa',h:'समोसा',c:'Food'},
+  {u:'لسی',r:'lassī',e:'lassi',h:'लस्सी',c:'Food'},
+  {u:'چٹنی',r:'chuṭnī',e:'chutney',h:'चटनी',c:'Food'},
+
+  // TIME
+  {u:'صبح',r:'subḥ',e:'morning',h:'सुबह',c:'Time'},
+  {u:'شام',r:'shām',e:'evening',h:'शाम',c:'Time'},
+  {u:'رات',r:'rāt',e:'night',h:'रात',c:'Time'},
+  {u:'دن',r:'din',e:'day',h:'दिन',c:'Time'},
+  {u:'سال',r:'sāl',e:'year',h:'साल',c:'Time'},
+  {u:'مہینہ',r:'mahīnā',e:'month',h:'महीना',c:'Time'},
+  {u:'ہفتہ',r:'hafta',e:'week',h:'हफ़्ता',c:'Time'},
+  {u:'آج',r:'āj',e:'today',h:'आज',c:'Time'},
+  {u:'کل',r:'kal',e:'yesterday / tomorrow',h:'कल',c:'Time'},
+  {u:'ابھی',r:'abhī',e:'right now',h:'अभी',c:'Time'},
+
+  // NUMBERS
+  {u:'ایک',r:'ek',e:'one',h:'एक',c:'Numbers'},
+  {u:'دو',r:'do',e:'two',h:'दो',c:'Numbers'},
+  {u:'تین',r:'tīn',e:'three',h:'तीन',c:'Numbers'},
+  {u:'چار',r:'chār',e:'four',h:'चार',c:'Numbers'},
+  {u:'پانچ',r:'pānch',e:'five',h:'पाँच',c:'Numbers'},
+  {u:'چھ',r:'chhe',e:'six',h:'छह',c:'Numbers'},
+  {u:'سات',r:'sāt',e:'seven',h:'सात',c:'Numbers'},
+  {u:'آٹھ',r:'āṭh',e:'eight',h:'आठ',c:'Numbers'},
+  {u:'نو',r:'nau',e:'nine',h:'नौ',c:'Numbers'},
+  {u:'دس',r:'das',e:'ten',h:'दस',c:'Numbers'},
+  {u:'صفر',r:'sifr',e:'zero',h:'शून्य',c:'Numbers'},
+
+  // COLORS
+  {u:'رنگ',r:'rang',e:'colour',h:'रंग',c:'Colors'},
+  {u:'سرخ',r:'surkh',e:'red',h:'लाल',c:'Colors'},
+  {u:'نیلا',r:'nīlā',e:'blue',h:'नीला',c:'Colors'},
+  {u:'سبز',r:'sabz',e:'green',h:'हरा',c:'Colors'},
+  {u:'پیلا',r:'pīlā',e:'yellow',h:'पीला',c:'Colors'},
+  {u:'سفید',r:'safed',e:'white',h:'सफ़ेद',c:'Colors'},
+  {u:'کالا',r:'kālā',e:'black',h:'काला',c:'Colors'},
+
+  // ADJECTIVES
+  {u:'بڑا',r:'baṛā',e:'big',h:'बड़ा',c:'Adjectives'},
+  {u:'چھوٹا',r:'chhoṭā',e:'small',h:'छोटा',c:'Adjectives'},
+  {u:'اچھا',r:'achchhā',e:'good',h:'अच्छा',c:'Adjectives'},
+  {u:'برا',r:'burā',e:'bad',h:'बुरा',c:'Adjectives'},
+  {u:'نیا',r:'nayā',e:'new',h:'नया',c:'Adjectives'},
+  {u:'پرانا',r:'purānā',e:'old',h:'पुराना',c:'Adjectives'},
+  {u:'گرم',r:'garam',e:'hot',h:'गरम',c:'Adjectives'},
+  {u:'ٹھنڈا',r:'ṭhanḍā',e:'cold',h:'ठंडा',c:'Adjectives'},
+  {u:'آسان',r:'āsān',e:'easy',h:'आसान',c:'Adjectives'},
+  {u:'مشکل',r:'mushkil',e:'difficult',h:'मुश्किल',c:'Adjectives'},
+  {u:'خوبصورت',r:'khūbsūrat',e:'beautiful',h:'खूबसूरत',c:'Adjectives'},
+  {u:'تیز',r:'tez',e:'fast / sharp',h:'तेज़',c:'Adjectives'},
+  {u:'آہستہ',r:'āhista',e:'slow',h:'धीरे',c:'Adjectives'},
+  {u:'دلچسپ',r:'dilchasp',e:'interesting',h:'दिलचस्प',c:'Adjectives'},
+  {u:'پیارا',r:'pyārā',e:'dear / lovely',h:'प्यारा',c:'Adjectives'},
+
+  // EMOTIONS
+  {u:'محبت',r:'muḥabbat',e:'love',h:'मोहब्बत',c:'Emotions'},
+  {u:'خوشی',r:'khushī',e:'happiness',h:'ख़ुशी',c:'Emotions'},
+  {u:'غم',r:'gham',e:'sadness',h:'ग़म',c:'Emotions'},
+  {u:'غصہ',r:'ghussa',e:'anger',h:'ग़ुस्सा',c:'Emotions'},
+  {u:'ڈر',r:'ḍar',e:'fear',h:'डर',c:'Emotions'},
+  {u:'خوش',r:'khush',e:'happy',h:'ख़ुश',c:'Emotions'},
+  {u:'اداس',r:'udās',e:'sad',h:'उदास',c:'Emotions'},
+  {u:'پسند',r:'pasand',e:'liking / favourite',h:'पसंद',c:'Emotions'},
+
+  // QUESTION WORDS
+  {u:'کیا',r:'kyā',e:'what',h:'क्या',c:'Questions'},
+  {u:'کون',r:'kaun',e:'who',h:'कौन',c:'Questions'},
+  {u:'کہاں',r:'kahāṅ',e:'where',h:'कहाँ',c:'Questions'},
+  {u:'کب',r:'kab',e:'when',h:'कब',c:'Questions'},
+  {u:'کیوں',r:'kyūṅ',e:'why',h:'क्यों',c:'Questions'},
+  {u:'کیسے',r:'kaise',e:'how',h:'कैसे',c:'Questions'},
+  {u:'کتنا',r:'kitnā',e:'how much',h:'कितना',c:'Questions'},
+
+  // PRONOUNS
+  {u:'میں',r:'maiṅ',e:'I',h:'मैं',c:'Pronouns'},
+  {u:'تم',r:'tum',e:'you (informal)',h:'तुम',c:'Pronouns'},
+  {u:'آپ',r:'āp',e:'you (formal)',h:'आप',c:'Pronouns'},
+  {u:'ہم',r:'ham',e:'we',h:'हम',c:'Pronouns'},
+  {u:'وہ',r:'vo',e:'he / she / they',h:'वो',c:'Pronouns'},
+  {u:'یہ',r:'yeh',e:'this',h:'यह',c:'Pronouns'},
+  {u:'میرا',r:'merā',e:'my',h:'मेरा',c:'Pronouns'},
+  {u:'تمہارا',r:'tumhārā',e:'your',h:'तुम्हारा',c:'Pronouns'},
+
+  // PLACES
+  {u:'گھر',r:'ghar',e:'house',h:'घर',c:'Places'},
+  {u:'شہر',r:'shahar',e:'city',h:'शहर',c:'Places'},
+  {u:'گاؤں',r:'gāuṅ',e:'village',h:'गाँव',c:'Places'},
+  {u:'ملک',r:'mulk',e:'country',h:'देश',c:'Places'},
+  {u:'سکول',r:'iskūl',e:'school',h:'स्कूल',c:'Places'},
+  {u:'یونیورسٹی',r:'yūnivarsiṭī',e:'university',h:'विश्वविद्यालय',c:'Places'},
+  {u:'ہسپتال',r:'hospitāl',e:'hospital',h:'अस्पताल',c:'Places'},
+  {u:'بازار',r:'bāzār',e:'market',h:'बाज़ार',c:'Places'},
+  {u:'سڑک',r:'saṛak',e:'road',h:'सड़क',c:'Places'},
+
+  // OBJECTS
+  {u:'کتاب',r:'kitāb',e:'book',h:'किताब',c:'Objects'},
+  {u:'قلم',r:'qalam',e:'pen',h:'क़लम',c:'Objects'},
+  {u:'کاغذ',r:'kāghaz',e:'paper',h:'काग़ज़',c:'Objects'},
+  {u:'گاڑی',r:'gāṛī',e:'car / vehicle',h:'गाड़ी',c:'Objects'},
+  {u:'دروازہ',r:'darvāza',e:'door',h:'दरवाज़ा',c:'Objects'},
+  {u:'کھڑکی',r:'khiṛkī',e:'window',h:'खिड़की',c:'Objects'},
+  {u:'پیسہ',r:'paisā',e:'money',h:'पैसा',c:'Objects'},
+  {u:'چابی',r:'chābī',e:'key',h:'चाबी',c:'Objects'},
+
+  // VERBS
+  {u:'کرنا',r:'karnā',e:'to do',h:'करना',c:'Verbs'},
+  {u:'ہونا',r:'honā',e:'to be',h:'होना',c:'Verbs'},
+  {u:'جانا',r:'jānā',e:'to go',h:'जाना',c:'Verbs'},
+  {u:'آنا',r:'ānā',e:'to come',h:'आना',c:'Verbs'},
+  {u:'دیکھنا',r:'dekhnā',e:'to see',h:'देखना',c:'Verbs'},
+  {u:'سننا',r:'sunnā',e:'to hear',h:'सुनना',c:'Verbs'},
+  {u:'بولنا',r:'bolnā',e:'to speak',h:'बोलना',c:'Verbs'},
+  {u:'پڑھنا',r:'paṛhnā',e:'to read',h:'पढ़ना',c:'Verbs'},
+  {u:'لکھنا',r:'likhnā',e:'to write',h:'लिखना',c:'Verbs'},
+  {u:'کھانا',r:'khānā',e:'to eat',h:'खाना',c:'Verbs'},
+  {u:'پینا',r:'pīnā',e:'to drink',h:'पीना',c:'Verbs'},
+  {u:'سونا',r:'sonā',e:'to sleep',h:'सोना',c:'Verbs'},
+  {u:'جاگنا',r:'jāgnā',e:'to wake up',h:'जागना',c:'Verbs'},
+  {u:'دینا',r:'denā',e:'to give',h:'देना',c:'Verbs'},
+  {u:'لینا',r:'lenā',e:'to take',h:'लेना',c:'Verbs'},
+
+  // POETRY / LITERATURE (from PDF Ghalib section)
+  {u:'لفظ',r:'lafẓ',e:'word',h:'शब्द',c:'Literature'},
+  {u:'اشعار',r:'ashʻār',e:'verses / poems',h:'शेर, अशआर',c:'Literature'},
+  {u:'غالب',r:'Ghālib',e:'Ghalib (legendary poet)',h:'ग़ालिब',c:'Literature'},
+  {u:'طلسم',r:'tilism',e:'charm / talisman',h:'जादू',c:'Literature'},
+  {u:'معانی',r:'maʻānī',e:'meanings',h:'अर्थ',c:'Literature'},
+  {u:'گنجینہ',r:'ganjīna',e:'treasure',h:'ख़ज़ाना',c:'Literature'},
+
+  // CONJUNCTIONS / GLUE WORDS
+  {u:'اور',r:'aur',e:'and',h:'और',c:'Conjunctions'},
+  {u:'یا',r:'yā',e:'or',h:'या',c:'Conjunctions'},
+  {u:'لیکن',r:'lekin',e:'but',h:'लेकिन',c:'Conjunctions'},
+  {u:'اگر',r:'agar',e:'if',h:'अगर',c:'Conjunctions'},
+  {u:'تو',r:'to',e:'then',h:'तो',c:'Conjunctions'},
+];
+let VOCAB_ACTIVE_CAT = 'All';
+let VOCAB_FILTER = 'all'; // all | known | unsure | new
+let VOCAB_MASTERY = {}; // {urduWord: 'known'|'unsure'}
+
+function vocabStorageKey(){return 'urduduo_vocab_mastery_'+(S.currentUser||'guest');}
+function loadVocabMasteryLocal(){
+  try{VOCAB_MASTERY = JSON.parse(localStorage.getItem(vocabStorageKey())||'{}');}
+  catch(e){VOCAB_MASTERY={};}
+}
+async function loadVocabMasteryCloud(){
+  if(!S.currentUser || S.currentUser==='guest') return;
+  try{
+    const r = await fetch(API+'/vocab/mastery',{credentials:'include'});
+    if(!r.ok) return;
+    const data = await r.json();
+    if(data && data.mastery) VOCAB_MASTERY = data.mastery;
+    localStorage.setItem(vocabStorageKey(), JSON.stringify(VOCAB_MASTERY));
+  }catch(e){}
+}
+async function setMastery(word, status){
+  if(status === 'new') delete VOCAB_MASTERY[word];
+  else VOCAB_MASTERY[word] = status;
+  localStorage.setItem(vocabStorageKey(), JSON.stringify(VOCAB_MASTERY));
+  renderVocab(); // refresh dots/buttons
+  if(S.currentUser && S.currentUser!=='guest'){
+    try{
+      await fetch(API+'/vocab/mastery',{
+        method:'POST',credentials:'include',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({word, status})
+      });
+    }catch(e){}
+  }
+}
+
+function vocabCategories(){
+  const cats = ['All'];
+  const seen = new Set();
+  VOCAB.forEach(v=>{if(!seen.has(v.c)){seen.add(v.c);cats.push(v.c);}});
+  return cats;
+}
+function renderVocabCats(){
+  const cats = vocabCategories();
+  const counts = {All: VOCAB.length};
+  VOCAB.forEach(v=>{counts[v.c]=(counts[v.c]||0)+1;});
+  document.getElementById('vocabCats').innerHTML = cats.map(c =>
+    `<button class="vocab-cat-btn ${c===VOCAB_ACTIVE_CAT?'active':''}" onclick="setVocabCat('${c}')">${c}<span class="count">${counts[c]||0}</span></button>`
+  ).join('');
+}
+function setVocabCat(c){VOCAB_ACTIVE_CAT=c;renderVocabCats();renderVocab();}
+function setVocabFilter(f){VOCAB_FILTER=f;renderVocab();}
+
+function renderVocabSummary(){
+  const known = Object.values(VOCAB_MASTERY).filter(s=>s==='known').length;
+  const unsure = Object.values(VOCAB_MASTERY).filter(s=>s==='unsure').length;
+  const total = VOCAB.length;
+  const fresh = total - known - unsure;
+  const el = document.getElementById('vocabSummary');
+  if(!el) return;
+  el.innerHTML = `
+    <span class="vfilter ${VOCAB_FILTER==='all'?'on':''}" onclick="setVocabFilter('all')"><span class="dot" style="background:#cbd5e1"></span> All <b style="color:var(--ink)">${total}</b></span>
+    <span class="vfilter ${VOCAB_FILTER==='known'?'on':''}" onclick="setVocabFilter('known')"><span class="dot" style="background:#58cc02"></span> Known <b style="color:var(--ink)">${known}</b></span>
+    <span class="vfilter ${VOCAB_FILTER==='unsure'?'on':''}" onclick="setVocabFilter('unsure')"><span class="dot" style="background:#f7c948"></span> Unsure <b style="color:var(--ink)">${unsure}</b></span>
+    <span class="vfilter ${VOCAB_FILTER==='new'?'on':''}" onclick="setVocabFilter('new')"><span class="dot" style="background:#94a3b8"></span> New <b style="color:var(--ink)">${fresh}</b></span>
+  `;
+}
+
+function renderVocab(){
+  const q = (document.getElementById('vocabSearch')?.value||'').trim().toLowerCase();
+  const grid = document.getElementById('vocabGrid');
+  renderVocabSummary();
+  const matches = VOCAB.filter(v=>{
+    if(VOCAB_ACTIVE_CAT!=='All' && v.c!==VOCAB_ACTIVE_CAT) return false;
+    const status = VOCAB_MASTERY[v.u] || 'new';
+    if(VOCAB_FILTER!=='all' && VOCAB_FILTER!==status) return false;
+    if(!q) return true;
+    return (v.u+' '+v.r+' '+v.e+' '+v.h).toLowerCase().includes(q);
+  });
+  if(matches.length===0){
+    grid.innerHTML = `<div class="vocab-empty">No words match. Try another filter or search.</div>`;
+    return;
+  }
+  grid.innerHTML = matches.map((v)=>{
+    const status = VOCAB_MASTERY[v.u] || 'new';
+    return `
+    <div class="vocab-card" onclick="this.classList.toggle('flipped')">
+      <span class="v-cat-badge">${v.c}</span>
+      <button class="v-speaker" onclick="event.stopPropagation();speakUrdu('${esc(v.u)}')" title="Pronounce">🔊</button>
+      <div class="v-urdu">${v.u}</div>
+      <div class="v-roman">${v.r}</div>
+      <div class="v-en">${v.e}</div>
+      <div class="vocab-mastery" onclick="event.stopPropagation()">
+        <button class="act-known ${status==='known'?'on':''}" onclick="setMastery('${esc(v.u)}','known')">Known</button>
+        <button class="act-unsure ${status==='unsure'?'on':''}" onclick="setMastery('${esc(v.u)}','unsure')">Unsure</button>
+        <button class="act-new ${status==='new'?'on':''}" onclick="setMastery('${esc(v.u)}','new')">New</button>
+      </div>
+      <span class="v-status-dot ${status}"></span>
+    </div>
+  `;}).join('');
+}
+function speakUrdu(text){
+  try{
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='ur-PK';u.rate=.85;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+
+// ════════════════════════════════════════════════
+// BOOT
+// ════════════════════════════════════════════════
+(async function(){
+  // 1) Handle Google OAuth callback if present in URL hash
+  await processSessionFromHash();
+
+  // 2) Check if a backend session cookie is alive
+  const me = await fetchMe();
+  if(me && me.user_id){
+    // Pull cloud progress
+    const cloud = await pullCloudProgress();
+    if(cloud){
+      S.xp = cloud.xp || 0;
+      S.streak = cloud.streak || 1;
+      S.done = cloud.done || [];
+      if(cloud.portrait){
+        try{localStorage.setItem('urduduo_bday_img', cloud.portrait);}catch(e){}
+      }
+    }
+    loginUser(me.user_id, me.name || me.email, me.email);
+    return;
+  }
+
+  // 3) Fallback: guest last-session
+  const lastUser=localStorage.getItem('urduduo_lastuser');
+  if(lastUser==='guest'){loginUser('guest','Guest');}
+  // else show login screen (default)
+})();
+</script>
+<div id="root" style="display:none"></div>
+<script>
+// Safety net: remove platform-injected support / badge widgets (by selector AND by content)
+(function(){
+  const KEYWORDS = ['emergent', 'made with emergent', 'how can i help', 'support', 'chat with us', 'built with', 'powered by emergent'];
+  const SELECTORS = [
+    '#emergent-badge', '[id*="emergent-badge"]', '[id*="emergent-support"]',
+    '[class*="emergent-badge"]', '[class*="emergent-support"]',
+    '[id^="emergent"]', '[class^="emergent"]',
+    'iframe[src*="emergent"]', 'iframe[src*="support"]', 'iframe[src*="intercom"]', 'iframe[src*="crisp"]',
+    'iframe[title*="support" i]', 'iframe[title*="chat" i]', 'iframe[title*="help" i]',
+    'a[href*="emergent.sh"]', 'a[href*="emergent.app"]', 'a[href*="emergent.com"]',
+    '[data-emergent]', '#__emergent-widget',
+    '.emergent-widget', '.emergent-launcher', '.support-launcher', '.support-bubble',
+    '[aria-label*="support" i]', '[aria-label*="emergent" i]',
+  ];
+  function killEl(el){ try{ el.remove(); }catch(e){ try{ el.style.cssText = 'display:none !important;visibility:hidden !important;opacity:0 !important;pointer-events:none !important;'; }catch(e2){} } }
+  function nukeWidgets(){
+    // 1) selector-based
+    SELECTORS.forEach(sel => { try{ document.querySelectorAll(sel).forEach(killEl); }catch(e){} });
+    // 2) content-based: any fixed/sticky element near the viewport edges with widget-y text
+    const all = document.querySelectorAll('body *');
+    for(let i=0;i<all.length;i++){
+      const el = all[i];
+      if(!el || el.id === 'mascot' || el.closest('#bdayOverlay') || el.closest('#appShell') || el.closest('#loginScreen')) continue;
+      const cs = el.ownerDocument && el.ownerDocument.defaultView ? el.ownerDocument.defaultView.getComputedStyle(el) : null;
+      if(!cs) continue;
+      if(cs.position !== 'fixed' && cs.position !== 'sticky') continue;
+      const rect = el.getBoundingClientRect();
+      if(rect.width === 0 || rect.height === 0) continue;
+      const txt = (el.innerText || el.textContent || '').toLowerCase().trim();
+      if(!txt || txt.length > 200) continue;
+      for(const k of KEYWORDS){
+        if(txt.includes(k)){ killEl(el); break; }
+      }
+    }
+  }
+  nukeWidgets();
+  ['DOMContentLoaded','load'].forEach(ev => document.addEventListener(ev, nukeWidgets));
+  setInterval(nukeWidgets, 1500); // belt + suspenders for late injectors
+  try{ new MutationObserver(nukeWidgets).observe(document.documentElement, {childList:true, subtree:true}); }catch(e){}
+})();
+</script>
+</body>
+</html>
